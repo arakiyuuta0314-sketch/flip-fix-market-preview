@@ -607,6 +607,40 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 .normal-time-tip{min-height:2.4em;display:flex;align-items:center}
 .normal-time-tip.repair-time-error,.rush-repair-message.repair-time-error{color:#ffb9ad!important;font-weight:900;text-shadow:0 1px 5px #301321}
 @media(max-width:650px){.normal-time-tip{min-height:2.6em}}
+
+/* Put timer and brief damage feedback in the minigame the player is looking at. */
+.minigame.focus-timer-game{position:relative;border:2px solid #6fb9ae;transition:border-color .16s ease,box-shadow .16s ease}
+.mini-heading-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.focus-time-pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:75px;border:1px solid #92e0c8;border-radius:9px;background:#174b54;color:#c9ffe8;padding:5px 7px;font-size:13px;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums}
+.focus-time-pill b{font-variant-numeric:tabular-nums;font-size:17px;line-height:1}
+.focus-time-track{height:5px;overflow:hidden;margin:3px 1px 9px;background:#153845;border-radius:6px}
+.focus-time-track>span{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#63ade2,#9ef8bf);transition:width .2s linear}
+.minigame.focus-timer-warning{border-color:#ffd185!important;box-shadow:inset 0 0 0 1px #ffd18588,0 0 12px #ffc35a30}
+.focus-timer-warning .focus-time-pill{color:#ffecb6;border-color:#ffd185;background:#594729}
+.focus-timer-warning .focus-time-track>span{background:#ffd185}
+.minigame.focus-timer-urgent{border-color:#ff8e87!important;box-shadow:0 0 0 2px #ff8e87aa,0 0 16px #ff5e5e6e;animation:focusTimerPulse .58s ease-in-out infinite alternate}
+.focus-timer-urgent .focus-time-pill{color:#fff0e3;background:#894247;border-color:#ffaea5}
+.focus-timer-urgent .focus-time-track>span{background:#ff8585}
+@keyframes focusTimerPulse{from{box-shadow:0 0 0 1px #ff8e87aa,0 0 6px #ff696933}to{box-shadow:0 0 0 3px #ff8e87,0 0 18px #ff6969aa}}
+.minigame.focus-failed{border-color:#ff9b9b!important;box-shadow:inset 0 0 0 3px #ff777790,0 0 19px #ff737366!important;animation:focusFailFlash .21s ease-in-out 2 alternate!important}
+@keyframes focusFailFlash{from{filter:none}to{filter:brightness(1.18)}}
+.focus-feedback{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);z-index:7;max-width:calc(100% - 18px);width:max-content;pointer-events:none;border:2px solid #ffd4ca;border-radius:12px;padding:9px 14px;background:#8b3038ed;color:#fff5e9;font-weight:950;font-size:clamp(13px,3.8vw,18px);line-height:1.3;text-align:center;box-shadow:0 5px 22px #000b;animation:focusFailurePop .2s ease both}
+@keyframes focusFailurePop{from{opacity:0;transform:translate(-50%,-42%) scale(.91)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@media(max-width:650px){
+ .mini-heading-actions{gap:4px}
+ .focus-time-pill{min-width:61px;padding:5px 5px;font-size:10px}
+ .focus-time-pill b{font-size:16px}
+ .focus-time-track{margin-bottom:6px}
+ .mini-heading h3{font-size:14px}
+ .focus-feedback{padding:7px 9px;font-size:13px}
+}
+
+.minigame.focus-timed-out{animation:none!important;box-shadow:0 0 0 2px #e79b8c55!important}
+.focus-timeout-panel{position:absolute;z-index:9;left:50%;top:53%;transform:translate(-50%,-50%);display:flex;align-items:center;flex-direction:column;gap:6px;max-width:calc(100% - 20px);width:min(250px,90%);background:#263647f5;color:#fff0dd;border:2px solid #ffb99f;border-radius:14px;padding:12px 10px;box-shadow:0 8px 29px #000c;text-align:center}
+.focus-timeout-panel strong{color:#ffd1b9;font-size:21px}
+.focus-timeout-panel span{font-size:11px;color:#ecf1e8}
+.focus-timeout-panel .btn{min-height:40px;width:100%;font-size:12px;padding:6px}
+@media(max-width:650px){.focus-timeout-panel{padding:9px 8px;gap:5px}.focus-timeout-panel strong{font-size:18px}.focus-timeout-panel .btn{min-height:36px}}
 </style>
 </head>
 <body>
@@ -806,22 +840,49 @@ function dismissToast(){
   rush.textContent=L('各工程5秒以内でクリアすると報酬','Clear each mini-game within 5 seconds');
   rush.classList.remove('repair-time-error');
  }
+ app.querySelector('.minigame.focus-failed')?.classList.remove('focus-failed');
+ app.querySelector('.focus-feedback')?.remove();
+}
+function showFocusFeedback(game,message){
+ game.classList.add('focus-failed');
+ game.querySelector('.focus-feedback')?.remove();
+ const badge=document.createElement('div');
+ badge.className='focus-feedback';
+ badge.setAttribute('role','status');
+ badge.textContent='✖ '+message;
+ game.appendChild(badge);
+}
+function focusTimeDisplay(ms){
+ const sec=Math.max(0,Math.ceil(ms/1000));
+ return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+}
+function focusTimeBudget(a){
+ return (a.isTimed?(a.stageSeconds||RUSH_SECONDS_PER_STAGE):a.normalStageSeconds||normalStageSeconds(a))*1000;
+}
+function updateFocusTimer(a,remaining){
+ const game=app.querySelector('.minigame');
+ if(!game)return;
+ const countdown=game.querySelector('[data-focus-clock]');
+ if(countdown)countdown.textContent=focusTimeDisplay(remaining);
+ const progress=game.querySelector('[data-focus-progress]');
+ if(progress)progress.style.width=Math.max(0,Math.min(100,100*remaining/focusTimeBudget(a)))+'%';
+ game.classList.toggle('focus-timer-warning',remaining<=(a.isTimed?3000:10000));
+ game.classList.toggle('focus-timer-urgent',remaining<=(a.isTimed?2000:5000));
 }
 function notify(message,type=''){
  dismissToast();
  // A temporary notice must never cover tutorial or story dialog controls.
  if(state?.pendingScene||state?.active?.tutorialPending)return;
- // Show repair failures in the existing timer hint, not over the minigame.
+ // Errors are briefly displayed on the playing field itself, without
+ // stealing taps or making the player look back to the timer at the top.
  if(type==='error'&&currentTab==='work'&&state?.active&&!state.active.complete&&!state.active.broken){
-  // The retry panel already explains timeouts; do not duplicate the warning.
   if(state.active.normalRetryNeeded)return;
-  const target=document.querySelector('.normal-time-tip,.rush-repair-message');
-  if(target){
+  const game=app.querySelector('.minigame');
+  if(game){
    const a=state.active;
-   repairNotice={message,key:a.id+':'+a.stageIndex,until:Date.now()+1500};
-   target.textContent=message;
-   target.classList.add('repair-time-error');
-   toastHandle=setTimeout(dismissToast,1500);
+   repairNotice={message,key:a.id+':'+a.stageIndex,until:Date.now()+950};
+   showFocusFeedback(game,message);
+   toastHandle=setTimeout(dismissToast,950);
    return;
   }
  }
@@ -2618,7 +2679,7 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="settings">⚙ ${L('ゲーム設定','Game settings')}</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · PLAYTEST v0.15.1 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · PLAYTEST v0.15.2 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>${evolutionOverlay()}${eventResultOverlay()}${tutorialOverlay()}${settingsOverlay()}${developmentPanel()}`;
  translateDOM();
  const newContent=app.querySelector('.content');
@@ -2802,7 +2863,26 @@ function renderMinigame(a){const t=taskOf(),st=a.stageState||{},def=STAGES[t.typ
    <p class="game-tip">${done.length}/${st.count} ${L('接点成功・長押し不要','joints complete · NO long press')}</p></div>`;
  }
  if(t.type==='calibrate'){const center=25+(t.seed%51),width=clamp(24-a.difficulty*3,6,21);inside=`<div class="calibration-pad"><div class="row between"><span class="muted tiny">MIN</span><b style="color:var(--mint)">SWEET SPOT</b><span class="muted tiny">MAX</span></div><div class="slider-rail"><div class="slider-target" style="left:${center-width/2}%;width:${width}%"></div><div class="slider-needle" id="needle" style="left:50%"></div></div><button class="btn block" data-action="time-stop">🎯 ここで止める！ (Space)</button></div><p class="game-tip">針が緑の範囲にある時だけ成功。精密操作ほど範囲が狭い。</p>`;}
- return `<div class="eyebrow">REPAIR TASK ${a.stageIndex+1} / ${a.stages.length}</div><div class="minigame"><div class="mini-heading"><h3>${def.icon} ${def.name}</h3><button class="mini-help" data-action="tutorial-help" aria-label="${L('遊び方を確認','Show instructions')}">？ ${L('遊び方','Help')}</button></div>${inside}</div><div class="hint section-block">⚠️ 修理ミスで本体耐久度が減少。残り12%以下になると修復不能。保護フィルムは次のミスを1回防ぎます。</div>`;
+ const remaining=a.isTimed?timeLeft(a):normalTimeLeft(a);
+ const pct=Math.max(0,Math.min(100,100*remaining/focusTimeBudget(a)));
+ const warned=remaining<=(a.isTimed?3000:10000),critical=remaining<=(a.isTimed?2000:5000);
+ const failure=currentRepairNotice();
+ return `<div class="eyebrow">REPAIR TASK ${a.stageIndex+1} / ${a.stages.length}</div>
+ <div class="minigame focus-timer-game ${warned?'focus-timer-warning':''} ${critical?'focus-timer-urgent':''} ${a.normalRetryNeeded?'focus-timed-out':''} ${failure?'focus-failed':''}">
+ <div class="mini-heading"><h3>${def.icon} ${def.name}</h3>
+  <div class="mini-heading-actions">
+   <span class="focus-time-pill" aria-label="${L('ゲームの残り時間','Remaining game time')}">⏱ <b data-focus-clock>${focusTimeDisplay(remaining)}</b></span>
+   <button class="mini-help" data-action="tutorial-help" aria-label="${L('遊び方を確認','Show instructions')}">？ ${L('遊び方','Help')}</button>
+  </div></div>
+ <div class="focus-time-track" aria-hidden="true"><span data-focus-progress style="width:${pct}%"></span></div>
+ ${inside}
+ ${a.normalRetryNeeded?`<div class="focus-timeout-panel" role="alert">
+  <strong>⌛ ${L('時間切れ！','TIME UP!')}</strong>
+  <span>${L('耐久度が下がりました','Durability decreased')}</span>
+  <button class="btn" data-action="normal-retry">↻ ${L('同じ工程をやり直す','Retry stage')}</button>
+ </div>`:''}
+ ${failure?`<div class="focus-feedback" role="status">✖ ${failure.message}</div>`:''}
+ </div><div class="hint section-block">⚠️ 修理ミスで本体耐久度が減少。残り12%以下になると修復不能。保護フィルムは次のミスを1回防ぎます。</div>`;
 }
 function renderTools(){
  return `${title('TOOLS & UPGRADES',L('アイテムショップ','Tools & upgrades'),L('お金の使い道を選び、修理屋を成長させよう。','Invest in your tools and workshop.'))}
@@ -3088,6 +3168,7 @@ setInterval(()=>{
   if(!a.normalRetryNeeded){
    const remaining=normalTimeLeft(a);
    if(remaining===0){normalTimeout();return;}
+   updateFocusTimer(a,remaining);
    const clock=app.querySelector('[data-normal-clock]');
    if(clock){
     const sec=Math.ceil(remaining/1000);
@@ -3102,6 +3183,7 @@ setInterval(()=>{
  if(!state.active.isTimed||state.active.awaitingStage||state.active.awaitingStart)return;
  const a=state.active,remaining=timeLeft(a);
  if(remaining===0){finishTimed(false);return;}
+ updateFocusTimer(a,remaining);
  const clock=app.querySelector('[data-timed-clock]');
  if(clock){const sec=Math.ceil(remaining/1000);clock.textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
  const bar=app.querySelector('[data-timed-bar]');if(bar)bar.style.width=100*remaining/((a.stageSeconds||a.budget)*1000)+'%';
