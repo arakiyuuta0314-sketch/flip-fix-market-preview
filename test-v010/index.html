@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111827" />
   <meta name="description" content="Flip & Fix Market — 中古品を仕入れ、修理して売る経営ゲームのプレイアブル試作版。" />
-  <title>Flip & Fix Market — Playtest v0.11.0</title>
+  <title>Flip & Fix Market — Playtest v0.12.0</title>
   <style>
 :root { color-scheme: dark; --base:#101522; --panel:#1c2537; --panel2:#242e42; --stroke:#364258; --text:#f3f4ec; --muted:#a7b1c5; --gold:#ffc977; --mint:#79e2c3; --coral:#ff917e; --blue:#8eafff; --ink:#121a29; --shadow:0 18px 70px #0006; }
 * {box-sizing:border-box} html, body { min-height:100%; } body {margin:0;background:radial-gradient(ellipse at 82% 0%,#263451 0,transparent 37%),radial-gradient(ellipse at 0% 60%,#213940 0,transparent 40%),var(--base);font:500 14px/1.6 'DM Sans','Noto Sans JP',system-ui,sans-serif;color:var(--text)}button {font:inherit;cursor:pointer} button:focus-visible,[tabindex]:focus-visible {outline:3px solid var(--mint);outline-offset:3px} button:disabled {cursor:not-allowed;opacity:.44} .shell {max-width:1260px;margin:0 auto;padding:23px 22px 65px} .topbar {display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:20px} .identity{display:flex;align-items:center;gap:13px}.logo-icon{background:var(--gold);width:48px;height:48px;color:var(--ink);border:3px solid #ffe3a9;display:grid;place-items:center;border-radius:14px;transform:rotate(-5deg);font-size:25px;box-shadow:4px 5px 0 #0004}.identity h1 {font-size:22px;line-height:1.1;letter-spacing:.4px;margin:0;color:var(--gold)}.identity p{margin:4px 0 0;color:var(--muted);font-size:11px;letter-spacing:1.6px;text-transform:uppercase}.top-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.money,.level-tag,.status-pill {background:#243045;border:1px solid var(--stroke);border-radius:13px;padding:8px 14px;display:flex;gap:8px;align-items:center;white-space:nowrap}.money b{color:var(--gold);font-size:19px}.level-tag b{color:var(--mint)}.status-pill{color:var(--muted);font-size:12px}.circle-icon{display:inline-flex;align-items:center;justify-content:center;color:#142030;width:24px;height:24px;border-radius:50%;background:var(--gold);font-size:15px;font-weight:900}.layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:21px}.sidebar{background:#1b2435;border:1px solid var(--stroke);border-radius:19px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:625px}.navbtn{width:100%;border:none;background:transparent;color:#b9c1d0;display:flex;align-items:center;gap:12px;text-align:left;padding:13px 12px;border-radius:12px;font-weight:750}.navbtn .symbol{display:grid;place-items:center;font-size:22px;width:29px;height:27px}.navbtn.active{color:#1b2631;background:var(--gold);box-shadow:0 4px 0 #a7752b55}.navbtn:hover:not(.active){background:#2c3850;color:white}.side-separator{height:1px;background:var(--stroke);margin:12px 0}.sidebar-foot{margin-top:auto;border-radius:14px;background:#111a2a;padding:14px}.sidebar-foot h3{font-size:12px;margin:0 0 7px;color:var(--mint)}.sidebar-foot p{margin:0;color:var(--muted);font-size:11px;line-height:1.9}.sidebar-foot button{margin-top:12px}.content{min-width:0}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:17px}.section-heading h2{font-size:24px;margin:0;letter-spacing:.2px}.eyebrow {text-transform:uppercase;color:var(--mint);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:2px}.sub{color:var(--muted);font-size:12px;margin:4px 0 0}.btn{border:1px solid transparent;background:var(--gold);color:#1e2632;border-radius:11px;padding:10px 15px;font-weight:800;transition:filter .12s,transform .12s;white-space:nowrap}.btn:hover:not(:disabled){filter:brightness(1.09);transform:translateY(-1px)}.btn.secondary{background:#313f55;border-color:#56627a;color:var(--text)}.btn.ghost{background:transparent;color:var(--mint);border-color:#41685d}.btn.danger{background:#663943;border-color:#b05d65;color:#fff3f1}.btn.sm{font-size:12px;padding:7px 12px}.btn.block{width:100%}.panel{background:#1b2537;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 7px 29px #0002}.padded{padding:20px}.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(235px,1fr);gap:16px}.shop-scene{position:relative;overflow:hidden;height:310px;border-radius:15px;background:linear-gradient(#39566b 0 59%,#38405a 59% 100%);border:4px solid #536b7e}.shop-scene:before{content:'';position:absolute;left:0;right:0;top:0;height:56%;background:repeating-linear-gradient(90deg,transparent 0 49px,#ffffff07 50px 51px)}.shop-sign{position:absolute;z-index:2;top:13px;left:50%;transform:translateX(-50%);background:#182639;color:#ffc977;border:3px solid #d3a45e;border-radius:9px;padding:2px 27px;font:800 19px 'DM Sans';letter-spacing:2px;white-space:nowrap;box-shadow:0 4px #152435aa}.shelf{position:absolute;z-index:2;left:6%;width:37%;height:13px;background:#a97860;border-bottom:6px solid #6e4b43;box-shadow:0 4px 0 #0003}.shelf.top{top:39%}.shelf.bottom{top:62%}.shelf-objects{position:absolute;left:7%;width:35%;top:23%;height:35%;display:flex;align-items:end;justify-content:space-around;z-index:2}.shelf-objects span{font-size:34px;filter:drop-shadow(2px 6px 1px #0005)}.wall-window{position:absolute;top:25%;right:7%;width:27%;height:30%;background:#b4dce5;border:9px solid #e0bc89;border-bottom-width:14px;border-radius:11px;box-shadow:inset 0 0 0 5px #7ca4b7}.wall-window:before{content:'';position:absolute;left:50%;height:100%;width:8px;background:#e0bc89;transform:translateX(-50%)}.wall-window:after{content:'';position:absolute;top:48%;width:100%;height:7px;background:#e0bc89}.counter{z-index:4;position:absolute;bottom:12%;left:22%;width:57%;height:26%;background:#b88664;border:6px solid #5f3e38;border-radius:7px 7px 12px 12px;box-shadow:0 9px 0 #17233355}.counter:after{content:'FLIP  •  FIX';position:absolute;left:50%;top:33%;transform:translateX(-50%);font-size:18px;font-weight:900;color:#684537;white-space:nowrap;letter-spacing:2px}.counter-top{position:absolute;left:19%;right:18%;height:12px;background:#eac08c;bottom:37%;z-index:5;border-radius:6px}.counter-items{position:absolute;z-index:6;left:35%;width:27%;bottom:37%;display:flex;justify-content:space-between;align-items:end}.counter-items span{font-size:44px;filter:drop-shadow(3px 2px #263441)}.plant{position:absolute;bottom:15%;right:8%;z-index:5;font-size:64px}.floor-line{position:absolute;top:78%;left:0;right:0;border-top:1px solid #e1a26738}.fame-bar {height:9px;background:#121a2b;border-radius:8px;overflow:hidden;margin-top:8px}.fame-bar>span{display:block;background:linear-gradient(90deg,var(--mint),#a3b9ff);height:100%;border-radius:8px}.metric-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.metric{background:#263349;padding:13px;border-radius:12px}.metric small{color:var(--muted);display:block;font-size:11px}.metric strong{font-size:21px;color:var(--text)}.main-card-title{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:0 0 12px}.main-card-title h3{font-size:15px;margin:0}.main-card-title small{font-size:11px;color:var(--muted)}.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.item-card{background:#202c3f;border:1px solid #3c4a62;padding:14px;border-radius:16px;min-width:0;display:flex;flex-direction:column;gap:10px}.item-card:hover{border-color:#62748d}.art-frame{display:grid;place-items:center;background:radial-gradient(circle at 50% 32%,#465773 0,#2a374f 71%);height:143px;border-radius:11px;overflow:hidden;position:relative}.art-frame svg{width:96%;height:98%;filter:drop-shadow(2px 10px 4px #0c13265c)}.art-frame.large{height:285px}.art-frame.large svg{max-height:285px}.tag{border:1px solid #425d61;border-radius:7px;background:#1e4946;color:var(--mint);font-size:10px;padding:2px 7px;font-weight:800;letter-spacing:.5px;display:inline-block}.tag.rare{background:#474057;border-color:#8367a2;color:#e5c4ff}.tag.epic{background:#604436;border-color:#b17a4b;color:#ffe2aa}.tag.legend{background:#53403c;border-color:#e6b160;color:#ffdb8c}.item-name{font-size:15px;font-weight:800;margin:0}.item-sub{font-size:11px;color:var(--muted);margin:0}.card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}.price{font-size:17px;color:var(--gold);font-weight:900}.stars{font-size:12px;color:#ffcf77;letter-spacing:1px;white-space:nowrap}.price-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff13;gap:8px;font-size:12px}.price-row strong{font-size:14px}.stack{display:flex;flex-direction:column;gap:13px}.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.muted{color:var(--muted)}.pill{padding:4px 8px;background:#2d3c51;border:1px solid #4b5972;border-radius:7px;font-size:11px;color:#c8d5eb}.workshop-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:17px}.workshop-controls{padding:19px}.statline{display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px;font-size:12px}.condition-track{height:11px;background:#0d1728;border-radius:20px;overflow:hidden}.condition-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#ec947a,#ffd071,#8ee5bd);transition:width .15s}.step-progress{display:flex;gap:6px;margin:16px 0}.step-progress span{height:7px;flex:1;background:#36465f;border-radius:8px}.step-progress .done{background:var(--mint)}.step-progress .current{background:var(--gold)}.minigame{min-height:260px;background:#121c2c;border:1px solid #3a4961;border-radius:15px;padding:17px;position:relative;overflow:hidden}.minigame h3{font-size:15px;margin:0}.minigame p{color:var(--muted);font-size:12px;margin:2px 0 10px}.clean-pad{height:197px;background:radial-gradient(ellipse,#435569,#263b49);position:relative;border-radius:12px;overflow:hidden;border:2px solid #617481;touch-action:none;user-select:none}.clean-pad:after{pointer-events:none;content:'✦  WIPE TO CLEAN  ✦';position:absolute;bottom:7px;right:11px;font-size:10px;letter-spacing:1px;color:#ecfaff5e}.clean-spot{position:absolute;width:51px;height:40px;border-radius:50%;transform:translate(-50%,-50%) rotate(-12deg);border:3px dotted #6c5348;background:radial-gradient(ellipse,#6b5048 7%,#987158b6 56%,transparent 72%);box-shadow:0 0 11px #59413188;pointer-events:none;transition:opacity .15s}.clean-spot.is-clean{opacity:0}.wire-pad{position:relative;display:flex;justify-content:space-between;padding:15px 20px 10px;height:176px;background:#202f40;border:1px solid #4d6277;border-radius:10px}.terminal-col{display:flex;flex-direction:column;justify-content:space-between;align-items:center;z-index:1}.terminal{border:3px solid #e5d9ae;box-shadow:0 4px #0003;width:37px;height:37px;border-radius:50%;position:relative;z-index:2}.terminal.selected{outline:4px solid #f8edb6;outline-offset:3px}.terminal.done{opacity:.27}.wire-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}.calibration-pad{height:173px;background:#1e2c43;border:1px solid #40556e;border-radius:10px;padding:24px 18px;display:flex;flex-direction:column;justify-content:center;gap:25px}.slider-rail{height:19px;border-radius:10px;background:linear-gradient(#60758d,#34485f);position:relative;border:2px solid #8294a5}.slider-target{position:absolute;top:-8px;bottom:-8px;border:2px solid #aaf2c8;background:#5ed4a64d;border-radius:8px}.slider-needle{position:absolute;top:-12px;bottom:-12px;width:5px;background:#ffcd6c;box-shadow:0 0 9px #ffcd6c;border-radius:3px;transform:translateX(-50%)}.game-tip{font-size:11px;color:#9db5c2;text-align:center}.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.tool-btn{border:1px solid #52637a;background:#2d3c51;color:#ecf3ef;padding:9px;border-radius:10px;font-size:12px;font-weight:750;text-align:left;line-height:1.65}.tool-btn small{font-size:10px;color:#abbed1;display:block}.tool-btn:hover:not(:disabled){border-color:var(--gold)}.tool-btn.selected{border-color:var(--mint);color:var(--mint)}.hint{background:#2d3142;border-left:3px solid var(--gold);color:#e2cfac;padding:11px 13px;font-size:12px;border-radius:8px}.result-card{background:linear-gradient(140deg,#273f4b,#27304a);border:1px solid #597885;padding:19px;border-radius:17px}.result-card h3{font-size:21px;margin:0}.result-card .total{font-size:32px;font-weight:900;color:var(--gold);margin:7px 0}.shop-item{display:flex;align-items:center;gap:12px;background:#26354a;border:1px solid #465771;border-radius:15px;padding:15px}.shop-icon{width:48px;height:48px;display:grid;place-items:center;background:#3c4e65;border-radius:11px;font-size:26px;flex-shrink:0}.shop-desc{flex:1;min-width:0}.shop-desc h3{margin:0;font-size:14px}.shop-desc p{font-size:11px;margin:2px 0;color:var(--muted)}.shop-price{font-weight:900;color:var(--gold);white-space:nowrap}.gallery-card{position:relative;background:#26354a;border:1px solid #4d5c74;padding:14px;border-radius:16px}.gallery-card .art-frame{height:135px}.empty{padding:55px 18px;text-align:center;border:1px dashed #57637a;border-radius:18px;background:#1b253749}.empty .big-emoji{font-size:56px}.empty h3{font-size:18px;margin:8px 0}.empty p{color:var(--muted);font-size:12px;max-width:430px;margin:0 auto 16px}.footer{font-size:11px;color:#9ca9be;text-align:center;padding:25px 0}.toast{position:fixed;z-index:60;bottom:22px;left:50%;transform:translateX(-50%);background:#ffdda0;color:#1b2631;border-radius:13px;padding:12px 21px;font-weight:800;box-shadow:0 12px 40px #0009;max-width:min(90vw,550px);text-align:center;animation:pop .2s ease}.toast.error{background:#ffc1b9}.toast.good{background:#a7efd3}@keyframes pop{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}.mini-caption{font-size:11px;color:var(--muted);margin:7px 0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.upgrade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.locked{filter:grayscale(.7);opacity:.7}.mobile-nav{display:none}.dashboard-bottom{margin-top:16px}.save-error{padding:14px;border:1px solid #c96e6e;background:#4b2c37;color:#ffdddd;border-radius:12px}.section-block{margin-top:17px}.checkbox-like{background:#283e45;color:var(--mint);border:1px solid #437065;padding:5px 8px;font-size:11px;border-radius:7px}.state-card{padding:17px;border:1px solid #415370;border-radius:14px;background:#24354b}.tiny{font-size:11px}.light{color:var(--gold)}
@@ -555,9 +555,11 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 .story-inbox-item b{font-size:12px}.story-inbox-item small{font-size:11px;line-height:1.3}.story-inbox-item>strong{color:#ffe4a1}
 .story-inbox-item:active{background:#417e84}.story-inbox-empty{font-size:12px;padding:10px;border:1px solid #5b8c7e;border-radius:9px;margin:7px 0;color:#b7dfc9}
 .resident-finale{background:#f4d68c;color:#234a47}
+.resident-side{background:#346c63;color:#fff8df;border-color:#9adabc}
 @media(max-width:650px){.story-inbox-items{grid-template-columns:1fr}.story-inbox{padding:8px;margin:5px 0}}
 
 .story-finale-record{padding:12px;margin-bottom:12px;border:2px solid #ffe7a2;border-radius:12px;color:#fff0b5;background:linear-gradient(125deg,#344e77,#1f4a4a);font-weight:900;line-height:1.5}
+@media(max-width:650px) and (max-height:680px){.town-world .town-hotspot .tap-sign{display:none}}
 </style>
 </head>
 <body>
@@ -667,7 +669,7 @@ const app = document.getElementById('app');
 const n=(v)=>Number(v||0).toLocaleString('ja-JP');
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
-function baseSave(){return {version:SAVE_VERSION,coins:460,fame:0,completed:0,failures:0,revenue:0,spent:0,nextId:1,inventory:[],active:null,offers:[],collection:[],upgrades:{bench:false,dealer:false,showcase:false,warehouse:false},tools:{clean:1,wire:0,precision:0,screw:0,circuit:0,shield:1,auto:0,diagnose:0,assemble:0,power:0},townLevel:1,houseLevel:0,storySeen:false,seenCelebration:0,residentLove:{},residentSeen:{},residentTalkCount:{},eventsDone:{},residentChapters:{},residentFinals:{},townFinaleSeen:false,projects:{},timedWon:0,timedFailed:0,timedLast:null,rushUsed:{},rushOffer:null,rushNormalCompleted:0,rushNextEligibleAt:2,pendingScene:null,locale:'en'};}
+function baseSave(){return {version:SAVE_VERSION,coins:460,fame:0,completed:0,failures:0,revenue:0,spent:0,nextId:1,inventory:[],active:null,offers:[],collection:[],upgrades:{bench:false,dealer:false,showcase:false,warehouse:false},tools:{clean:1,wire:0,precision:0,screw:0,circuit:0,shield:1,auto:0,diagnose:0,assemble:0,power:0},townLevel:1,houseLevel:0,storySeen:false,seenCelebration:0,residentLove:{},residentSeen:{},residentTalkCount:{},eventsDone:{},residentChapters:{},residentFinals:{},residentSideStories:{},townFinaleSeen:false,projects:{},timedWon:0,timedFailed:0,timedLast:null,rushUsed:{},rushOffer:null,rushNormalCompleted:0,rushNextEligibleAt:2,pendingScene:null,locale:'en'};}
 function load(){
  try{
    const raw=storage.getItem(KEY);
@@ -683,7 +685,7 @@ function load(){
     data.coins+=Number(data.active.deposit||0);
     data.active=null;
    }
-   data.townLevel=clamp(Number(data.townLevel||1),1,MAX_TOWN_LEVEL);data.residentLove||={};data.residentSeen||={};data.residentTalkCount||={};data.eventsDone||={};data.residentChapters||={};data.residentFinals||={};data.townFinaleSeen??=false;data.projects||={};data.timedWon||=0;data.timedFailed||=0;data.timedLast||=null;data.rushUsed||={};data.pendingScene||=null;
+   data.townLevel=clamp(Number(data.townLevel||1),1,MAX_TOWN_LEVEL);data.residentLove||={};data.residentSeen||={};data.residentTalkCount||={};data.eventsDone||={};data.residentChapters||={};data.residentFinals||={};data.residentSideStories||={};data.townFinaleSeen??=false;data.projects||={};data.timedWon||=0;data.timedFailed||=0;data.timedLast||=null;data.rushUsed||={};data.pendingScene||=null;
    data.rushOffer??=null;data.rushNormalCompleted??=0;data.rushNextEligibleAt??=2;
    if(data.pendingScene?.type==='step'||data.active?.awaitingStage){
     data.pendingScene=null;
@@ -918,22 +920,26 @@ function finishResident(success){
  const a=state.active;if(!a?.residentId)return;
  const id=a.residentId,config=RESIDENT_EVENTS[id],resident=RESIDENTS.find(x=>x.id===id);
  if(!config||!resident)throw Error('Unknown resident event '+id);
- const chapter=a.residentChapter||1,followup=chapter===2?RESIDENT_FOLLOWUPS[id]:chapter===3?RESIDENT_FINALES[id]:null;
+ const chapter=a.residentChapter||1,story=residentChapterStory(id,chapter);
  if(success){
   if(chapter===1){
    if(state.eventsDone[id])throw Error('Resident event already rewarded');
    state.eventsDone[id]=true;
   }else if(chapter===2){
-   if(!followup||state.residentChapters[id])throw Error('Second resident chapter already completed');
+   if(state.residentChapters[id])throw Error('Second resident chapter already completed');
    state.residentChapters[id]=true;
   }else if(chapter===3){
-   if(!followup||state.residentFinals[id])throw Error('Final resident chapter already completed');
+   if(state.residentFinals[id])throw Error('Final resident chapter already completed');
    state.residentFinals[id]=true;
+  }else if(chapter===4||chapter===5){
+   const i=chapter-4,key=id+'_'+i;
+   if(state.residentSideStories[key])throw Error('Side story already completed');
+   state.residentSideStories[key]=true;
   }else throw Error('Unknown resident chapter');
   state.residentLove[id]=Math.min(5,(state.residentLove[id]||0)+(chapter===1?2:1));
-  state.tools[followup?.tool||config.tool]=(state.tools[followup?.tool||config.tool]||0)+(followup?.amount||config.amount);
+  state.tools[story.tool||config.tool]=(state.tools[story.tool||config.tool]||0)+(story.amount||config.amount);
  }
- state.pendingScene={type:'resident-result',residentId:id,chapter,success,tool:followup?.tool||config.tool,amount:success?(followup?.amount||config.amount):0,
+ state.pendingScene={type:'resident-result',residentId:id,chapter,success,tool:story?.tool||config.tool,amount:success?(story?.amount||config.amount):0,
   tests:a.stages.slice(0,a.stageIndex).map(x=>x.type),failedTest:success?null:a.stages[a.stageIndex]?.type};
  state.active=null;currentTab='people';mutate();
 }
@@ -1124,6 +1130,561 @@ const RESIDENT_FOLLOWUPS={
  sol:{level:12,hearts:3,ja:'町を包む光',en:'Light for Every Home',intro:['太陽集光器が動くようになった。今度は、街のすみずみまで電力を送りたい。','The solar collector is fixed. Now let us bring its power to every home in the city.'],end:['暗かった場所まで明るくなった。未来は、みんなで分け合う光なんだ。','Even the forgotten corners are bright. The future is light we share.'],stages:['power','solder'],tool:'precision',amount:3,icon:'☀️'},
  hoshi:{level:12,hearts:3,ja:'はじまりの道具を未来へ',en:'The Workshop Time Capsule',intro:['星の港ができたね。でも最初の修理道具は、ちゃんと残しておきたいな。','The star harbor is finished, but we must preserve the tools from the little repair shop where it all began.'],end:['記録できたよ。どんなに遠い未来でも、この町のはじまりは消えない。','The record is safe. No matter how far into the future we go, this town will never forget its beginning.'],stages:['assemble','solder'],tool:'auto',amount:1,icon:'🏛️'}
 };
+const RESIDENT_SIDE_STORIES={
+ "gen": [
+  {
+   "level": 4,
+   "ja": "フミに渡す時計台の設計図",
+   "en": "A Blueprint for Fumi",
+   "intro": [
+    "フミが時計台を描き直したいそうじゃ。古い投影機から設計図を取り出せるかの。",
+    "Fumi wants to restore the clocktower sign. Can we recover the blueprint from my old projector?"
+   ],
+   "end": [
+    "これで看板にも時計台の姿が残るな。昔と今が並んで見えるわい。",
+    "Now the clocktower will live on in the town’s signs. The old and new stand together."
+   ],
+   "stages": [
+    "clean",
+    "diagnose",
+    "wires",
+    "power"
+   ],
+   "tool": "clean",
+   "amount": 1,
+   "icon": "📐"
+  },
+  {
+   "level": 7,
+   "ja": "映像に映った昔の約束",
+   "en": "A Promise on Film",
+   "intro": [
+    "ノラが昔のフィルムを見つけてくれた。映写機を直して、みんなと見たいんじゃ。",
+    "Nora found an old film. Can we restore the projector and watch it together?"
+   ],
+   "end": [
+    "あの頃の友人たちが笑っとる。約束を覚えている人がまだいるんじゃな。",
+    "My old friends are smiling there. Someone still remembers the promises we made."
+   ],
+   "stages": [
+    "screws",
+    "clean",
+    "laser",
+    "assemble"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "🎞️"
+  }
+ ],
+ "mia": [
+  {
+   "level": 5,
+   "ja": "ユキと広場の移動カフェ",
+   "en": "Coffee in the Square",
+   "intro": [
+    "ユキが広場を整備してくれたの。移動式のコーヒーマシンを試してみたいな。",
+    "Yuki has restored the square. I want to try a mobile coffee cart there."
+   ],
+   "end": [
+    "広場にコーヒーの香りが広がった！ 修理屋さんの分は特別に淹れるね。",
+    "The square smells like coffee! I saved a special cup for you."
+   ],
+   "stages": [
+    "clean",
+    "screws",
+    "solder",
+    "power"
+   ],
+   "tool": "shield",
+   "amount": 1,
+   "icon": "🫖"
+  },
+  {
+   "level": 8,
+   "ja": "夜勤の人への差し入れ",
+   "en": "A Cup for the Night Shift",
+   "intro": [
+    "アオイが夜勤の人を案内しているの。夜でも温かい飲み物を届けたい。",
+    "Aoi guides workers through the night. I want to bring them something warm."
+   ],
+   "end": [
+    "疲れた顔が少しほぐれたね。街が眠らないなら、カフェも寄り添いたいな。",
+    "They look a little less tired. If the city stays awake, the cafe can be there too."
+   ],
+   "stages": [
+    "diagnose",
+    "wires",
+    "calibrate",
+    "power"
+   ],
+   "tool": "clean",
+   "amount": 1,
+   "icon": "🌙"
+  }
+ ],
+ "leo": [
+  {
+   "level": 6,
+   "ja": "リョウの忘れ物探し",
+   "en": "The Lost Parcel",
+   "intro": [
+    "リョウが駅で荷物を探しているんだ。僕の探査ロボットを走らせてみよう。",
+    "Ryo lost a parcel at the station. Let my little search robot help find it!"
+   ],
+   "end": [
+    "見つけた！ 役に立つ発明も、案外いいものだね。",
+    "We found it! Turns out inventions feel best when they help someone."
+   ],
+   "stages": [
+    "diagnose",
+    "circuit",
+    "laser",
+    "power"
+   ],
+   "tool": "circuit",
+   "amount": 1,
+   "icon": "🤖"
+  },
+  {
+   "level": 9,
+   "ja": "ゲートを越える小さな機械",
+   "en": "A Machine Beyond the Gate",
+   "intro": [
+    "カイのゲートを通れる小さな観測機を作りたい。遠い景色を見てみようよ。",
+    "I want to send a tiny probe through Kai’s gate and see what is beyond."
+   ],
+   "end": [
+    "遠くの光が届いた！ 子どもの頃に想像していた世界だ。",
+    "A distant light came back! It’s the world I used to dream about."
+   ],
+   "stages": [
+    "assemble",
+    "wires",
+    "laser",
+    "calibrate"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "🔭"
+  }
+ ],
+ "fumi": [
+  {
+   "level": 7,
+   "ja": "リョウの駅に描く地図",
+   "en": "A Map at the Station",
+   "intro": [
+    "リョウの駅に、迷わないための案内板を置きたいの。古い印刷機を直そう。",
+    "Ryo’s station needs a clear map. Can we repair this old printing machine?"
+   ],
+   "end": [
+    "初めて来た人でも、ちゃんと目的地に着けるね。",
+    "Now even first-time visitors can find their way home."
+   ],
+   "stages": [
+    "clean",
+    "screws",
+    "wires",
+    "calibrate"
+   ],
+   "tool": "wire",
+   "amount": 1,
+   "icon": "🗺️"
+  },
+  {
+   "level": 10,
+   "ja": "空の庭へ続く看板",
+   "en": "A Sign to the Sky Garden",
+   "intro": [
+    "ルミの空の庭を案内したいの。空中で読める標識を作れるかな。",
+    "I want everyone to find Lumi’s sky garden. Can we make a sign visible in the air?"
+   ],
+   "end": [
+    "空を見上げた人が、ちゃんと花を見つけた！",
+    "People looked up and found the flowers!"
+   ],
+   "stages": [
+    "assemble",
+    "laser",
+    "circuit",
+    "power"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "🪧"
+  }
+ ],
+ "yuki": [
+  {
+   "level": 8,
+   "ja": "アオイと迷子の街灯",
+   "en": "The Lamp That Lost Its Way",
+   "intro": [
+    "アオイが夜道の暗い場所を見つけたの。古い街灯の制御盤を調べよう。",
+    "Aoi found a dark alley. Let’s inspect its old streetlamp controller."
+   ],
+   "end": [
+    "道が見えるようになった！ 小さな修理だけど、安心が増えたね。",
+    "The path is visible again. Such a little repair, but it means safety."
+   ],
+   "stages": [
+    "diagnose",
+    "wires",
+    "solder",
+    "power"
+   ],
+   "tool": "power",
+   "amount": 1,
+   "icon": "💡"
+  },
+  {
+   "level": 11,
+   "ja": "太陽光で動く噴水",
+   "en": "A Fountain Powered by Sunlight",
+   "intro": [
+    "ソルの研究を広場でも使いたい。噴水のポンプを太陽光に切り替えよう。",
+    "I want to use Sol’s solar energy in our square. Let’s retrofit the fountain pump."
+   ],
+   "end": [
+    "昼間の光が水を動かしてる。街が自分で息をしているみたい。",
+    "The sun is moving the water. It feels like the town can breathe on its own."
+   ],
+   "stages": [
+    "screws",
+    "circuit",
+    "calibrate",
+    "power"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "☀️"
+  }
+ ],
+ "ryo": [
+  {
+   "level": 9,
+   "ja": "カイへ届ける始発便",
+   "en": "The First Train to Kai",
+   "intro": [
+    "カイの軌道ゲートへ資材を届けたい。始発便の車両を点検してくれる？",
+    "Kai needs supplies at the orbital gate. Can you inspect the first train?"
+   ],
+   "end": [
+    "間に合った！ ひとつの路線が、次の世界までつながったな。",
+    "Right on time! One little train line connects us to a whole new world."
+   ],
+   "stages": [
+    "screws",
+    "diagnose",
+    "wires",
+    "power"
+   ],
+   "tool": "power",
+   "amount": 1,
+   "icon": "🚄"
+  },
+  {
+   "level": 12,
+   "ja": "星の港からの帰り道",
+   "en": "The Road Back from the Stars",
+   "intro": [
+    "ホシが迎える旅人のために、最終便の行き先表示を新しくしたい。",
+    "Hoshi wants arriving travelers to find their last train home. We need new destination displays."
+   ],
+   "end": [
+    "遠くまで来た人も、ここで安心して帰れる。運転していてよかったよ。",
+    "Even visitors from the stars can find their way home. That is why I drive."
+   ],
+   "stages": [
+    "assemble",
+    "circuit",
+    "laser",
+    "power"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "🚉"
+  }
+ ],
+ "nora": [
+  {
+   "level": 10,
+   "ja": "ルミの花を記録する",
+   "en": "Recording Lumi’s Flowers",
+   "intro": [
+    "ルミの庭で咲く花を映像に残したい。記録装置を一緒に直そう。",
+    "I want to capture Lumi’s first sky flowers. Help me repair this recorder."
+   ],
+   "end": [
+    "咲く瞬間が残せたよ。未来の誰かにもこの色を見てほしいな。",
+    "We captured the bloom! Someone in the future should see these colors."
+   ],
+   "stages": [
+    "diagnose",
+    "solder",
+    "calibrate",
+    "assemble"
+   ],
+   "tool": "diagnose",
+   "amount": 1,
+   "icon": "🌸"
+  },
+  {
+   "level": 12,
+   "ja": "星の港の夜空図鑑",
+   "en": "An Atlas of Starry Skies",
+   "intro": [
+    "ホシと一緒に星を記録したいの。古い観測器も未来の星図とつないでみよう。",
+    "Hoshi and I want to record the stars. Let’s connect an old telescope to the new star charts."
+   ],
+   "end": [
+    "昔の望遠鏡と新しい星図が重なった！ 見上げる気持ちは同じだね。",
+    "The old telescope matches the new charts! Our wonder hasn’t changed at all."
+   ],
+   "stages": [
+    "clean",
+    "circuit",
+    "laser",
+    "power"
+   ],
+   "tool": "circuit",
+   "amount": 1,
+   "icon": "🌌"
+  }
+ ],
+ "aoi": [
+  {
+   "level": 11,
+   "ja": "ソルの光と町の記録",
+   "en": "Light on the Archives",
+   "intro": [
+    "ソルの発電装置で、古い記録庫の電源を守りたいのです。",
+    "Sol’s generator could protect the old archive from power failures."
+   ],
+   "end": [
+    "記憶を守る明かりが点きました。人の手でつながった電気ですね。",
+    "The archive lights are on. A current created by many helping hands."
+   ],
+   "stages": [
+    "diagnose",
+    "wires",
+    "solder",
+    "power"
+   ],
+   "tool": "auto",
+   "amount": 1,
+   "icon": "🗃️"
+  },
+  {
+   "level": 12,
+   "ja": "旅人に伝える最初の一歩",
+   "en": "The First Step for Visitors",
+   "intro": [
+    "ホシの港を訪れる人へ、最初の修理屋の物語を案内しましょう。",
+    "Let’s tell arriving travelers at Hoshi’s harbor how this town first began."
+   ],
+   "end": [
+    "案内を聞いた人が工房へ向かいました。古い物語は、また新しい出会いになります。",
+    "Visitors are heading toward the workshop. An old story has begun a new meeting."
+   ],
+   "stages": [
+    "assemble",
+    "diagnose",
+    "circuit",
+    "calibrate"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "📖"
+  }
+ ],
+ "kai": [
+  {
+   "level": 12,
+   "ja": "ホシの港へ着陸案内",
+   "en": "Landing at Hoshi’s Harbor",
+   "intro": [
+    "ホシの港に新しい便が来るよ。誘導灯を一緒に調整しよう。",
+    "A new ship is coming to Hoshi’s harbor. Let’s calibrate its guidance lights."
+   ],
+   "end": [
+    "無事に着いた！ ゲートの向こうにも、この街を好きになってもらえるかな。",
+    "A safe landing! I hope travelers beyond the gate grow to love this town."
+   ],
+   "stages": [
+    "diagnose",
+    "laser",
+    "wires",
+    "power"
+   ],
+   "tool": "power",
+   "amount": 1,
+   "icon": "🛬"
+  },
+  {
+   "level": 12,
+   "ja": "故郷に返す通信",
+   "en": "A Message Home",
+   "intro": [
+    "遠い場所へ出た人が、故郷に連絡できるよう通信塔を直したい。",
+    "I want people who leave for distant worlds to call home. Help me fix the transmitter."
+   ],
+   "end": [
+    "つながったよ。「ただいま」って声が返ってきた。",
+    "Connection established. We heard someone say, “I’m home.”"
+   ],
+   "stages": [
+    "screws",
+    "circuit",
+    "solder",
+    "calibrate"
+   ],
+   "tool": "auto",
+   "amount": 1,
+   "icon": "📡"
+  }
+ ],
+ "lumi": [
+  {
+   "level": 12,
+   "ja": "ミアへ届ける空のハーブ",
+   "en": "Herbs for Mia",
+   "intro": [
+    "ミアのカフェに空の庭のハーブを届けたいの。保冷箱を直してくれる？",
+    "I want Mia to use sky-garden herbs at her cafe. Can you fix this chilled delivery box?"
+   ],
+   "end": [
+    "カフェからいい香りがしてきた！ 空と地上が味でつながったね。",
+    "What a lovely aroma from the cafe! The sky and ground are connected by flavor."
+   ],
+   "stages": [
+    "clean",
+    "wires",
+    "calibrate",
+    "power"
+   ],
+   "tool": "clean",
+   "amount": 1,
+   "icon": "🌿"
+  },
+  {
+   "level": 12,
+   "ja": "街の子どもの種まき",
+   "en": "Seeds for the Next Generation",
+   "intro": [
+    "街の子どもたちが庭に来るの。種を運ぶ小さな装置を一緒に作ろう。",
+    "The town’s children are visiting the garden. Let’s make a little seed dispenser for them."
+   ],
+   "end": [
+    "みんな夢中で種をまいてる。次の花は、あの子たちの花だね。",
+    "They are planting so eagerly! The next flowers will belong to them."
+   ],
+   "stages": [
+    "assemble",
+    "screws",
+    "laser",
+    "power"
+   ],
+   "tool": "assemble",
+   "amount": 1,
+   "icon": "🌱"
+  }
+ ],
+ "sol": [
+  {
+   "level": 12,
+   "ja": "ユキの広場に夕暮れ灯",
+   "en": "Sunset Lamps in the Square",
+   "intro": [
+    "ユキが広場で夜の集まりを開くそうだ。蓄電器を使って灯りを点けたい。",
+    "Yuki is hosting an evening gathering. Let’s power the lights with stored sunlight."
+   ],
+   "end": [
+    "日が沈んでも、街にはやさしい光が残ったね。",
+    "The sun has set, but its gentle light remains in the square."
+   ],
+   "stages": [
+    "diagnose",
+    "wires",
+    "calibrate",
+    "power"
+   ],
+   "tool": "power",
+   "amount": 1,
+   "icon": "🌇"
+  },
+  {
+   "level": 12,
+   "ja": "工房へ贈る小さな太陽",
+   "en": "A Tiny Sun for the Workshop",
+   "intro": [
+    "ずっと街を支えてくれた工房に、独立した電源を贈りたいんだ。",
+    "I want to give the workshop its own power source, to thank it for keeping this town alive."
+   ],
+   "end": [
+    "これで停電しても修理が続けられる。街の未来をまた直していこう。",
+    "Now repairs can go on even in a blackout. Let’s keep fixing this town’s future."
+   ],
+   "stages": [
+    "screws",
+    "circuit",
+    "solder",
+    "power"
+   ],
+   "tool": "precision",
+   "amount": 1,
+   "icon": "🔆"
+  }
+ ],
+ "hoshi": [
+  {
+   "level": 12,
+   "ja": "源さんの時計を港に",
+   "en": "Gen’s Clock at the Harbor",
+   "intro": [
+    "源さんの町時計を、出発する人にも見てもらいたい。展示装置を直そう。",
+    "I want departing travelers to see Gen’s old clock. Let’s restore its display."
+   ],
+   "end": [
+    "時計が鳴ったね。この港にも、町の時間が流れ始めたよ。",
+    "The clock chimed. The harbor is now part of the town’s time."
+   ],
+   "stages": [
+    "clean",
+    "assemble",
+    "laser",
+    "calibrate"
+   ],
+   "tool": "auto",
+   "amount": 1,
+   "icon": "🕰️"
+  },
+  {
+   "level": 12,
+   "ja": "旅の先へ、小さな修理箱",
+   "en": "A Repair Kit for the Journey",
+   "intro": [
+    "星へ旅立つ船に、修理道具をひと箱ずつ積みたいの。準備を手伝って。",
+    "Every starship should carry a little repair kit. Will you help me prepare them?"
+   ],
+   "end": [
+    "道具が船に乗ったよ。きっと遠い星でも、誰かの暮らしを助けるね。",
+    "The tools are aboard. They’ll help someone build a life on a distant world."
+   ],
+   "stages": [
+    "screws",
+    "diagnose",
+    "solder",
+    "assemble"
+   ],
+   "tool": "shield",
+   "amount": 1,
+   "icon": "🧰"
+  }
+ ]
+};
+
 const RESIDENT_FINALES={
  gen:{level:4,ja:'古地図に残された道',en:'The Road on the Old Map',intro:['町時計の裏から、昔の地図が出てきた。途切れた道をもう一度、みんなでつなぎたいんじゃ。','A map hidden in the old clock shows a forgotten road. Will you help reconnect the town?'],end:['地図の道が、今の街につながった。次の世代にも歩いてほしい道じゃ。','The old road now meets the new town. Let the next generation walk it too.'],stages:['diagnose','wires','laser','assemble'],tool:'precision',amount:2,icon:'🗺️'},
  mia:{level:4,ja:'みんなの朝ごはん',en:'Breakfast for Everyone',intro:['源さんの古い地図を見たの。街の人が集まる朝市を開きたい。厨房を直すの、手伝ってくれる？','Gen showed me the old map. I want to bring the neighbors together for a breakfast market.'],end:['初めての朝市、大成功！ ひとりだった朝が、みんなの朝になったね。','Our first breakfast market! What was once a lonely morning is now everyone’s morning.'],stages:['clean','solder','assemble','power'],tool:'shield',amount:2,icon:'🥐'},
@@ -1138,6 +1699,26 @@ const RESIDENT_FINALES={
  sol:{level:12,ja:'誰も取り残さない明かり',en:'A Light for Everyone',intro:['街の中心は明るい。でも外れの古い家は、まだ暗いまま。電気をそこまで届けたい。','The city center shines, but the old houses on the edge are still dark. No one should be left behind.'],end:['これで街の端まで明るい。未来って、誰も忘れないことなのかもしれないね。','Every corner is bright now. Maybe the future is making sure no one is forgotten.'],stages:['diagnose','solder','power','circuit'],tool:'precision',amount:3,icon:'💡'},
  hoshi:{level:12,ja:'修理屋から始まった未来',en:'The Future Began With a Repair',intro:['源さんから聞いたよ。ここは昔、小さな修理屋だったんだって。最初の看板を港に飾りたい。','Gen told me this place began as a little repair shop. I’d like to hang its very first sign at the star harbor.'],end:['飾れた！ あの小さな修理屋が、ここまで街を連れてきたんだね。','There it is! That little workshop brought an entire town all the way to the stars.'],stages:['clean','assemble','solder','power'],tool:'auto',amount:1,icon:'🌠'}
 };
+function residentSideConfig(id,chapter){
+ const index=chapter-4;
+ if(index!==0&&index!==1)throw Error('Invalid resident side chapter '+chapter);
+ const story=RESIDENT_SIDE_STORIES[id]?.[index];
+ if(!story)throw Error('Unknown side story '+id+'/'+chapter);
+ return story;
+}
+function residentSideAvailable(r,chapter){
+ const story=residentSideConfig(r.id,chapter),i=chapter-4,key=r.id+'_'+i;
+ return characterAvailable(r)&&!!state.eventsDone[r.id]&&!state.residentSideStories?.[key]&&
+  (i===0||!!state.residentSideStories?.[r.id+'_0'])&&
+  state.townLevel>=story.level&&(state.residentLove[r.id]||0)>=(i===0?2:3);
+}
+function residentChapterStory(id,chapter){
+ if(chapter===1)return RESIDENT_EVENTS[id];
+ if(chapter===2)return RESIDENT_FOLLOWUPS[id];
+ if(chapter===3)return RESIDENT_FINALES[id];
+ if(chapter===4||chapter===5)return residentSideConfig(id,chapter);
+ throw Error('Invalid resident chapter '+chapter);
+}
 function residentFinalAvailable(r){
  const x=RESIDENT_FINALES[r.id];
  return !!x&&characterAvailable(r)&&!!state.residentChapters?.[r.id]&&!state.residentFinals?.[r.id]&&
@@ -1321,7 +1902,8 @@ function scenery(lvl=state.townLevel,home=state.houseLevel){
  <circle cx="780" cy="66" r="132" fill="url(#townSun)"/>
  <path d="M0 164Q170 41 375 128T920 83V640H0Z" fill="${future?'#7ab7aa':'#82bca5'}"/>
  <path d="M0 247Q170 145 319 202T920 178V640H0Z" fill="${future?'#66a39e':'#6fab8c'}"/>
- <path d="M10 346L450 112 916 355 450 610Z" fill="${grass}" stroke="#577f6b" stroke-width="9"/>
+ <g class="town-art-raised" transform="translate(0,-44)">
+  <path d="M10 346L450 112 916 355 450 610Z" fill="${grass}" stroke="#577f6b" stroke-width="9"/>
  <path d="M70 343L452 152 865 354 452 555Z" fill="none" stroke="#dfebbd" stroke-width="4" stroke-dasharray="2 14" opacity=".7"/>
  <path d="M76 349L400 192 877 435 548 589Z" fill="${roadColor}" opacity=".96"/>
  <path d="M158 487L693 213 799 269 270 547Z" fill="${roadColor}"/>
@@ -1339,7 +1921,8 @@ function scenery(lvl=state.townLevel,home=state.houseLevel){
  <path class="tap-hit" d="M439 421L634 412L634 553L429 585Z"/>
  <g class="tap-sign" transform="translate(439 529)"><rect x="0" y="0" rx="11" width="161" height="49"/><text x="8" y="31">${L('📦 仕入れ','📦 MARKET')}</text></g></g>
  ${lvl>=2?'<g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="people"><path class="tap-hit" d="M746 305L890 312L893 498L743 498Z"/><g class="tap-sign" transform="translate(713 480)"><rect width="159" height="43" rx="10"/><text x="9" y="28">💬 PEOPLE</text></g></g>':''}
- </svg>`;
+ </g>
+  </svg>`;
 }
 function evolutionDetail(e){
  if(!e)return '';
@@ -1385,6 +1968,7 @@ function eventResultOverlay(){
  const e=state.pendingScene;if(!e)return '';
  const resident=e.residentId?RESIDENTS.find(r=>r.id===e.residentId):null;
  const event=resident?RESIDENT_EVENTS[resident.id]:null;
+ const story=resident?residentChapterStory(resident.id,e.chapter||1):null;
  let icon='✨',heading='',subhead='',body='',button='',action='scene-close',color='success';
  if(e.type==='rush-intro'){
   icon='⏱️';heading=L('スピード修理、開始！','RUSH REPAIR READY!');
@@ -1405,15 +1989,16 @@ function eventResultOverlay(){
   button=L('会話を終える','Continue');action='scene-close';
  }
  else if(e.type==='resident-intro'){
-  icon=resident?.emoji||'👤';heading=e.chapter>=2?L((e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.ja||'',(e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.en||''):L(event?.ja||'住人イベント',event?.en||'Resident story');
+  icon=resident?.emoji||'👤';heading=L(story?.ja||'住人イベント',story?.en||'Resident story');
   subhead=(resident?residentName(resident):'')+' · '+L('修理のお願い','Repair request');
-  body=(e.chapter>=2?L((e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.intro[0]||'',(e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.intro[1]||''):(resident?residentText(resident.lines[0]):''))+' '+(e.chapter>=2?L('4工程を制限時間内に修理しよう。','Finish FOUR timed repair stages.'):L('3工程を制限時間内に修理しよう。','Finish THREE timed repair stages.'));
+  const dialogue=e.chapter>=2?L(...(story?.intro||['修理をお願いします。','Please help with this repair.'])):(resident?residentText(resident.lines[0]):'');
+  body=dialogue+' '+(e.chapter===1?L('3つの修理工程を順番にクリアしよう。','Complete three repair stages in order.'):L('4つの修理工程を順番にクリアしよう。','Complete four repair stages in order.'));
   button=L('依頼を引き受ける','Accept repair request');action='scene-start';
  }
  else if(e.type==='resident-result'){
-  icon=e.success?'🎉':'💥';heading=e.success?L('住人イベント達成！','RESIDENT EVENT COMPLETE!'):L('修理に失敗…','REPAIR REQUEST FAILED');
-  subhead=(resident?residentName(resident):'')+' · '+(e.chapter>=2?L((e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.ja||'',(e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.en||''):L(event?.ja||'',event?.en||''));
-  body=e.success?((e.chapter>=2?L(...((e.chapter===3?RESIDENT_FINALES:RESIDENT_FOLLOWUPS)[e.residentId]?.end||['修理成功！','Repair complete!'])):L(...(RESIDENT_EVENT_THANKS[e.residentId]||['修理成功！','Repair complete!'])))+' '+L('友情が深まった！報酬の道具','Friendship grew! Tool reward')+' ×'+e.amount):
+  icon=e.success?'🎉':'💥';heading=e.success?(e.chapter>=4?L('街の交流イベント達成！','NEIGHBOR STORY COMPLETE!'):L('住人イベント達成！','RESIDENT EVENT COMPLETE!')):L('修理に失敗…','REPAIR REQUEST FAILED');
+  subhead=(resident?residentName(resident):'')+' · '+L(story?.ja||'',story?.en||'');
+  body=e.success?((e.chapter>=2?L(...(story?.end||['修理成功！','Repair complete!'])):L(...(RESIDENT_EVENT_THANKS[e.residentId]||['修理成功！','Repair complete!'])))+' '+L('友情が深まった！報酬の道具','Friendship grew! Tool reward')+' ×'+e.amount):
     L('道具の報酬は未獲得。住人画面からまた挑戦できます。','No reward this time. You can retry from the Residents page.');
   button=L('住人のところへ','Back to residents');color=e.success?'success':'fail';
  }
@@ -1456,13 +2041,18 @@ function handleSceneAction(action){
   state.pendingScene=null;mutate();return true;
  }
  if(action==='scene-start'&&e.type==='resident-intro'){
-  const id=e.residentId,config=RESIDENT_EVENTS[id],chapter=e.chapter||1,followup=chapter===2?RESIDENT_FOLLOWUPS[id]:RESIDENT_FINALES[id];
+  const id=e.residentId,config=RESIDENT_EVENTS[id],chapter=e.chapter||1,story=residentChapterStory(id,chapter);
   const r=RESIDENTS.find(r=>r.id===id);
-  if(!config||!r||state.active||(chapter===1?state.eventsDone[id]||!characterAvailable(r):chapter===2?!residentFollowupAvailable(r):chapter===3?!residentFinalAvailable(r):true))throw Error('Invalid resident start');
-  const m=chapter===3?{difficulty:Math.min(5,Math.max(4,state.houseLevel+2)),stages:followup.stages.map(type=>({type,seed:rnd(101,99999)}))}
-   :chapter===2?{difficulty:Math.min(5,Math.max(3,state.houseLevel+2)),stages:[followup.stages[0],'diagnose',followup.stages[1],'laser'].map(type=>({type,seed:rnd(101,99999)}))}:residentMission(id);
+  const valid=chapter===1?!state.eventsDone[id]&&characterAvailable(r):
+   chapter===2?residentFollowupAvailable(r):
+   chapter===3?residentFinalAvailable(r):
+   (chapter===4||chapter===5)?residentSideAvailable(r,chapter):false;
+  if(!config||!r||state.active||!valid)throw Error('Invalid resident start');
+  const m=chapter===3?{difficulty:Math.min(5,Math.max(4,state.houseLevel+2)),stages:story.stages.map(type=>({type,seed:rnd(101,99999)}))}:
+   chapter===2?{difficulty:Math.min(5,Math.max(3,state.houseLevel+2)),stages:[story.stages[0],'diagnose',story.stages[1],'laser'].map(type=>({type,seed:rnd(101,99999)}))}:
+   chapter>=4?{difficulty:Math.min(5,Math.max(3,state.houseLevel+2)),stages:story.stages.map(type=>({type,seed:rnd(101,99999)}))}:residentMission(id);
   const kind=KIND.find(k=>k.level<=state.townLevel)||KIND[0];
-  state.active={id:state.nextId++,kind:kind.id,name:L(...(chapter>=2?[followup.ja,followup.en]:[config.ja,config.en])),difficulty:m.difficulty,residentChapter:chapter,
+  state.active={id:state.nextId++,kind:kind.id,name:L(...(chapter>=2?[story.ja,story.en]:[config.ja,config.en])),difficulty:m.difficulty,residentChapter:chapter,
    price:0,purchasePrice:0,baseValue:0,rarity:'STORY',stages:m.stages,stageIndex:0,stageState:{},
    integrity:100,complete:false,broken:false,shield:false,isContract:true,residentId:id};
   state.pendingScene=null;currentTab='work';initStage();mutate();return true;
@@ -1616,10 +2206,14 @@ function renderShrine(){const price=townCost(),next=state.townLevel+1,ready=stat
 function renderPeople(){
  const unlockedForStory=r=>characterAvailable(r);
  const firstReady=r=>unlockedForStory(r)&&!state.eventsDone[r.id]&&RESIDENT_EVENTS[r.id]&&(r.id!=='gen'||state.completed>=1);
- const taskFor=r=>residentFinalAvailable(r)?{chapter:3,action:'resident-finale',story:RESIDENT_FINALES[r.id]}:
-  residentFollowupAvailable(r)?{chapter:2,action:'resident-followup',story:RESIDENT_FOLLOWUPS[r.id]}:
-  firstReady(r)?{chapter:1,action:'resident-event',story:RESIDENT_EVENTS[r.id]}:null;
- const sortRank=r=>taskFor(r)?50+taskFor(r).chapter:unlockedForStory(r)?10-(state.residentFinals?.[r.id]?5:0):0;
+  const taskFor=r=>{
+   if(residentFinalAvailable(r))return {chapter:3,action:'resident-finale',story:RESIDENT_FINALES[r.id]};
+   if(residentFollowupAvailable(r))return {chapter:2,action:'resident-followup',story:RESIDENT_FOLLOWUPS[r.id]};
+   if(firstReady(r))return {chapter:1,action:'resident-event',story:RESIDENT_EVENTS[r.id]};
+   for(const chapter of [4,5])if(residentSideAvailable(r,chapter))return {chapter,action:'resident-side-'+(chapter-3),story:residentSideConfig(r.id,chapter)};
+   return null;
+  };
+  const sortRank=r=>{const t=taskFor(r);return t?(t.chapter<=3?60+t.chapter:50+t.chapter):unlockedForStory(r)?10-(state.residentFinals?.[r.id]?5:0):0;};
  const ordered=RESIDENTS.slice().sort((a,b)=>sortRank(b)-sortRank(a)||a.level-b.level);
  const ready=ordered.filter(taskFor);
  const inbox=ready.length?`<section class="story-inbox">
@@ -1634,6 +2228,8 @@ function renderPeople(){
   const canTalk=unlocked&&(state.residentSeen[r.id]||-1)!==state.completed+state.townLevel*100;
   const first=unlocked&&!!RESIDENT_EVENTS[r.id]&&!state.eventsDone[r.id]&&(r.id!=='gen'||state.completed>=1);
   const next=residentFollowupAvailable(r),story=RESIDENT_FOLLOWUPS[r.id];
+   const side1=residentSideAvailable(r,4),side2=residentSideAvailable(r,5);
+   const sideProgress=Number(!!state.residentSideStories?.[r.id+'_0'])+Number(!!state.residentSideStories?.[r.id+'_1']);
   const progress=state.residentFinals?.[r.id]?3:state.residentChapters?.[r.id]?2:state.eventsDone[r.id]?1:0;
   const future=progress===1?RESIDENT_FOLLOWUPS[r.id]:progress===2?RESIDENT_FINALES[r.id]:null;
   const hint=progress>0&&progress<3&&future?`<div class="story-progress-note">${state.townLevel<future.level?
@@ -1645,13 +2241,15 @@ function renderPeople(){
     <div class="person-details"><h3>${unlocked?residentName(r):L('まだ知らない住人','Unknown neighbor')}
     <span class="muted" style="font-size:11px">${unlocked?residentText(r.role):'LV.'+r.level}</span></h3>
     <div class="hearts">${'♥'.repeat(Math.min(5,love))}${'♡'.repeat(5-Math.min(5,love))}</div>
-    ${unlocked?`<div class="person-story-status">${L('物語','Stories')} ${progress}/3
+    ${unlocked?`<div class="person-story-status">${L('本編','Main')} ${progress}/3 · ${L('交流','Extra')} ${sideProgress}/2
       ${progress===2?'🌟':progress===1?'📖':''}</div><p>${residentText(r.lines[(state.residentTalkCount[r.id]||0)%r.lines.length])}</p>
       <div class="person-actions"><button class="btn sm ${canTalk?'':'secondary'}" data-action="talk" data-id="${r.id}" ${canTalk?'':'disabled'}>${canTalk?L('話しかける','Talk'):L('次の修理後に','After next repair')}</button>
       ${first?`<button class="btn sm" data-action="resident-event" data-id="${r.id}">✨ ${L(RESIDENT_EVENTS[r.id].ja,RESIDENT_EVENTS[r.id].en)}</button>`:''}
       ${next?`<button class="btn sm resident-chapter" data-action="resident-followup" data-id="${r.id}">${story.icon} ${L(story.ja,story.en)}</button>`:''}
       ${residentFinalAvailable(r)?`<button class="btn sm resident-finale" data-action="resident-finale" data-id="${r.id}">${RESIDENT_FINALES[r.id].icon} ${L(RESIDENT_FINALES[r.id].ja,RESIDENT_FINALES[r.id].en)}</button>`:''}</div>
-      ${hint}
+      ${side1?`<button class="btn sm resident-side" data-action="resident-side-1" data-id="${r.id}">${RESIDENT_SIDE_STORIES[r.id][0].icon} ${L(RESIDENT_SIDE_STORIES[r.id][0].ja,RESIDENT_SIDE_STORIES[r.id][0].en)}</button>`:''}
+       ${side2?`<button class="btn sm resident-side" data-action="resident-side-2" data-id="${r.id}">${RESIDENT_SIDE_STORIES[r.id][1].icon} ${L(RESIDENT_SIDE_STORIES[r.id][1].ja,RESIDENT_SIDE_STORIES[r.id][1].en)}</button>`:''}
+       ${hint}
       ${progress===3?`<p class="story-completed">🌟 ${L('この住人の物語は完結。街の景色に思い出が残った。','This neighbor’s story is complete. Their memory stays with the town.')}</p>`:''}`:
       `<p>${L('街が育つと引っ越してくる。','Moves in as the town grows.')}</p>`}
     </div></div>`;
@@ -1661,14 +2259,19 @@ function renderPeople(){
   if(state.eventsDone[r.id])items.push(`<div class="story-journal-line">✅ <b>${residentName(r)}</b> · ${L(RESIDENT_EVENTS[r.id]?.ja||'',RESIDENT_EVENTS[r.id]?.en||'')}</div>`);
   if(state.residentChapters?.[r.id])items.push(`<div class="story-journal-line story-journal-chapter">📖 <b>${residentName(r)}</b> · ${L(RESIDENT_FOLLOWUPS[r.id]?.ja||'',RESIDENT_FOLLOWUPS[r.id]?.en||'')}</div>`);
   if(state.residentFinals?.[r.id])items.push(`<div class="story-journal-line story-journal-chapter">🌟 <b>${residentName(r)}</b> · ${L(RESIDENT_FINALES[r.id]?.ja||'',RESIDENT_FINALES[r.id]?.en||'')}</div>`);
-  return items;
+  for(const i of [0,1])if(state.residentSideStories?.[r.id+'_'+i]){
+    const side=RESIDENT_SIDE_STORIES[r.id][i];
+    items.push(`<div class="story-journal-line story-journal-chapter">🤝 <b>${residentName(r)}</b> · ${L(side.ja,side.en)}</div>`);
+   }
+   return items;
  }).join('');
  const firstCount=RESIDENTS.filter(r=>state.eventsDone[r.id]).length,secondCount=Object.keys(state.residentChapters||{}).filter(k=>state.residentChapters[k]).length;
  const finalCount=Object.keys(state.residentFinals||{}).filter(k=>state.residentFinals[k]).length;
+  const sideCount=Object.keys(state.residentSideStories||{}).filter(k=>state.residentSideStories[k]).length;
  return `${title('TOWN STORIES',L('街の住人','Town residents'),L('手伝った修理は、その人の次の物語へ。街が育つと新しい依頼が届く。','Every favor leads to another story as the town grows.'))}
  ${inbox}<div class="town-grid"><section class="town-panel">
  <h3>💌 ${L('住人の物語','Neighbors & their stories')}</h3>
- <p class="resident-summary">📖 ${L('はじめの依頼','First')} ${firstCount}/12 · 📖 ${L('続き','Next')} ${secondCount}/12 · 🌟 ${L('最終章','Final')} ${finalCount}/12</p>
+ <p class="resident-summary">📖 ${L('はじめの依頼','First')} ${firstCount}/12 · 📖 ${L('続き','Next')} ${secondCount}/12 · 🌟 ${L('最終章','Final')} ${finalCount}/12 · 🤝 ${L('街の交流','Extra stories')} ${sideCount}/24</p>
  ${residents}</section><section class="town-panel"><h3>📅 ${L('街の思い出帳','Town journal')}</h3>
  ${allResidentFinals()?`<div class="story-finale-record">🌠 ${L('12人の物語が揃った。忘れられた村から星の港へ。','All 12 stories are complete. From a forgotten village to a star harbor.')}</div>`:''}
  ${diary||`<p>${L('まだ記録はない。源さんに話しかけてみよう。','No memories yet. Speak to Gen to begin.')}</p>`}
@@ -1709,12 +2312,14 @@ function townAction(action,id){
   state.residentTalkCount[id]=count+1;
   state.pendingScene={type:'conversation',residentId:id,dialogue};mutate();return true;
  }
- if(action==='resident-event'||action==='resident-followup'||action==='resident-finale'){
-  const config=RESIDENT_EVENTS[id],resident=RESIDENTS.find(r=>r.id===id),chapter=action==='resident-finale'?3:action==='resident-followup'?2:1;
+ if(['resident-event','resident-followup','resident-finale','resident-side-1','resident-side-2'].includes(action)){
+  const config=RESIDENT_EVENTS[id],resident=RESIDENTS.find(r=>r.id===id);
+  const chapter=action==='resident-finale'?3:action==='resident-followup'?2:action==='resident-side-1'?4:action==='resident-side-2'?5:1;
   if(!config||!resident||!characterAvailable(resident)||state.active)return true;
   if(chapter===1&&(state.eventsDone[id]||(id==='gen'&&state.completed<1)))return true;
   if(chapter===2&&!residentFollowupAvailable(resident))return true;
   if(chapter===3&&!residentFinalAvailable(resident))return true;
+  if(chapter>=4&&!residentSideAvailable(resident,chapter))return true;
   state.pendingScene={type:'resident-intro',residentId:id,chapter};
   mutate();return true;
  }
@@ -1822,7 +2427,7 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="settings">⚙ ${L('ゲーム設定','Game settings')}</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · PLAYTEST v0.11.0 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · PLAYTEST v0.12.0 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>${evolutionOverlay()}${eventResultOverlay()}${settingsOverlay()}${developmentPanel()}`;
  translateDOM();
  const newContent=app.querySelector('.content');
