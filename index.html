@@ -136,6 +136,34 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
  .layout{flex-basis:38dvh;height:38dvh;min-height:130px}.mobile-nav{height:calc(48px + env(safe-area-inset-bottom))}.town-world{min-height:100px}.world-actions{bottom:4px}
 }
 
+/* Growth sequence: original town -> white bloom -> rebuilt town -> results card. */
+.town-test-reset{position:absolute;z-index:7;right:10px;top:10px;cursor:pointer;background:#183949e8;color:#fff0d2;border:1px solid #dbdbb5;border-radius:10px;font-weight:850;font-size:12px;padding:6px 10px;box-shadow:0 3px 10px #163b4a77;touch-action:manipulation}
+.town-test-reset:hover{background:#a94948;color:#fff}
+.town-world.scene-flash .town-test-reset,.town-world.scene-view .town-test-reset{display:none}
+.evolution-old{position:absolute;inset:0;z-index:4;pointer-events:none;animation:originalVanish 1.7s both}
+.evolution-old svg{width:100%;height:100%;display:block}
+.evolution-whiteout{position:absolute;z-index:20;inset:0;background:radial-gradient(circle at 51% 44%,#ffffff 0%,#fff 30%,#fffef3 80%,#ffffff 100%);animation:evolutionLight 1.7s ease-in-out both;pointer-events:auto}
+@keyframes originalVanish{0%,25%{opacity:1}30%,100%{opacity:0}}
+@keyframes evolutionLight{0%{opacity:0}24%,59%{opacity:1}100%{opacity:0}}
+.town-world.scene-view>.isometric-town{animation:worldArrive .7s ease-out both}
+@keyframes worldArrive{0%{filter:brightness(1.3) saturate(1.25)}100%{filter:brightness(1) saturate(1)}}
+.town-milestone{left:50%;width:min(450px,calc(100% - 20px));max-width:calc(100% - 20px);max-height:calc(100% - 18px);overflow-y:auto;overflow-x:hidden;box-sizing:border-box;padding:12px;top:50%;border-radius:16px}
+.town-milestone .town-compare{min-width:0;max-width:100%;gap:7px}
+.town-milestone .town-compare>div{width:calc(50% - 4px);min-width:0}
+.town-milestone .town-compare svg{max-width:100%}
+@media(max-width:650px){
+ .town-test-reset{right:6px;top:6px;font-size:10px;padding:5px 8px}
+ .town-milestone{top:50%;width:calc(100% - 18px);max-width:calc(100% - 18px);max-height:calc(100% - 16px);padding:10px 8px;font-size:12px}
+ .town-milestone strong{font-size:20px}
+ .town-milestone small{font-size:11px;margin:4px 0 7px}
+ .town-milestone button{font-size:13px;padding:7px 11px;max-width:100%;white-space:normal}
+ .town-milestone .town-compare>div svg{height:83px!important}
+}
+@media(prefers-reduced-motion:reduce){.town-world.scene-view>.isometric-town{animation:none}}
+
+.town-result-detail{margin:5px 0 8px;padding:6px 8px;border-radius:8px;background:#32685b;color:#fff1be;font-size:13px;font-weight:850}
+@media(max-width:650px){.town-result-detail{margin:4px 0 6px;font-size:11px;padding:5px 7px}}
+
 </style>
 </head>
 <body>
@@ -375,6 +403,15 @@ function objective(){
 // v0.5: a true 2.5D miniature world, always visible above the interaction tray.
 // Independent city and house phases let players see exactly what their cash changed.
 let sceneReveal=null;
+let evolutionTimers=[];
+function cancelEvolution(){for(const id of evolutionTimers)clearTimeout(id);evolutionTimers=[];}
+function beginEvolution(kind,from,to){
+ cancelEvolution();
+ const token=sceneReveal={kind,from,to,phase:'flash'};
+ evolutionTimers.push(setTimeout(()=>{if(sceneReveal!==token)return;token.phase='view';render();},1700));
+ evolutionTimers.push(setTimeout(()=>{if(sceneReveal!==token)return;token.phase='summary';render();},2900));
+}
+
 function isoBox(x,y,w,d,h,left,right,roof,options={}){
  const p=(a,b)=>`${a},${b}`;
  const back=y-d*0.54;
@@ -502,9 +539,30 @@ function scenery(lvl=state.townLevel,home=state.houseLevel){
  ${lvl>=2?'<g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="people"><path class="tap-hit" d="M746 305L890 312L893 498L743 498Z"/><g class="tap-sign" transform="translate(713 480)"><rect width="159" height="43" rx="10"/><text x="9" y="28">💬 PEOPLE</text></g></g>':''}
  </svg>`;
 }
+function evolutionDetail(e){
+ if(!e)return '';
+ const town=[
+  ['',''],['',''],
+  ['カフェが開店！ 新しい住人が引っ越してきた','A cafe opens and a new neighbor arrives'],
+  ['時計屋と街灯が増え、通りがにぎやかに','A clock shop and streetlights brighten the town'],
+  ['商店街が完成！ 屋台と飾り付けが登場','A shopping street appears, with stalls and banners'],
+  ['噴水のある広場が完成','A fountain and city plaza are built'],
+  ['高層ビルとモノレールが登場','High-rises and a monorail appear'],
+  ['未来型ビルと光る道路が完成','Neon roads and futuristic towers light up'],
+  ['空の乗り物が飛ぶ未来都市に！','Flying vehicles arrive in a future metropolis']
+ ];
+ const house=[
+  ['',''],['屋根と外壁を修理した','Repaired the roof and outside walls'],
+  ['作業場を増築！ 精密修理に対応','Expanded the workshop for precision repairs'],
+  ['研究設備を備えた大きな工房に','A larger workshop with research equipment'],
+  ['未来型の修理研究所が完成！','The futuristic repair institute is complete']
+ ];
+ const pair=e.kind==='town'?town[e.to]:house[e.to];
+ return pair?L(pair[0],pair[1]):'';
+}
 function world(){
- const milestone=sceneReveal?`<div class="town-milestone" role="status"><small>${sceneReveal.kind==='town'?L('神社への奉納が届いた！','Your offering was received!'):L('改装が完成した！','Renovation complete!')}</small><strong>${sceneReveal.kind==='town'?L('街 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'TOWN LV.'+sceneReveal.from+' → LV.'+sceneReveal.to):L('家 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'HOME LV.'+sceneReveal.from+' → LV.'+sceneReveal.to)}</strong><div class="town-compare"><div><small>BEFORE</small>${scenery(sceneReveal.kind==='town'?sceneReveal.from:state.townLevel,sceneReveal.kind==='house'?sceneReveal.from:state.houseLevel)}</div><div><small>AFTER</small>${scenery()}</div></div><small>${sceneReveal.kind==='town'?L('新しい建物・商品・住人が解放！','New buildings, products and neighbors!'):L('工房の外観が新しくなった！','Your workshop has a new look!')}</small><button class="btn" data-action="reveal-dismiss">${L('新しい街を見に行く','Explore the new town')} →</button></div>`:'';
- return `<section class="town-world ${sceneReveal?'town-cinematic fx-celebrate':''}" aria-label="${L('街の箱庭','Town diorama')}">${scenery()}<div class="town-head"><div class="town-label"><small>${L('わたしの街','MY TOWN')}</small>${getTownName()}</div><span class="town-badge">LV.${state.townLevel}/8</span></div><div class="town-scene-tip">${L("建物をタップして移動","Tap buildings to visit")}</div><div class="village-stat">🏠 ${L('家','Home')} ${state.houseLevel}/4 · ⛩️ ${L('街','Town')} ${state.townLevel}/8</div><div class="world-actions"><button class="btn secondary sm" data-action="tab" data-id="shop">🏠 ${L('改装','Home')}</button><button class="btn sm" data-action="tab" data-id="shrine">⛩️ ${L('奉納','Shrine')}</button></div>${milestone}</section>`;
+ const milestone=sceneReveal&&sceneReveal.phase==='summary'?`<div class="town-milestone" role="status"><small>${sceneReveal.kind==='town'?L('神社への奉納が届いた！','Your offering was received!'):L('改装が完成した！','Renovation complete!')}</small><strong>${sceneReveal.kind==='town'?L('街 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'TOWN LV.'+sceneReveal.from+' → LV.'+sceneReveal.to):L('家 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'HOME LV.'+sceneReveal.from+' → LV.'+sceneReveal.to)}</strong><div class="town-result-detail">✨ ${evolutionDetail(sceneReveal)}</div><div class="town-compare"><div><small>BEFORE</small>${scenery(sceneReveal.kind==='town'?sceneReveal.from:state.townLevel,sceneReveal.kind==='house'?sceneReveal.from:state.houseLevel)}</div><div><small>AFTER</small>${scenery()}</div></div><small>${sceneReveal.kind==='town'?L('新しい建物・商品・住人が解放！','New buildings, products and neighbors!'):L('工房の外観が新しくなった！','Your workshop has a new look!')}</small><button class="btn" data-action="reveal-dismiss">${L('新しい街を見に行く','Explore the new town')} →</button></div>`:'';
+ return `<section class="town-world ${sceneReveal?.phase==='flash'?'scene-flash':sceneReveal?.phase==='view'?'scene-view':sceneReveal?.phase==='summary'?'scene-summary':''}" data-evolution-phase="${sceneReveal?.phase||'idle'}" aria-label="${L('街の箱庭','Town diorama')}">${scenery()}${sceneReveal?.phase==='flash'?'<div class="evolution-old" aria-hidden="true">'+scenery(sceneReveal.kind==='town'?sceneReveal.from:state.townLevel,sceneReveal.kind==='house'?sceneReveal.from:state.houseLevel)+'</div><div class="evolution-whiteout" aria-hidden="true"></div>':''}<div class="town-head"><div class="town-label"><small>${L('わたしの街','MY TOWN')}</small>${getTownName()}</div><span class="town-badge">LV.${state.townLevel}/8</span></div><button class="town-test-reset" data-action="reset" title="${L('確認して最初からやり直す','Start over with confirmation')}" aria-label="${L('テスト用リセット','Reset test game')}">↻ ${L('リセット','Reset')}</button><div class="village-stat">🏠 ${L('家','Home')} ${state.houseLevel}/4 · ⛩️ ${L('街','Town')} ${state.townLevel}/8</div><div class="world-actions"><button class="btn secondary sm" data-action="tab" data-id="shop">🏠 ${L('改装','Home')}</button><button class="btn sm" data-action="tab" data-id="shrine">⛩️ ${L('奉納','Shrine')}</button></div>${milestone}</section>`;
 }
 function questView(){const q=objective();return `<div class="quest"><div><b>✦ ${L('次の目標','NEXT GOAL')} · ${q.title}</b><p>${q.desc}</p></div><button class="btn sm" data-action="tab" data-id="${q.tab}">${q.label} →</button></div>`;}
 function storyIntro(){return !state.storySeen?`<div class="story-cut"><b>PROLOGUE · ${L('修理屋と忘れられた村','The repairer and the forgotten town')}</b><h2>${L('ようこそ、小さな修理屋へ。','Welcome to your little workshop.')}</h2><p>${L('新しい生活を始めようと、あなたは静かな田舎町にやってきた。空き家だらけの通り、壊れた看板、誰も使わない古い神社。','You arrive in a quiet village to start a new life. Empty houses, broken signs, and a lonely old shrine line the streets.')}</p><p>${L('残っていた古道具屋の源さんが言う。「壊れたものを直せるなら、この街もきっと直せるさ」','An old antique dealer named Gen smiles: “If you can fix broken things, perhaps you can fix this town too.”')}</p><p><b>${L('修理で稼ぎ、神社に奉納して、街を未来まで育てよう。','Repair, earn, offer at the shrine, and grow the town into the future.')}</b></p><button class="btn" data-action="story-done">${L('さあ、修理屋を開店！','Open the workshop!')} →</button></div>`:'';}
@@ -512,14 +570,14 @@ function renderTownHome(){const q=objective();return `${storyIntro()}<div class=
 function renderShrine(){const price=townCost(),next=state.townLevel+1,ready=state.coins>=price&&state.completed>0;return `${title('THE SHRINE',L('街の神社','Town shrine'),L('まとまったお金を奉納すると、街の景色が一気に変わる。','A large offering changes the whole town.'))}${questView()}<div class="town-grid"><section class="town-panel"><h3>⛩️ ${L('賽銭箱','Offering box')}</h3><p>${state.townLevel===1?L('「この街にも、もう一度にぎわいを」──源さんの願いが書かれている。','An old plaque reads: “May this town flourish again.”'):L('奉納するたびに、建物が直り、新しい住人がやってくる。','Each offering restores buildings and welcomes new neighbors.')}</p>${next<=8?`<div class="story-box"><div class="voice">${L('次の街へ','NEXT STAGE')} · LV.${next}</div><h2 style="margin:3px 0">${TOWN_NAMES[next][state.locale==='en'?1:0]}</h2><div class="price-row"><span>${L('奉納額','Offering')}</span><strong>$${n(price)}</strong></div><div class="price-row"><span>${L('所持金','Balance')}</span><strong>$${n(state.coins)}</strong></div><div class="progress-track"><div class="progress-fill" style="width:${clamp(100*state.coins/price,0,100)}%"></div></div><button class="btn block" data-action="offer-town" ${ready?'':'disabled'}>⛩️ ${L('奉納して街を発展させる','Make offering & upgrade town')} · $${n(price)}</button>${state.completed===0?`<p>${L('最初に一品修理して、街の人から信頼を得よう。','First repair an item to earn the villagers’ trust.')}</p>`:''}</div>`:`<div class="story-box"><h2>${L('未来都市が完成！','The future city is complete!')}</h2><p>${L('街の発展を見届けた。これからは住人との関係や収集を楽しもう。','Your town is thriving. Keep collecting and making memories.')}</p></div>`}</section><section class="town-panel"><h3>✨ ${L('発展で解放されるもの','What town growth unlocks')}</h3><div class="unlock-grid">${(next===2?[L('カメラと時計','Cameras & clocks'),L('ミアのカフェ','Mia’s cafe'),L('配線修理チップ','Wire repair chips')]:next===3?[L('発明家レオ','Leo the inventor'),L('ロボット','Toy robots'),L('難易度★4への挑戦','Harder repair jobs')]:next===4?[L('商店街と住人フミ','Main street & Fumi'),L('レトロゲーム機','Retro consoles'),L('回路修理キット','Circuit kits')]:[L('新しい街並み','New cityscape'),L('高度な修理品','Advanced repair items'),L('より多彩な住人イベント','More resident events')]).map(x=>`<span class="unlock-chip">✦ ${x}</span>`).join('')}</div><p>${L('街の発展で新しい品目と道具が開放。販売利益が増える一方、街で商品が増えても、難易度は修理経験で上がる。★3以上は工房改装が必要。','More items and tools unlock with each town level, while workshop renovations let you handle harder jobs.')}</p><button class="btn secondary block" data-action="tab" data-id="market">📦 ${L('仕入れ市場へ','Go to market')}</button></section></div><section class="town-panel section-block"><h3>${L('街の成長記録','Town timeline')}</h3><div class="town-stages">${TOWN_NAMES.slice(1).map((n,i)=>`<div class="town-stage ${i+1===state.townLevel?'here':i+1<state.townLevel?'done':''}"><b>LV.${i+1} ${n[state.locale==='en'?1:0]}</b><span>${i+1<state.townLevel?L('発展済み','Restored'):i+1===state.townLevel?L('いまここ','Current'):L('これから','Locked')}</span></div>`).join('')}</div></section>`;}
 function renderPeople(){return `${title('TOWN STORIES',L('街の住人','Town residents'),L('街が発展するほど新しい人がやってくる。修理と会話で仲良くなろう。','Meet neighbors and build friendships as your town grows.'))}${questView()}<div class="town-grid"><section class="town-panel"><h3>💌 ${L('顔なじみとイベント','Friendships & stories')}</h3>${RESIDENTS.map(r=>{const unlocked=characterAvailable(r),love=state.residentLove[r.id]||0,canTalk=unlocked&&(state.residentSeen[r.id]||-1)!==state.completed+state.townLevel*100,evt=unlocked&&r.id==='mia'&&!state.eventsDone.mia;return `<div class="person-card" style="${!unlocked?'opacity:.42':''}"><div class="person-face">${unlocked?r.emoji:'🔒'}</div><div class="person-details"><h3>${unlocked?residentName(r):L('まだ知らない住人','Unknown neighbor')} <span class="muted" style="font-size:11px">${unlocked?residentText(r.role):'LV.'+r.level}</span></h3><div class="hearts">${'♥'.repeat(Math.min(5,love))}${'♡'.repeat(5-Math.min(5,love))}</div><p>${unlocked?residentText(r.lines[Math.min(2,Math.floor(love/2))]):L('街が育つと引っ越してくる。','Moves in when the town grows.')}</p>${unlocked?`<button class="btn sm ${canTalk?'':'secondary'}" data-action="talk" data-id="${r.id}" ${canTalk?'':'disabled'}>${canTalk?L('話しかける','Talk'):L('また次の修理後に','After next repair')}</button>${evt?` <button class="btn sm" data-action="resident-event" data-id="mia">✨ ${L('歓迎イベント','Welcome event')}</button>`:''}`:''}</div></div>`}).join('')}</section><section class="town-panel"><h3>📅 ${L('街で起こったこと','Town journal')}</h3>${state.townLevel===1?`<div class="story-box"><div class="voice">${L('新しい出会い','FIRST MEETING')}</div><p>${L('源さんは昔からこの街を見守っている。最初の修理が終わったら話しかけてみよう。','Gen has watched over this town for years. Talk to him after your first repair.')}</p></div>`:''}${Object.entries(state.eventsDone).filter(([_,v])=>v).map(([k])=>`<p>✅ ${k==='mia'?L('ミアのカフェ開店祝い','Mia’s cafe opening'):L('住人イベント','Resident event')}</p>`).join('')||`<p>${L('これから街の思い出が増えていく。','New memories are waiting.')}</p>`}<h3>${L('街を育てると','With every town upgrade')}</h3><p>${L('新しい住人が現れ、特別な会話やアイテムが開放される。全員と仲良くなる必要はない。','New neighbors bring new stories and useful rewards. Socializing is optional.')}</p><button class="btn secondary block" data-action="tab" data-id="shrine">⛩️ ${L('神社へ','Visit shrine')}</button></section></div>`;}
 function townAction(action,id){
- if(action==='reveal-dismiss'){sceneReveal=null;render();return true;}
+ if(action==='reveal-dismiss'){cancelEvolution();sceneReveal=null;render();return true;}
  if(action==='language'){state.locale=id==='en'?'en':'ja';persist();render();return true;}
  if(action==='story-done'){state.storySeen=true;mutate();notify(L('修理屋、開店！','The repair shop is open!'),'good');return true;}
- if(action==='house-up'){const cost=houseCost();if(state.houseLevel>=4||state.coins<cost)return true;const from=state.houseLevel;state.coins-=cost;state.spent+=cost;state.houseLevel++;sceneReveal={kind:'house',from,to:state.houseLevel};mutate();notify(L('家がきれいになった！','Your house looks better!'),'good');return true;}
+ if(action==='house-up'){const cost=houseCost();if(state.houseLevel>=4||state.coins<cost)return true;const from=state.houseLevel;state.coins-=cost;state.spent+=cost;state.houseLevel++;beginEvolution('house',from,state.houseLevel);mutate();return true;}
  if(action==='offer-town'){
   const price=townCost();if(!price||state.coins<price||state.completed<1)return true;
-  const from=state.townLevel;state.coins-=price;state.spent+=price;state.townLevel++;sceneReveal={kind:'town',from,to:state.townLevel};
-  state.offers=[];refillOffers();currentTab='shrine';mutate();notify(L('街が進化した！新しい商品と住人が登場！','Town upgraded! New items and residents unlocked!'),'good');return true;
+  const from=state.townLevel;state.coins-=price;state.spent+=price;state.townLevel++;beginEvolution('town',from,state.townLevel);
+  state.offers=[];refillOffers();currentTab='shrine';mutate();return true;
  }
  if(action==='talk'){const r=RESIDENTS.find(x=>x.id===id);if(!r||!characterAvailable(r))return true;const key=state.completed+state.townLevel*100;if(state.residentSeen[id]===key)return true;state.residentSeen[id]=key;state.residentLove[id]=Math.min(5,(state.residentLove[id]||0)+1);mutate();notify(residentName(r)+': '+residentText(r.lines[Math.min(2,Math.floor((state.residentLove[id]-1)/2))]),'good');return true;}
  if(action==='resident-event'&&id==='mia'&&state.townLevel>=2&&!state.eventsDone.mia){state.eventsDone.mia=true;state.residentLove.mia=Math.min(5,(state.residentLove.mia||0)+2);state.tools.shield+=2;mutate();notify(L('ミアのカフェ開店！ お礼に保護フィルムを2枚もらった。','Mia’s cafe is open! You received 2 protective films.'),'good');return true;}
@@ -621,11 +679,15 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="reset">最初からやり直す</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · FIRST 10 MINUTES v0.7.1 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · FIRST 10 MINUTES v0.7.2 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>`;
  translateDOM();
  const newContent=app.querySelector('.content');
  if(newContent && keepScroll) newContent.scrollTop=oldScroll;
+ // On desktop the workshop page can scroll past the town. Bring the
+ // actual transforming scene into view before the white flash begins.
+ if(sceneReveal?.phase==='flash' && window.innerWidth>650)
+  app.querySelector('.town-world')?.scrollIntoView({block:'center',behavior:'auto'});
  lastRenderTab=currentTab;
  lastRenderWorkKey=currentWorkKey;
  if(state.seenCelebration<state.townLevel){state.seenCelebration=state.townLevel;persist();}
@@ -707,8 +769,9 @@ function startCalibration(){const task=taskOf();if(!task)return;const needle=doc
 function activate(id){if(state.active)return notify('先に作業台の修理を終えてください。','error');const ix=state.inventory.findIndex(x=>x.id===id);if(ix<0)return;
  if(!canRepairDifficulty(state.inventory[ix].difficulty)){notify(L('この修理には工房 LV.'+minimumHouse(state.inventory[ix].difficulty)+' の設備が必要です。改装してください。','This job requires WORKSHOP LV.'+minimumHouse(state.inventory[ix].difficulty)+'. Renovate your house first.'),'error');currentTab='shop';render();return;}
  const a=state.inventory.splice(ix,1)[0];a.stageIndex=0;a.integrity=100;a.complete=false;a.broken=false;a.shield=false;state.active=a;initStage();currentTab='work';mutate();}
-function resetAll(){if(confirm('すべての進行状況を削除してニューゲームを始めますか？この操作は取り消せません。')){state=baseSave();refillOffers();currentTab='shop';mutate();notify('新しいお店をオープン！','good');}}
+function resetAll(){if(confirm('すべての進行状況を削除してニューゲームを始めますか？この操作は取り消せません。')){cancelEvolution();sceneReveal=null;state=baseSave();refillOffers();currentTab='shop';mutate();notify(L('新しいお店をオープン！','New game started!'),'good');}}
 function handleAction(action,id){
+ if(sceneReveal && sceneReveal.phase!=='summary' && action!=='reset')return;
  if(townAction(action,id))return;
  if(action==='tab'){currentTab=id;selectedWire=-1;render();return;}
  if(action==='reset'){resetAll();return;}
