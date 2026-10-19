@@ -20,6 +20,22 @@
 /* TOWN REVIVAL • vertical slice v0.4 */
 :root{--base:#112032;--panel:#21334b;--panel2:#28415d;--stroke:#435c70;--gold:#ffcf75;--mint:#88ebc7}
 body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100%)}
+ .diagnose-grid,.assembly-grid,.power-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}
+ .diagnose-cell,.assembly-piece,.power-switch{min-width:0;min-height:71px;background:#244052;color:#e7f7ed;border:2px solid #598a91;border-radius:12px;padding:7px 4px;text-align:center;font-weight:850;touch-action:manipulation}
+ .diagnose-cell small,.assembly-piece small,.power-switch small{display:block;color:#bcd8d6;font-size:10px}
+ .diagnose-cell strong{display:block;font-size:19px;line-height:1.4}
+ .diagnose-cell.fault{border-color:#ffad7a;background:#57433e}
+ .diagnose-cell.fixed,.assembly-piece.placed{background:#285b4f;opacity:.45}
+ .assembly-piece.active{outline:3px solid #ffcf75;background:#405b6a}
+ .power-switch.on{border-color:#8eebc8;background:#336e60;color:#fff8cc}
+ .assembly-blueprint{background:#182f43;border:1px solid #517783;border-radius:12px;padding:9px;color:#ffdf91;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+ .assembly-blueprint b{background:#30566b;border-radius:7px;min-width:23px;text-align:center;padding:3px 4px}
+ .assembly-blueprint .done{color:#92e9bf;background:#235647}
+ .power-target{display:flex;justify-content:space-between;align-items:center;background:#1c3f4e;padding:11px;border-radius:12px;gap:9px}
+ .power-target strong{font-size:21px;color:#ffdd8b}
+ .power-progress{height:11px;background:#192b39;border-radius:9px;margin:9px 0;overflow:hidden}
+ .power-progress>span{height:100%;display:block;background:linear-gradient(90deg,#78bacc,#90edb6);border-radius:9px}
+ @media(max-width:650px){.diagnose-grid,.assembly-grid,.power-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.diagnose-cell,.assembly-piece,.power-switch{min-height:59px;font-size:12px}.diagnose-cell strong{font-size:16px}}
  .town-hotspot{cursor:pointer;outline:none;touch-action:manipulation}
  .town-hotspot .tap-sign rect{fill:#17495be8;stroke:#fff4a7;stroke-width:3}
  .town-hotspot .tap-sign text{font-size:17px;font-weight:900;fill:#fff5db;pointer-events:none}
@@ -166,14 +182,20 @@ const TOOLS = [
  {id:'screw',icon:'🪛',name:'ネジ外しビット',desc:'分解工程を自動で成功',cost:84,stage:'screws'},
  {id:'circuit',icon:'🧩',name:'回路交換パーツ',desc:'回路修復工程を自動で成功',cost:115,stage:'circuit'},
  {id:'shield',icon:'🛡️',name:'保護フィルム',desc:'次のミスによるダメージを1回無効化',cost:65,stage:null},
- {id:'auto',icon:'⚡',name:'全自動修理キット',desc:'今の商品の残り工程をすべて完了',cost:245,stage:null}
+ {id:'auto',icon:'⚡',name:'全自動修理キット',desc:'今の商品の残り工程をすべて完了',cost:245,stage:null},
+ {id:'diagnose',icon:'🔍',name:'診断スキャナー',desc:'故障部品の診断工程をスキップ',cost:105,stage:'diagnose'},
+ {id:'assemble',icon:'🧲',name:'組立ガイド',desc:'組み立て工程をスキップ',cost:95,stage:'assemble'},
+ {id:'power',icon:'🔋',name:'自動通電テスター',desc:'通電調整工程をスキップ',cost:135,stage:'power'}
 ];
 const STAGES = {
  clean:{name:'クリーニング',icon:'🧽',tip:'汚れの上をなぞって取り除こう。タップ操作でもOK。'},
  wires:{name:'配線の接続',icon:'🔌',tip:'左の端子を選び、同じ色の右の端子につなごう。'},
  calibrate:{name:'精密調整',icon:'🎯',tip:'黄色い針が緑のゾーンに入った瞬間に止めよう。'},
  screws:{name:'精密分解',icon:'🪛',tip:'指定された順番でネジを外そう。★3以上は順番を覚えてからスタート。'},
- circuit:{name:'回路の修復',icon:'🧩',tip:'パネルを回転させ、左のINPUTから右のOUTPUTへ回路を通そう。'}
+ circuit:{name:'回路の修復',icon:'🧩',tip:'パネルを回転させ、左のINPUTから右のOUTPUTへ回路を通そう。'},
+ diagnose:{name:'故障診断',icon:'🔍',tip:'80°C以上の過熱部品をすべて見つけて交換しよう。間違えると損傷！'},
+ assemble:{name:'部品の組み立て',icon:'🧲',tip:'設計図に示された順番で部品を取り付けよう。'},
+ power:{name:'通電テスト',icon:'🔋',tip:'スイッチの出力合計を目標電圧に合わせてから通電しよう。'}
 };
 const UPGRADES = [
   {id:'bench',name:'精密作業台',icon:'🛠️',cost:320,desc:'修理完了時の品質 +5、失敗ダメージを少し軽減'},
@@ -187,7 +209,7 @@ const app = document.getElementById('app');
 const n=(v)=>Number(v||0).toLocaleString('ja-JP');
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
-function baseSave(){return {version:SAVE_VERSION,coins:460,fame:0,completed:0,failures:0,revenue:0,spent:0,nextId:1,inventory:[],active:null,offers:[],collection:[],upgrades:{bench:false,dealer:false,showcase:false,warehouse:false},tools:{clean:1,wire:0,precision:0,screw:0,circuit:0,shield:1,auto:0},townLevel:1,houseLevel:0,storySeen:false,seenCelebration:0,residentLove:{},residentSeen:{},eventsDone:{},locale:'en'};}
+function baseSave(){return {version:SAVE_VERSION,coins:460,fame:0,completed:0,failures:0,revenue:0,spent:0,nextId:1,inventory:[],active:null,offers:[],collection:[],upgrades:{bench:false,dealer:false,showcase:false,warehouse:false},tools:{clean:1,wire:0,precision:0,screw:0,circuit:0,shield:1,auto:0,diagnose:0,assemble:0,power:0},townLevel:1,houseLevel:0,storySeen:false,seenCelebration:0,residentLove:{},residentSeen:{},eventsDone:{},locale:'en'};}
 function load(){
  try{
    const raw=storage.getItem(KEY);
@@ -198,6 +220,7 @@ function load(){
    if(data.version===2){data.townLevel=1;data.houseLevel=0;data.storySeen=false;data.seenCelebration=0;data.residentLove={};data.residentSeen={};data.eventsDone={};data.locale=(navigator.language||'ja').startsWith('ja')?'ja':'en';data.version=3;}
    if(data.version!==SAVE_VERSION) throw Error('未対応の保存データです。上書きせず停止します。');
    data.townLevel=clamp(Number(data.townLevel||1),1,8);data.residentLove||={};data.residentSeen||={};data.eventsDone||={};
+   for(const id of ['diagnose','assemble','power'])if(data.tools[id]===undefined)data.tools[id]=0;
    state=data;persist();
  } catch(e){
    blockedSave=true;state=baseSave();refillOffers();
@@ -212,31 +235,61 @@ function notify(message,type=''){const old=document.querySelector('.toast');if(o
 function tier(){return clamp(1+Math.floor((state.completed+state.fame/20)/4),1,5);}
 function limit(){return state.upgrades.warehouse?6:3;}
 function stars(d){return '★'.repeat(d)+'☆'.repeat(5-d);}
+const TOOL_UNLOCK={clean:1,shield:1,wire:2,screw:2,precision:3,circuit:4,auto:3,diagnose:2,assemble:3,power:4};
 function marketPrice(o){return Math.max(1,Math.round(o.price*(state.upgrades.dealer?.9:1)));}
+function minimumHouse(difficulty){return difficulty<=2?0:difficulty===3?1:difficulty===4?2:3;}
+function canRepairDifficulty(difficulty){return state.houseLevel>=minimumHouse(difficulty);}
+function offerStages(kind,difficulty,forcedDifficulty){
+ const core=['clean','wires','calibrate','screws','circuit','diagnose','assemble','power'];
+ const choices=core.slice(0,difficulty===1?5:difficulty===2?6:difficulty===3?7:8);
+ const result=[];
+ if(forcedDifficulty===1)result.push({type:'clean',seed:rnd(101,99999)});
+ const used=new Set(result.map(x=>x.type));
+ while(result.length<difficulty+1){
+  let type=choices[rnd(0,choices.length-1)];
+  if(used.has(type)&&used.size<choices.length)continue;
+  used.add(type);result.push({type,seed:rnd(101,99999)});
+ }
+ return result;
+}
 function generateOffer(forcedDifficulty){
  const townPool=KIND.filter(x=>({handheld:1,radio:1,camera:2,watch:2,robot:3,console:4}[x.id]||1)<=state.townLevel);const kind=townPool[rnd(0,townPool.length-1)];
- const max=clamp(Math.min(tier()+1,state.townLevel+1),2,5);
- const difficulty=forcedDifficulty||rnd(1,max);
+ const max=clamp(tier()+1,2,5);
+ const difficulty=forcedDifficulty||((rnd(1,16)===1)?Math.min(5,max+1):rnd(1,max));
  const rarities=['COMMON','UNCOMMON','RARE','EPIC','LEGENDARY'];
  const rarityIndex=Math.min(4, Math.max(0,difficulty-1)+(rnd(1,7)===7?1:0));
  const baseValue=Math.round((kind.base + (difficulty-1)*170)*(1+rarityIndex*.12));
  const price=Math.round(baseValue*(.33+difficulty*.035));
- const pool=['clean','wires','calibrate','screws','circuit'];
- const stages=[];
- for(let i=0;i<difficulty+1;i++) stages.push({type:pool[(i+kind.base)%pool.length],seed:rnd(101,99999)});
- // Ensure the first tutorial item opens with the cleaning stage.
- if(forcedDifficulty===1)stages[0]={type:'clean',seed:rnd(101,99999)};
+ const stages=offerStages(kind,difficulty,forcedDifficulty);
  return {id:state.nextId++,kind:kind.id,name:kind.name,baseValue,price,difficulty,rarity:rarities[rarityIndex],stages};
 }
 function refillOffers(){while(state.offers.length<3)state.offers.push(generateOffer(state.completed===0&&state.offers.length===0?1:null));}
 function taskOf(){if(!state.active||state.active.stageIndex>=state.active.stages.length) return null;return state.active.stages[state.active.stageIndex];}
 function shuffleIndex(count,seed){const a=[...Array(count).keys()];let x=seed>>>0;for(let i=count-1;i>0;i--){x=(1664525*x+1013904223)>>>0;const j=x%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function diagnosisTargets(seed,difficulty){
+ const count=3+difficulty, num=difficulty>=5?3:difficulty>=3?2:1;
+ return shuffleIndex(count,seed).slice(0,num);
+}
+function diagnosticHeat(seed,difficulty,index){
+ return diagnosisTargets(seed,difficulty).includes(index)?82+(seed+index*7)%16:23+(seed*3+index*11)%53;
+}
+function assemblyOrder(seed,difficulty){return shuffleIndex(2+difficulty,seed);}
+function powerWeights(difficulty){return [2,3,5,7,11,13,17].slice(0,2+difficulty);}
+function powerTarget(seed,difficulty){
+ const weights=powerWeights(difficulty);
+ const chosen=weights.map((_,i)=>(seed>>(i+1))&1);
+ if(!chosen.some(Boolean))chosen[0]=1;
+ return weights.reduce((sum,x,i)=>sum+x*chosen[i],0);
+}
 function initStage(){const a=state.active,t=taskOf();if(!t) return;
  if(t.type==='clean'){const spots=clamp(2+a.difficulty+Math.floor(a.stageIndex/2),3,8);a.stageState={cleaned:[],count:spots};}
  if(t.type==='wires'){a.stageState={done:[],count:clamp(2+Math.floor(a.difficulty/2),2,5)};}
  if(t.type==='calibrate'){a.stageState={};}
  if(t.type==='screws'){a.stageState={removed:[],count:clamp(2+a.difficulty,3,7),started:a.difficulty<=2};}
  if(t.type==='circuit'){const path=circuitPath(a.difficulty);a.stageState={angles:path.map((_,i)=>((t.seed>>(i%8))+i*3)%4)};}
+ if(t.type==='diagnose'){a.stageState={found:[]};}
+ if(t.type==='assemble'){a.stageState={placed:[]};}
+ if(t.type==='power'){a.stageState={enabled:[]};}
  selectedWire=-1;
 }
 function circuitPath(difficulty){return difficulty<3?[3,4,5]:difficulty<5?[0,1,4,7,8]:[0,1,2,5,4,7,8];}
@@ -301,9 +354,9 @@ function houseCost(){return [130,420,1200,3000,7500][Math.min(state.houseLevel,4
 function objective(){
  if(!state.storySeen)return {title:L('新しい街での暮らし','A new life in town'),desc:L('まずは引っ越しの物語を読もう。','Read the opening story.'),tab:'shop',label:L('物語を見る','Read story')};
  if(state.completed<1)return {title:L('最初の商品を修理しよう','Repair your first item'),desc:L('仕入れ市場で★1の商品を選び、修理して販売しよう。','Buy an easy item at the market, repair it and sell it.'),tab:state.active||state.inventory.length?'work':'market',label:L('修理を始める','Start repairing')};
- if(state.townLevel===1)return {title:L('神社に $520 奉納しよう','Offer $520 at the shrine'),desc:L('最初の街レベルアップで家が直り、新しい住人と商品が解放される！','Your first offering restores the house and unlocks a neighbor and new items!'),tab:'shrine',label:L('神社へ行く','Visit shrine')};
+ if(state.townLevel===1)return {title:L('神社に $520 奉納しよう','Offer $520 at the shrine'),desc:L('最初の街レベルアップでカフェと新しい住人・商品が解放される！','Your first offering unlocks a cafe, a new neighbor and new items!'),tab:'shrine',label:L('神社へ行く','Visit shrine')};
  if(state.townLevel===2&&!state.eventsDone.mia)return {title:L('引っ越してきたミアに会おう','Meet your new neighbor Mia'),desc:L('街が育つと住人との交流やイベントが増える。','Town growth brings new people and stories.'),tab:'people',label:L('住人に会う','Meet residents')};
- if(state.townLevel<8)return {title:L('次の街へ。修理して奉納資金を貯めよう','Grow your town'),desc:L('次の街レベルは $','Next upgrade costs $')+n(townCost())+L('。街が発展するほど新しい道具や修理品が増える。','; better tools and items will unlock.'),tab:state.coins>=townCost()?'shrine':'market',label:state.coins>=townCost()?L('神社へ行く','Visit shrine'):L('商品を仕入れる','Find items')};
+ if(state.townLevel<8)return {title:L('次の街へ。修理して奉納資金を貯めよう','Grow your town'),desc:L('次の街レベルは $','Next upgrade costs $')+n(townCost())+L('。街の発展で新しい品目・店・住人が増える。修理の腕は別に磨こう。','; new products, shops and neighbors will unlock. Your repair skill grows separately.'),tab:state.coins>=townCost()?'shrine':'market',label:state.coins>=townCost()?L('神社へ行く','Visit shrine'):L('商品を仕入れる','Find items')};
  return {title:L('未来都市の修理職人','Master of the future city'),desc:L('コレクションを集め、住人との思い出を増やそう。','Collect treasures and build lasting friendships.'),tab:'gallery',label:L('コレクションを見る','See collection')};
 }
 // v0.5: a true 2.5D miniature world, always visible above the interaction tray.
@@ -390,13 +443,28 @@ function scenery(lvl=state.townLevel,home=state.houseLevel){
  lvl===6?'<path d="M342 561l464 -249" stroke="#fff4d2" stroke-width="9" stroke-dasharray="26 19"/>':
  '<g><path d="M360 551l439 -244" stroke="#78fff0" stroke-width="11"/><path d="M360 568l439 -244" stroke="#d0fff6" stroke-width="4"/></g>';
  const urbanSky=lvl>=6?Array.from({length:lvl===6?2:lvl===7?3:4},(_,i)=>isoBox(415+i*80,249-i%2*35,47,38,155+((i*47)%80),'#a8d3df','#6098ba',lvl>=7?'#63deec':'#538ea8',{windows:true,neon:lvl>=7})).join(''):'';
+ const epochDecor=lvl===1?
+ '<g><path d="M337 495l51 -38m-46 65l63 -44m-83 15l12 51" stroke="#6b6354" stroke-width="7" opacity=".5"/><path d="M398 560l28 -17m18 18l26 -14" stroke="#80745b" stroke-width="13" opacity=".5"/></g>':
+ lvl===2?
+ '<g><ellipse cx="567" cy="452" rx="53" ry="15" fill="#4db983" opacity=".75"/><g fill="#ffdb6d"><circle cx="546" cy="444" r="7"/><circle cx="567" cy="449" r="6"/><circle cx="593" cy="441" r="7"/></g><ellipse cx="750" cy="518" rx="34" ry="13" fill="#5fc88f"/><g fill="#f78c9b"><circle cx="730" cy="515" r="6"/><circle cx="755" cy="512" r="6"/></g></g>':
+ lvl===3?
+ '<g><path d="M371 303l-25 -22m48 7l-25 -18" stroke="#fce39d" stroke-width="9"/><path d="M415 492l275 -141" stroke="#fff4d8" stroke-width="5" stroke-dasharray="18 14"/><circle cx="664" cy="536" r="23" fill="#edcb7d" stroke="#fff4bb" stroke-width="5"/></g>':
+ lvl===4?
+ '<g><path d="M328 264Q530 192 779 286" stroke="#fff0ad" stroke-width="7" fill="none"/><path d="M356 260l20 30 16 -38m35 0l17 28 19 -30m27 -6l19 28 18 -30m23 1l17 31 18 -27m28 3l17 31 19 -30" fill="#ff9878" stroke="#f6ddad" stroke-width="2"/><rect x="538" y="242" width="101" height="31" rx="10" fill="#ffbd72"/><text x="544" y="264" font-size="20" font-weight="900" fill="#553b46">MARKET</text></g>':
+ lvl===5?
+ '<g><path d="M348 525l356 -182" stroke="#e4f1ea" stroke-width="14" stroke-dasharray="7 30"/><ellipse cx="578" cy="528" rx="62" ry="28" fill="#90e1ae" stroke="#e2eabc" stroke-width="7"/><circle cx="578" cy="517" r="16" fill="#fff5be"/><path d="M516 506l9 -26m108 53l14 -30" stroke="#396e78" stroke-width="9"/></g>':
+ lvl===6?
+ '<g><path d="M312 183Q552 89 871 190" fill="none" stroke="#466c86" stroke-width="22"/><path d="M312 173Q552 79 871 180" fill="none" stroke="#d6edeb" stroke-width="8"/><rect x="542" y="109" rx="20" width="183" height="49" fill="#eff5e4" stroke="#497f95" stroke-width="9"/><rect x="571" y="120" width="48" height="25" rx="5" fill="#76b0c6"/><rect x="631" y="120" width="48" height="25" rx="5" fill="#76b0c6"/></g>':
+ lvl===7?
+ '<g><path d="M276 195Q580 50 897 178" fill="none" stroke="#6bfdf1" stroke-width="17" opacity=".65"/><path d="M278 195Q580 50 897 178" fill="none" stroke="#c5fffc" stroke-width="4"/><ellipse cx="550" cy="128" rx="74" ry="20" fill="#4d9bb9" stroke="#98fff0" stroke-width="6"/><rect x="508" y="110" width="89" height="24" rx="12" fill="#d8ffff"/></g>':
+ '<g><path d="M225 199Q504 -4 901 196" fill="none" stroke="#7cfff4" stroke-width="16" opacity=".8"/><path d="M227 204Q504 8 900 201" fill="none" stroke="#d5ffff" stroke-width="4"/><ellipse cx="549" cy="78" rx="101" ry="23" fill="#4c9ebc" stroke="#c4fff2" stroke-width="9"/><path d="M504 76l29 -30h44l29 30z" fill="#d5fcf7"/><circle cx="768" cy="231" r="20" fill="#b0fff0" opacity=".6"/><path d="M750 230h39" stroke="#e6ffff" stroke-width="9"/></g>';
  const people= lvl>=2?isoPerson(382,407,'#d86e55')+isoPerson(644,367,'#5287bc'):'';
  const extraPeople=lvl>=4?isoPerson(553,551,'#f5bb68')+isoPerson(487,326,'#8164ad'):'';
  const streetlights=lvl>=3?Array.from({length:Math.min(7,lvl)},(_,i)=>{const x=330+i*62,y=543-i*39;return `<path d="M${x} ${y}v-41" stroke="#566b65" stroke-width="5"/><circle cx="${x}" cy="${y-41}" r="8" fill="${future?'#a7fffa':'#fff2ac'}"/>`;}).join(''):'';
  const treeSites=[[86,220,.9],[151,206,.8],[821,515,.9],[837,373,.8],[87,563,.9],[341,599,.72],[824,130,.8]];
  const trees=treeSites.map(([x,y,z],i)=> (lvl>5&&i%2===0?'':isoTree(x,y,z,future))).join('');
  return `<svg class="isometric-town" viewBox="0 0 920 640" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${L('街の箱庭','Living miniature town')}" xmlns="http://www.w3.org/2000/svg">
- <defs><linearGradient id="townSky" x2="0" y2="1"><stop stop-color="${future?'#417da8':'#96d5e3'}"/><stop offset="1" stop-color="${future?'#87c4be':'#c9e7b4'}"/></linearGradient><radialGradient id="townSun"><stop stop-color="#f8f4ca"/><stop offset="1" stop-color="#f8f4ca" stop-opacity="0"/></radialGradient></defs>
+ <defs><linearGradient id="townSky" x2="0" y2="1"><stop stop-color="${future?'#417da8':lvl>=5?'#72bcd9':lvl===1?'#b8c9b7':'#96d5e3'}"/><stop offset="1" stop-color="${future?'#87c4be':lvl>=5?'#cde8e8':'#c9e7b4'}"/></linearGradient><radialGradient id="townSun"><stop stop-color="#f8f4ca"/><stop offset="1" stop-color="#f8f4ca" stop-opacity="0"/></radialGradient></defs>
  <rect width="920" height="640" fill="url(#townSky)"/>
  <circle cx="780" cy="66" r="132" fill="url(#townSun)"/>
  <path d="M0 164Q170 41 375 128T920 83V640H0Z" fill="${future?'#7ab7aa':'#82bca5'}"/>
@@ -407,7 +475,7 @@ function scenery(lvl=state.townLevel,home=state.houseLevel){
  <path d="M158 487L693 213 799 269 270 547Z" fill="${roadColor}"/>
  ${lvl>=5?`<path d="M91 353L402 202 856 433" fill="none" stroke="#fff8d0" stroke-width="4" stroke-dasharray="30 19" opacity=".8"/>`:''}
  ${trees}${urbanSky}${shrine}${gate}${buildings}${marketStall}${market}${district}${fountain}${tower}
- ${atmosphere}${shopExtension}${repairHouse}${houseDecor}${chimney}${streetlights}${people}${extraPeople}${adornment}
+ ${atmosphere}${epochDecor}${shopExtension}${repairHouse}${houseDecor}${chimney}${streetlights}${people}${extraPeople}${adornment}
  <g><path d="M185 519l-4 24 40 22 4-23" fill="#f4e2af" stroke="#825e47" stroke-width="2"/><path d="M181 519l24 -14 42 21 -24 16z" fill="#e6d28f" stroke="#947357" stroke-width="2"/><text x="201" y="532" font-size="11" fill="#56483c" font-weight="900">HOME</text></g>
 <g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="work" aria-label="${L('修理屋','Workshop')}">
  <path class="tap-hit" d="M128 293L261 175L402 298L394 516L123 539Z"/>
@@ -427,8 +495,8 @@ function world(){
 }
 function questView(){const q=objective();return `<div class="quest"><div><b>✦ ${L('次の目標','NEXT GOAL')} · ${q.title}</b><p>${q.desc}</p></div><button class="btn sm" data-action="tab" data-id="${q.tab}">${q.label} →</button></div>`;}
 function storyIntro(){return !state.storySeen?`<div class="story-cut"><b>PROLOGUE · ${L('修理屋と忘れられた村','The repairer and the forgotten town')}</b><h2>${L('ようこそ、小さな修理屋へ。','Welcome to your little workshop.')}</h2><p>${L('新しい生活を始めようと、あなたは静かな田舎町にやってきた。空き家だらけの通り、壊れた看板、誰も使わない古い神社。','You arrive in a quiet village to start a new life. Empty houses, broken signs, and a lonely old shrine line the streets.')}</p><p>${L('残っていた古道具屋の源さんが言う。「壊れたものを直せるなら、この街もきっと直せるさ」','An old antique dealer named Gen smiles: “If you can fix broken things, perhaps you can fix this town too.”')}</p><p><b>${L('修理で稼ぎ、神社に奉納して、街を未来まで育てよう。','Repair, earn, offer at the shrine, and grow the town into the future.')}</b></p><button class="btn" data-action="story-done">${L('さあ、修理屋を開店！','Open the workshop!')} →</button></div>`:'';}
-function renderTownHome(){const q=objective();return `${storyIntro()}<div class="town-banner"><div class="eyebrow">TOWN REVIVAL · ${L('街を再生する物語','A town worth saving')}</div><h2>${L('壊れたものから、街を取り戻そう。','Repair things. Rebuild a town.')}</h2><p>${L('修理で稼ぎ、賽銭箱にまとまったお金を奉納。家と街並みが変わり、住人・道具・商品が増えていく。','Earn from repairs, make a big offering at the shrine, and watch houses, neighbors and new items appear.')}</p></div>${questView()}<div class="town-grid"><section class="town-panel"><h3>🏚️ ${L('あなたの修理屋','Your repair shop')}</h3><p>${L('家の状態','House condition')}: ${state.houseLevel===0?L('雨漏りするボロ家','A leaking fixer-upper'):state.houseLevel===1?L('屋根と壁を修理済み','Roof and walls repaired'):state.houseLevel===2?L('新しい作業場','Expanded workroom'):L('住み心地のいい工房','A cozy workshop')}</p><div class="progress-track"><div class="progress-fill" style="width:${state.houseLevel*25}%"></div></div><p>${L('家の修復は街の発展とは別に進められる。見た目も少しずつ良くなる。','Renovate your home separately from town progression. Watch your shop improve.')}</p><div class="scene-choice"><button class="btn secondary" data-action="house-up" ${state.houseLevel>=4||state.coins<houseCost()?'disabled':''}>🛠️ ${L('家を直す','Renovate house')} ${state.houseLevel>=4?L('完成！','MAX'):('$'+n(houseCost()))}</button><button class="btn" data-action="tab" data-id="${q.tab}">${q.label} →</button></div></section><section class="town-panel"><h3>📒 ${L('今までの成果','Your progress')}</h3><div class="price-row"><span>${L('修理完了','Repairs finished')}</span><strong>${n(state.completed)}</strong></div><div class="price-row"><span>${L('累計売上','Total revenue')}</span><strong>$${n(state.revenue)}</strong></div><div class="price-row"><span>${L('知り合った住人','Neighbors met')}</span><strong>${RESIDENTS.filter(r=>characterAvailable(r)).length}</strong></div><div class="price-row"><span>${L('街の発展','Town stage')}</span><strong>${state.townLevel}/8</strong></div><div class="scene-choice"><button class="btn secondary" data-action="tab" data-id="people">💬 ${L('住人に会う','Residents')}</button></div></section></div>`;}
-function renderShrine(){const price=townCost(),next=state.townLevel+1,ready=state.coins>=price&&state.completed>0;return `${title('THE SHRINE',L('街の神社','Town shrine'),L('まとまったお金を奉納すると、街の景色が一気に変わる。','A large offering changes the whole town.'))}${questView()}<div class="town-grid"><section class="town-panel"><h3>⛩️ ${L('賽銭箱','Offering box')}</h3><p>${state.townLevel===1?L('「この街にも、もう一度にぎわいを」──源さんの願いが書かれている。','An old plaque reads: “May this town flourish again.”'):L('奉納するたびに、建物が直り、新しい住人がやってくる。','Each offering restores buildings and welcomes new neighbors.')}</p>${next<=8?`<div class="story-box"><div class="voice">${L('次の街へ','NEXT STAGE')} · LV.${next}</div><h2 style="margin:3px 0">${TOWN_NAMES[next][state.locale==='en'?1:0]}</h2><div class="price-row"><span>${L('奉納額','Offering')}</span><strong>$${n(price)}</strong></div><div class="price-row"><span>${L('所持金','Balance')}</span><strong>$${n(state.coins)}</strong></div><div class="progress-track"><div class="progress-fill" style="width:${clamp(100*state.coins/price,0,100)}%"></div></div><button class="btn block" data-action="offer-town" ${ready?'':'disabled'}>⛩️ ${L('奉納して街を発展させる','Make offering & upgrade town')} · $${n(price)}</button>${state.completed===0?`<p>${L('最初に一品修理して、街の人から信頼を得よう。','First repair an item to earn the villagers’ trust.')}</p>`:''}</div>`:`<div class="story-box"><h2>${L('未来都市が完成！','The future city is complete!')}</h2><p>${L('街の発展を見届けた。これからは住人との関係や収集を楽しもう。','Your town is thriving. Keep collecting and making memories.')}</p></div>`}</section><section class="town-panel"><h3>✨ ${L('発展で解放されるもの','What town growth unlocks')}</h3><div class="unlock-grid">${(next===2?[L('カメラと時計','Cameras & clocks'),L('ミアのカフェ','Mia’s cafe'),L('配線修理チップ','Wire repair chips')]:next===3?[L('発明家レオ','Leo the inventor'),L('ロボット','Toy robots'),L('難易度★4への挑戦','Harder repair jobs')]:next===4?[L('商店街と住人フミ','Main street & Fumi'),L('レトロゲーム機','Retro consoles'),L('回路修理キット','Circuit kits')]:[L('新しい街並み','New cityscape'),L('高度な修理品','Advanced repair items'),L('より多彩な住人イベント','More resident events')]).map(x=>`<span class="unlock-chip">✦ ${x}</span>`).join('')}</div><p>${L('街の発展で新しい品目と道具が開放。販売利益が増える一方、修理の難度も高くなる。','More items and tools unlock with each town level, along with tougher repairs.')}</p><button class="btn secondary block" data-action="tab" data-id="market">📦 ${L('仕入れ市場へ','Go to market')}</button></section></div><section class="town-panel section-block"><h3>${L('街の成長記録','Town timeline')}</h3><div class="town-stages">${TOWN_NAMES.slice(1).map((n,i)=>`<div class="town-stage ${i+1===state.townLevel?'here':i+1<state.townLevel?'done':''}"><b>LV.${i+1} ${n[state.locale==='en'?1:0]}</b><span>${i+1<state.townLevel?L('発展済み','Restored'):i+1===state.townLevel?L('いまここ','Current'):L('これから','Locked')}</span></div>`).join('')}</div></section>`;}
+function renderTownHome(){const q=objective();return `${storyIntro()}<div class="town-banner"><div class="eyebrow">TOWN REVIVAL · ${L('街を再生する物語','A town worth saving')}</div><h2>${L('壊れたものから、街を取り戻そう。','Repair things. Rebuild a town.')}</h2><p>${L('修理で稼ぎ、賽銭箱にまとまったお金を奉納。街並みが変わり、住人・道具・商品が増えていく。自分の家は別に改装できる。','Earn from repairs, make a big offering at the shrine, and watch the neighborhood, residents and new items appear. Renovate your house separately.')}</p></div>${questView()}<div class="town-grid"><section class="town-panel"><h3>🏚️ ${L('あなたの修理屋','Your repair shop')}</h3><p>${L('家の状態','House condition')}: ${state.houseLevel===0?L('雨漏りするボロ家','A leaking fixer-upper'):state.houseLevel===1?L('屋根と壁を修理済み','Roof and walls repaired'):state.houseLevel===2?L('精密作業場と増築','Precision workroom & extension'):state.houseLevel===3?L('高度修理ラボ','Advanced repair lab'):L('未来型の修理研究所','Futuristic repair institute')}</p><div class="progress-track"><div class="progress-fill" style="width:${state.houseLevel*25}%"></div></div><p>${L('家の改装は街とは独立。工房LV.1で難易度★3、LV.2で★4、LV.3で★5に挑める。','Home upgrades are independent. Workshop LV.1 unlocks 3-star, LV.2 4-star, and LV.3 5-star repairs.')}</p><div class="scene-choice"><button class="btn secondary" data-action="house-up" ${state.houseLevel>=4||state.coins<houseCost()?'disabled':''}>🛠️ ${L('家を直す','Renovate house')} ${state.houseLevel>=4?L('完成！','MAX'):('$'+n(houseCost()))}</button><button class="btn" data-action="tab" data-id="${q.tab}">${q.label} →</button></div></section><section class="town-panel"><h3>📒 ${L('今までの成果','Your progress')}</h3><div class="price-row"><span>${L('修理完了','Repairs finished')}</span><strong>${n(state.completed)}</strong></div><div class="price-row"><span>${L('累計売上','Total revenue')}</span><strong>$${n(state.revenue)}</strong></div><div class="price-row"><span>${L('知り合った住人','Neighbors met')}</span><strong>${RESIDENTS.filter(r=>characterAvailable(r)).length}</strong></div><div class="price-row"><span>${L('街の発展','Town stage')}</span><strong>${state.townLevel}/8</strong></div><div class="scene-choice"><button class="btn secondary" data-action="tab" data-id="people">💬 ${L('住人に会う','Residents')}</button></div></section></div>`;}
+function renderShrine(){const price=townCost(),next=state.townLevel+1,ready=state.coins>=price&&state.completed>0;return `${title('THE SHRINE',L('街の神社','Town shrine'),L('まとまったお金を奉納すると、街の景色が一気に変わる。','A large offering changes the whole town.'))}${questView()}<div class="town-grid"><section class="town-panel"><h3>⛩️ ${L('賽銭箱','Offering box')}</h3><p>${state.townLevel===1?L('「この街にも、もう一度にぎわいを」──源さんの願いが書かれている。','An old plaque reads: “May this town flourish again.”'):L('奉納するたびに、建物が直り、新しい住人がやってくる。','Each offering restores buildings and welcomes new neighbors.')}</p>${next<=8?`<div class="story-box"><div class="voice">${L('次の街へ','NEXT STAGE')} · LV.${next}</div><h2 style="margin:3px 0">${TOWN_NAMES[next][state.locale==='en'?1:0]}</h2><div class="price-row"><span>${L('奉納額','Offering')}</span><strong>$${n(price)}</strong></div><div class="price-row"><span>${L('所持金','Balance')}</span><strong>$${n(state.coins)}</strong></div><div class="progress-track"><div class="progress-fill" style="width:${clamp(100*state.coins/price,0,100)}%"></div></div><button class="btn block" data-action="offer-town" ${ready?'':'disabled'}>⛩️ ${L('奉納して街を発展させる','Make offering & upgrade town')} · $${n(price)}</button>${state.completed===0?`<p>${L('最初に一品修理して、街の人から信頼を得よう。','First repair an item to earn the villagers’ trust.')}</p>`:''}</div>`:`<div class="story-box"><h2>${L('未来都市が完成！','The future city is complete!')}</h2><p>${L('街の発展を見届けた。これからは住人との関係や収集を楽しもう。','Your town is thriving. Keep collecting and making memories.')}</p></div>`}</section><section class="town-panel"><h3>✨ ${L('発展で解放されるもの','What town growth unlocks')}</h3><div class="unlock-grid">${(next===2?[L('カメラと時計','Cameras & clocks'),L('ミアのカフェ','Mia’s cafe'),L('配線修理チップ','Wire repair chips')]:next===3?[L('発明家レオ','Leo the inventor'),L('ロボット','Toy robots'),L('難易度★4への挑戦','Harder repair jobs')]:next===4?[L('商店街と住人フミ','Main street & Fumi'),L('レトロゲーム機','Retro consoles'),L('回路修理キット','Circuit kits')]:[L('新しい街並み','New cityscape'),L('高度な修理品','Advanced repair items'),L('より多彩な住人イベント','More resident events')]).map(x=>`<span class="unlock-chip">✦ ${x}</span>`).join('')}</div><p>${L('街の発展で新しい品目と道具が開放。販売利益が増える一方、街で商品が増えても、難易度は修理経験で上がる。★3以上は工房改装が必要。','More items and tools unlock with each town level, while workshop renovations let you handle harder jobs.')}</p><button class="btn secondary block" data-action="tab" data-id="market">📦 ${L('仕入れ市場へ','Go to market')}</button></section></div><section class="town-panel section-block"><h3>${L('街の成長記録','Town timeline')}</h3><div class="town-stages">${TOWN_NAMES.slice(1).map((n,i)=>`<div class="town-stage ${i+1===state.townLevel?'here':i+1<state.townLevel?'done':''}"><b>LV.${i+1} ${n[state.locale==='en'?1:0]}</b><span>${i+1<state.townLevel?L('発展済み','Restored'):i+1===state.townLevel?L('いまここ','Current'):L('これから','Locked')}</span></div>`).join('')}</div></section>`;}
 function renderPeople(){return `${title('TOWN STORIES',L('街の住人','Town residents'),L('街が発展するほど新しい人がやってくる。修理と会話で仲良くなろう。','Meet neighbors and build friendships as your town grows.'))}${questView()}<div class="town-grid"><section class="town-panel"><h3>💌 ${L('顔なじみとイベント','Friendships & stories')}</h3>${RESIDENTS.map(r=>{const unlocked=characterAvailable(r),love=state.residentLove[r.id]||0,canTalk=unlocked&&(state.residentSeen[r.id]||-1)!==state.completed+state.townLevel*100,evt=unlocked&&r.id==='mia'&&!state.eventsDone.mia;return `<div class="person-card" style="${!unlocked?'opacity:.42':''}"><div class="person-face">${unlocked?r.emoji:'🔒'}</div><div class="person-details"><h3>${unlocked?residentName(r):L('まだ知らない住人','Unknown neighbor')} <span class="muted" style="font-size:11px">${unlocked?residentText(r.role):'LV.'+r.level}</span></h3><div class="hearts">${'♥'.repeat(Math.min(5,love))}${'♡'.repeat(5-Math.min(5,love))}</div><p>${unlocked?residentText(r.lines[Math.min(2,Math.floor(love/2))]):L('街が育つと引っ越してくる。','Moves in when the town grows.')}</p>${unlocked?`<button class="btn sm ${canTalk?'':'secondary'}" data-action="talk" data-id="${r.id}" ${canTalk?'':'disabled'}>${canTalk?L('話しかける','Talk'):L('また次の修理後に','After next repair')}</button>${evt?` <button class="btn sm" data-action="resident-event" data-id="mia">✨ ${L('歓迎イベント','Welcome event')}</button>`:''}`:''}</div></div>`}).join('')}</section><section class="town-panel"><h3>📅 ${L('街で起こったこと','Town journal')}</h3>${state.townLevel===1?`<div class="story-box"><div class="voice">${L('新しい出会い','FIRST MEETING')}</div><p>${L('源さんは昔からこの街を見守っている。最初の修理が終わったら話しかけてみよう。','Gen has watched over this town for years. Talk to him after your first repair.')}</p></div>`:''}${Object.entries(state.eventsDone).filter(([_,v])=>v).map(([k])=>`<p>✅ ${k==='mia'?L('ミアのカフェ開店祝い','Mia’s cafe opening'):L('住人イベント','Resident event')}</p>`).join('')||`<p>${L('これから街の思い出が増えていく。','New memories are waiting.')}</p>`}<h3>${L('街を育てると','With every town upgrade')}</h3><p>${L('新しい住人が現れ、特別な会話やアイテムが開放される。全員と仲良くなる必要はない。','New neighbors bring new stories and useful rewards. Socializing is optional.')}</p><button class="btn secondary block" data-action="tab" data-id="shrine">⛩️ ${L('神社へ','Visit shrine')}</button></section></div>`;}
 function townAction(action,id){
  if(action==='reveal-dismiss'){sceneReveal=null;render();return true;}
@@ -437,7 +505,7 @@ function townAction(action,id){
  if(action==='house-up'){const cost=houseCost();if(state.houseLevel>=4||state.coins<cost)return true;const from=state.houseLevel;state.coins-=cost;state.spent+=cost;state.houseLevel++;sceneReveal={kind:'house',from,to:state.houseLevel};mutate();notify(L('家がきれいになった！','Your house looks better!'),'good');return true;}
  if(action==='offer-town'){
   const price=townCost();if(!price||state.coins<price||state.completed<1)return true;
-  const from=state.townLevel;state.coins-=price;state.spent+=price;state.townLevel++;state.houseLevel=Math.max(state.houseLevel,1);sceneReveal={kind:'town',from,to:state.townLevel};
+  const from=state.townLevel;state.coins-=price;state.spent+=price;state.townLevel++;sceneReveal={kind:'town',from,to:state.townLevel};
   state.offers=[];refillOffers();currentTab='shrine';mutate();notify(L('街が進化した！新しい商品と住人が登場！','Town upgraded! New items and residents unlocked!'),'good');return true;
  }
  if(action==='talk'){const r=RESIDENTS.find(x=>x.id===id);if(!r||!characterAvailable(r))return true;const key=state.completed+state.townLevel*100;if(state.residentSeen[id]===key)return true;state.residentSeen[id]=key;state.residentLove[id]=Math.min(5,(state.residentLove[id]||0)+1);mutate();notify(residentName(r)+': '+residentText(r.lines[Math.min(2,Math.floor((state.residentLove[id]-1)/2))]),'good');return true;}
@@ -445,18 +513,87 @@ function townAction(action,id){
  return false;
 }
 const TRANSLATIONS={
+ '高額商品ほど修理が難しく、失敗時の損失も大きい。最初は★1から始めるのがおすすめ。保管枠':'Higher-value goods carry bigger repair risks. Start with 1-star items. Storage',
+ '消耗品で手間と失敗リスクを減らせる一方、購入費用が利益を圧迫することも。何に投資するかが経営のポイント。':'Consumables save time and reduce risk, but their costs eat into your profit. Choose upgrades wisely.',
+
+ '価値がありそうなジャンク品を見つけよう。仕入れには資金が必要。':'Find valuable secondhand goods. You need cash to buy them.',
+ 'ひとつずつ工程をクリアして、商品をよみがえらせよう。':'Complete the repair steps and give your purchase a new life.',
+ '市場で商品を仕入れたら、ここで修理に挑戦しよう。失敗すると耐久度が下がるので注意！':'Buy something at the market, then repair it here. Mistakes will damage the item!',
+ '作業台は空っぽ':'The workbench is empty',
+ 'ゲーム内のお金を使って、修理の効率を上げたりお店を育てよう。':'Spend your in-game money on better tools and workshop upgrades.',
+ '品ぞろえ更新':'Refresh stock',
+ '予想完売値':'Estimated resale',
+ '仕入れる':'Purchase',
+ '商品を仕入れる':'Shop for items',
+ '新しい商品が入荷！':'New stock has arrived!',
+ '今の商品の残り工程をすべて完了':'Complete all remaining repair steps',
+ '汚れ落とし工程を一瞬で完了':'Instantly complete cleaning',
+ '配線工程を自動で成功':'Auto-complete wiring',
+ '精密調整工程を自動で成功':'Auto-complete calibration',
+ '分解工程を自動で成功':'Auto-complete disassembly',
+ '回路修復工程を自動で成功':'Auto-complete circuit repairs',
+ '次のミスによるダメージを1回無効化':'Prevent one instance of damage',
+ '故障部品の診断工程をスキップ':'Skip fault diagnosis',
+ '組み立て工程をスキップ':'Skip assembly',
+ '通電調整工程をスキップ':'Skip the power test',
+ '修理完了時の品質 +5、失敗ダメージを少し軽減':'Repair quality +5 and slightly lower damage',
+ '市場での仕入れ価格が10%割引':'10% off marketplace purchases',
+ '展示で獲得する評判が1.5倍に':'1.5x reputation from exhibits',
+ '商品保管枠を3個から6個に拡張':'Increase inventory capacity from 3 to 6',
+ '仕入れた商品':'Purchased goods',
+ '使い切りアイテム':'Consumable items',
+ '永続アップグレード':'Permanent upgrades',
+ '累計売上':'Lifetime sales',
+ '修理完了':'Repairs completed',
+ '修理ミス':'Repair mistakes',
+ '購入価格':'Purchase price',
+ '本体の耐久度（ミスで減少）':'Item integrity (damage from mistakes)',
+ '修理の進捗':'Repair progress',
+ '途中で諦める':'Abandon repair',
+ '難易度':'Difficulty',
+ '予想完売値':'Est. resale value',
+ '汚れの上をなぞって取り除こう。タップ操作でもOK。':'Rub away all dirt spots. Touch controls work too.',
+ '左の端子を選び、同じ色の右の端子につなごう。':'Select a terminal on the left and match its color on the right.',
+ '黄色い針が緑のゾーンに入った瞬間に止めよう。':'Stop the yellow needle inside the green target zone.',
+ '指定された順番でネジを外そう。★3以上は順番を覚えてからスタート。':'Remove screws in order. For 3 stars or above, memorize the sequence first.',
+ 'パネルを回転させ、左のINPUTから右のOUTPUTへ回路を通そう。':'Rotate each tile to create a continuous circuit from input to output.',
+ '80°C以上の過熱部品をすべて見つけて交換しよう。間違えると損傷！':'Replace all components hotter than 80°C. Wrong choices cause damage!',
+ '設計図に示された順番で部品を取り付けよう。':'Assemble the parts in blueprint order.',
+ 'スイッチの出力合計を目標電圧に合わせてから通電しよう。':'Set switches to reach the target voltage, then run the test.',
+ '汚れをなぞって取り除く':'Wipe away the dirt',
+ 'マウス/指でなぞる':'Swipe with mouse or finger',
+ '本体が損傷してしまった。少しだけ部品代を回収できる。':'The item is broken beyond repair. You can salvage a few parts.',
+ '今の修理を終えたら次の商品へ':'Finish the current repair before starting the next item',
+ '資金が尽きても復帰できるよう、無料の小口修理依頼を受けられます。':'If you run out of money, you can take a small free repair job.',
+ '小口修理の仕事を受ける（無料）':'Accept a small free repair job',
+ '作業台':'Workbench',
+ '保管中の商品':'Inventory',
+ '倉庫の在庫':'Warehouse inventory',
+ 'ゲーム内のお金':'In-game money',
+ 'お店の評判':'Shop reputation',
+ '修復品質':'Repair quality',
+ '仕入れ価格':'Purchase cost',
+ '仕入れ差額':'Gross margin',
+ '販売すれば資金を獲得。展示すれば評判が上がり、より難しい商品が出現。':'Sell to earn money, or display it to build reputation and find tougher jobs.',
+ 'この価格で売る':'Sell for this price',
+ '修理不能になった…':'Beyond repair...',
+ 'ジャンク品として処分':'Scrap for parts',
+ '修理を中断':'Pause repair',
+ '次の修理へ':'Next repair',
+
  'マイショップ':'Home','仕入れ市場':'Market','修理工房':'Workshop','アイテムショップ':'Supplies','コレクション':'Collection','お店':'Home','仕入れ':'Market','修理':'Repair','道具':'Tools','住人':'Residents','神社':'Shrine',
  '修理済み':'Repaired','保管中の商品':'Items in stock','累計売上':'Total sales','展示コレクション':'Collected','お店の評判':'Reputation','販売する':'Sell','展示する':'Display','修理を再開する':'Resume repair','修理工房へ':'Go to workshop','商品を仕入れる':'Purchase item','修理台に置く':'Start repairing',
  '難易度':'Difficulty','工程':'steps','修理完了':'Repair complete','完成':'Complete','使用する':'Use','購入':'Buy','購入済':'Owned','仕入れる':'Purchase','修理を中断':'Pause repair',
  '修理完了時の品質 +5、失敗ダメージを少し軽減':'Repair quality +5; reduces damage','市場での仕入れ価格が10%割引':'10% off purchase prices','展示で獲得する評判が1.5倍に':'1.5x fame for displays','商品保管枠を3個から6個に拡張':'Inventory capacity increases to 6',
  'クリーニング剤':'Cleaner','配線修復チップ':'Wire chip','精密調整ユニット':'Calibration unit','ネジ外しビット':'Screw bit','回路交換パーツ':'Circuit kit','保護フィルム':'Protective film','全自動修理キット':'Auto-repair kit',
+ '診断スキャナー':'Diagnostic scanner','組立ガイド':'Assembly guide','自動通電テスター':'Power test kit','故障診断':'Fault diagnosis','部品の組み立て':'Assembly','通電テスト':'Power test',
  '精密作業台':'Precision bench','仕入れ交渉術':'Deal-making','展示ショーケース':'Display case','倉庫の増築':'Storage expansion',
  '携帯ゲーム機':'Handheld console','フィルムカメラ':'Film camera','ヴィンテージラジオ':'Vintage radio','アンティーク時計':'Antique clock','おもちゃロボット':'Toy robot','レトロゲーム機':'Retro console',
  'クリーニング':'Cleaning','配線の接続':'Wiring','精密調整':'Calibration','精密分解':'Disassembly','回路の修復':'Circuit repair',
  'このゲームの遊び方':'How to play','本日の営業':'Today’s business','マイショップ':'Home','コレクションを眺める':'See collection','おすすめ':'Recommended','次へ':'Next','最初からやり直す':'Reset game',
  '⭐':'⭐','売る':'Sell','所持':'Owned','修理済み':'Finished',
 };
-function translateDOM(){if(state.locale!=='en')return;const walk=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);const nodes=[];while(walk.nextNode())nodes.push(walk.currentNode);for(const node of nodes){let txt=node.nodeValue;for(const [ja,en] of Object.entries(TRANSLATIONS)){if(ja&&txt.includes(ja))txt=txt.split(ja).join(en);}node.nodeValue=txt;}}
+function translateDOM(){if(state.locale!=='en')return;const walk=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);const nodes=[];while(walk.nextNode())nodes.push(walk.currentNode);for(const node of nodes){let txt=node.nodeValue;for(const [ja,en] of Object.entries(TRANSLATIONS).sort((a,b)=>b[0].length-a[0].length)){if(ja&&txt.includes(ja))txt=txt.split(ja).join(en);}node.nodeValue=txt;}}
 
 function navButton(id,icon,text){return `<button class="navbtn ${currentTab===id?'active':''}" data-action="tab" data-id="${id}"><span class="symbol">${icon}</span><span>${text}</span></button>`;}
 function money(){return `<span class="circle-icon">$</span><b>${n(state.coins)}</b>`;}
@@ -471,7 +608,7 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="reset">最初からやり直す</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · FIRST 10 MINUTES v0.6 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · FIRST 10 MINUTES v0.7 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>`;
  translateDOM();
  const newContent=app.querySelector('.content');
@@ -487,7 +624,7 @@ function renderTab(){switch(currentTab){case 'shop':return renderShop();case 'ma
 function renderShop(){return renderTownHome();}
 function itemCard(o,context='market'){
  const p=marketPrice(o);
- return `<article class="item-card"><div class="row between"><span class="tag ${o.rarity==='LEGENDARY'?'legend':o.rarity==='EPIC'?'epic':o.rarity==='RARE'?'rare':''}">${o.rarity}</span><span class="stars">${stars(o.difficulty)}</span></div><div class="art-frame">${renderObjectSvg(o)}</div><div><h3 class="item-name">${o.name}</h3><p class="item-sub">難易度 ${o.difficulty}/5 • ${o.stages.length} 工程</p></div><div class="card-meta"><span class="price">$${n(context==='market'?p:o.price)}</span><span class="pill">予想完売値 $${n(Math.round(o.baseValue*.98))}</span></div>${context==='market'?`<button class="btn block" data-action="buy" data-id="${o.id}" ${state.coins<p||state.inventory.length+(state.active?1:0)>=limit()?'disabled':''}>仕入れる</button>`:`<button class="btn block" data-action="activate" data-id="${o.id}" ${state.active?'disabled':''}>修理台に置く</button>`}</article>`;
+ return `<article class="item-card"><div class="row between"><span class="tag ${o.rarity==='LEGENDARY'?'legend':o.rarity==='EPIC'?'epic':o.rarity==='RARE'?'rare':''}">${o.rarity}</span><span class="stars">${stars(o.difficulty)}</span></div><div class="art-frame">${renderObjectSvg(o)}</div><div><h3 class="item-name">${o.name}</h3><p class="item-sub">${L('難易度','Difficulty')} ${o.difficulty}/5 • ${o.stages.length} ${L('工程','steps')}</p><p class="item-sub">🏠 ${L('必要な工房','Workshop required')} LV.${minimumHouse(o.difficulty)}</p></div><div class="card-meta"><span class="price">$${n(context==='market'?p:o.price)}</span><span class="pill">予想完売値 $${n(Math.round(o.baseValue*.98))}</span></div>${context==='market'?`<button class="btn block" data-action="buy" data-id="${o.id}" ${state.coins<p||state.inventory.length+(state.active?1:0)>=limit()?'disabled':''}>仕入れる</button>`:`<button class="btn block" data-action="activate" data-id="${o.id}" ${state.active?'disabled':''}>修理台に置く</button>`}</article>`;
 }
 function renderMarket(){return `${title('DISCOVER & TRADE','仕入れ市場','価値がありそうなジャンク品を見つけよう。仕入れには資金が必要。',`<button class="btn secondary sm" data-action="refresh">🔄 品ぞろえ更新 $25</button>`)}
  ${questView()}<div class="unlock-notice">🔓 ${L('街レベル','Town level')} ${state.townLevel}: ${L('仕入れ可能な品目が街の成長に合わせて増えます。','More product types unlock as your town grows.')}</div><div class="cards-grid">${state.offers.map(o=>itemCard(o)).join('')}</div>
@@ -514,11 +651,35 @@ function renderMinigame(a){const t=taskOf(),st=a.stageState||{},def=STAGES[t.typ
  }
  if(t.type==='screws'){const seq=shuffleIndex(st.count,t.seed);const visible=!st.started||a.difficulty<=2;inside=`<div class="screw-panel"><div class="screw-sequence">${visible?'外す順番：'+seq.map(i=>i+1).join(' → '):'順番は非表示です。記憶した順番で外そう！'}</div>${!st.started?`<button class="btn block" data-action="screw-start">🪛 覚えた！ 分解開始</button>`:`<div class="screw-grid">${Array.from({length:st.count},(_,i)=>`<button class="screw-head ${st.removed.includes(i)?'removed':''}" data-action="screw-turn" data-id="${i}" ${st.removed.includes(i)?'disabled':''} aria-label="ネジ ${i+1}">${i+1}<small>✕</small></button>`).join('')}</div>`}</div><p class="game-tip">${st.removed.length}/${st.count} 本分解 • 間違えると本体を傷つけます</p>`;}
  if(t.type==='circuit'){const path=circuitPath(a.difficulty);const aMap=new Map(path.map((v,i)=>[v,i]));inside=`<div class="circuit-panel"><div class="circuit-labels"><b>⚡ INPUT</b><span>タップで90°回転</span><b>OUTPUT ⚡</b></div><div class="circuit-grid">${Array.from({length:9},(_,slot)=>{const i=aMap.get(slot);if(i===undefined)return '<div class="circuit-empty"></div>';const dir=circuitConnectors(path,i),angle=st.angles[i];return `<button class="circuit-tile" data-action="circuit-turn" data-id="${i}" aria-label="回路パネル ${i+1} を回転"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(${angle*90},50,50)"><circle cx="50" cy="50" r="15" fill="#fed58f"/>${dir.map(d=>{const e=[[50,0],[100,50],[50,100],[0,50]][d];return `<path d="M50 50 L${e[0]} ${e[1]}" stroke="#94efcc" stroke-width="13" stroke-linecap="round"/>`;}).join('')}</g></svg></button>`;}).join('')}</div></div><p class="game-tip">緑の配線が入口と出口をつなぐように回転。すべて通れば成功！</p>`;}
+ if(t.type==='diagnose'){
+   const targets=diagnosisTargets(t.seed,a.difficulty),found=st.found||[];
+   inside=`<div class="game-tip">${L('80°C以上は過熱しています。故障した部品をすべて交換！','Over 80°C means overheating. Replace all faulty parts!')}</div>
+   <div class="diagnose-grid">${Array.from({length:3+a.difficulty},(_,i)=>{
+    const heat=diagnosticHeat(t.seed,a.difficulty,i),fixed=found.includes(i);
+    return `<button class="diagnose-cell ${heat>=80?'fault':''} ${fixed?'fixed':''}" data-action="diagnose-check" data-id="${i}" ${fixed?'disabled':''}><small>CHIP ${i+1}</small><strong>${fixed?'✅':heat+'°C'}</strong><small>${fixed?'FIXED':heat>=80?'OVERHEAT':'NORMAL'}</small></button>`;
+   }).join('')}</div><p class="game-tip">${found.length}/${targets.length} ${L('故障部品を交換','faulty parts replaced')}</p>`;
+ }
+ if(t.type==='assemble'){
+   const order=assemblyOrder(t.seed,a.difficulty),placed=st.placed||[],names=['A','B','C','D','E','F','G'];
+   inside=`<div class="game-tip">${L('設計図の順に部品を選択','Install the components in blueprint order')}</div>
+   <div class="assembly-blueprint"><b>PLAN</b>${order.map((part,i)=>`<b class="${i<placed.length?'done':''}">${i<placed.length?'✓':names[part]}</b>`).join('')}</div>
+   <div class="assembly-grid">${shuffleIndex(order.length,t.seed+727).map(part=>`<button class="assembly-piece ${placed.includes(part)?'placed':''}" data-action="assemble-place" data-id="${part}" ${placed.includes(part)?'disabled':''}>🧩 <strong>${names[part]}</strong><small>${placed.includes(part)?'INSTALLED':'PART'}</small></button>`).join('')}</div>
+   <p class="game-tip">${placed.length}/${order.length} ${L('部品を取り付け済み','components installed')}</p>`;
+ }
+ if(t.type==='power'){
+   const weights=powerWeights(a.difficulty),enabled=st.enabled||[],target=powerTarget(t.seed,a.difficulty);
+   const voltage=weights.reduce((v,w,i)=>v+(enabled.includes(i)?w:0),0);
+   inside=`<div class="power-target"><span>${L('目標電圧','TARGET')} <strong>${target}V</strong></span><span>${L('現在','CURRENT')} <strong>${voltage}V</strong></span></div>
+   <div class="power-progress"><span style="width="${Math.min(100,100*voltage/target)}%;background:${voltage>target?'#ff8377':'linear-gradient(90deg,#78bacc,#90edb6)'}"></span></div>
+   <div class="power-grid">${weights.map((w,i)=>`<button class="power-switch ${enabled.includes(i)?'on':''}" data-action="power-toggle" data-id="${i}"><strong>${enabled.includes(i)?'●':'○'} +${w}V</strong><small>${enabled.includes(i)?'ON':'OFF'}</small></button>`).join('')}</div>
+   <button class="btn block" data-action="power-test">🔋 ${L('通電テストを実行','Run power test')}</button>
+   <p class="game-tip">${L('通電テストで目標値を外すと本体に損傷','Incorrect voltage at test causes damage')}</p>`;
+ }
  if(t.type==='calibrate'){const center=25+(t.seed%51),width=clamp(24-a.difficulty*3,6,21);inside=`<div class="calibration-pad"><div class="row between"><span class="muted tiny">MIN</span><b style="color:var(--mint)">SWEET SPOT</b><span class="muted tiny">MAX</span></div><div class="slider-rail"><div class="slider-target" style="left:${center-width/2}%;width:${width}%"></div><div class="slider-needle" id="needle" style="left:50%"></div></div><button class="btn block" data-action="time-stop">🎯 ここで止める！ (Space)</button></div><p class="game-tip">針が緑の範囲にある時だけ成功。精密操作ほど範囲が狭い。</p>`;}
  return `<div class="eyebrow">REPAIR TASK ${a.stageIndex+1} / ${a.stages.length}</div><div class="minigame"><h3>${def.icon} ${def.name}</h3><p>${def.tip}</p>${inside}</div><div class="hint section-block">⚠️ 修理ミスで本体耐久度が減少。残り12%以下になると修復不能。保護フィルムは次のミスを1回防ぎます。</div>`;
 }
 function renderTools(){return `${title('TOOLS & UPGRADES','アイテムショップ','ゲーム内のお金を使って、修理の効率を上げたりお店を育てよう。')}
- <div class="unlock-notice">⛩️ ${L('街が発展すると新しい道具が解放されます。','Develop your town to unlock more tools.')}</div><div class="eyebrow section-block">CONSUMABLES · 使い切りアイテム</div><div class="stack">${TOOLS.filter(x=>({clean:1,shield:1,wire:2,screw:2,precision:3,circuit:4,auto:3}[x.id]||1)<=state.townLevel).map(x=>`<div class="shop-item"><div class="shop-icon">${x.icon}</div><div class="shop-desc"><h3>${x.name} <span class="pill">所持 ${state.tools[x.id]}</span></h3><p>${x.desc}</p></div><div class="shop-price">$${n(x.cost)}</div><button class="btn sm" data-action="buy-tool" data-id="${x.id}" ${state.coins<x.cost?'disabled':''}>購入</button></div>`).join('')}</div>
+ <div class="unlock-notice">⛩️ ${L('街が発展すると新しい道具が解放されます。','Develop your town to unlock more tools.')}</div><div class="eyebrow section-block">CONSUMABLES · 使い切りアイテム</div><div class="stack">${TOOLS.filter(x=>(TOOL_UNLOCK[x.id]||1)<=state.townLevel).map(x=>`<div class="shop-item"><div class="shop-icon">${x.icon}</div><div class="shop-desc"><h3>${x.name} <span class="pill">所持 ${state.tools[x.id]}</span></h3><p>${x.desc}</p></div><div class="shop-price">$${n(x.cost)}</div><button class="btn sm" data-action="buy-tool" data-id="${x.id}" ${state.coins<x.cost?'disabled':''}>購入</button></div>`).join('')}</div>
  <div class="eyebrow section-block" style="margin-top:25px">PERMANENT · 永続アップグレード</div><div class="upgrade-grid">${UPGRADES.map(x=>`<div class="shop-item"><div class="shop-icon">${x.icon}</div><div class="shop-desc"><h3>${x.name}</h3><p>${x.desc}</p><span class="shop-price">$${n(x.cost)}</span></div><button class="btn sm ${state.upgrades[x.id]?'secondary':''}" data-action="upgrade" data-id="${x.id}" ${state.upgrades[x.id]||state.coins<x.cost?'disabled':''}>${state.upgrades[x.id]?'購入済':'購入'}</button></div>`).join('')}</div><div class="hint section-block">💡 消耗品で手間と失敗リスクを減らせる一方、購入費用が利益を圧迫することも。何に投資するかが経営のポイント。</div>`;}
 function renderGallery(){return `${title('THE COLLECTION','コレクション','売らずに残した特別な修理品。展示すると評判が上がる。')}${state.collection.length?`<div class="cards-grid">${state.collection.map(x=>`<div class="gallery-card"><span class="tag ${x.rarity==='LEGENDARY'?'legend':''}">${x.rarity}</span><div class="art-frame" style="margin-top:8px">${renderObjectSvg(x)}</div><h3 class="item-name">${x.name}</h3><p class="item-sub">修復品質 ${x.quality}% • 難易度 ${stars(x.difficulty)}</p></div>`).join('')}</div>`:`<div class="empty"><div class="big-emoji">🏆</div><h3>まだ展示品がありません</h3><p>商品を修理したら、販売せずに「展示する」を選べます。貴重な品を集めて、伝説のお店を目指そう。</p><button class="btn" data-action="tab" data-id="market">📦 市場で探す</button></div>`}
  <section class="panel padded section-block"><div class="row between"><h3 style="margin:0">🌟 展示特典</h3><b class="light">評判 ${state.fame} pt</b></div><p class="sub">現在の仕入れ市場ティア ${tier()}/5。修理品を売っても少し評判が増え、展示すると多く増える。</p></section>`;}
@@ -530,7 +691,9 @@ function bindCleaning(){const pad=document.getElementById('clean-pad');if(!pad)r
  pad.addEventListener('pointerdown',e=>{dragging=true;pad.setPointerCapture?.(e.pointerId);hit(e);});pad.addEventListener('pointermove',e=>{if(dragging)hit(e)});pad.addEventListener('pointerup',()=>dragging=false);pad.addEventListener('pointercancel',()=>dragging=false);
 }
 function startCalibration(){const task=taskOf();if(!task)return;const needle=document.getElementById('needle');if(!needle)return;let start=performance.now();let seed=task.seed;const speed=.0018+state.active.difficulty*.00055;function draw(time){lastTiming=50+47*Math.sin((time-start)*speed+seed%11);needle.style.left=lastTiming+'%';timingRaf=requestAnimationFrame(draw);}timingRaf=requestAnimationFrame(draw);}
-function activate(id){if(state.active)return notify('先に作業台の修理を終えてください。','error');const ix=state.inventory.findIndex(x=>x.id===id);if(ix<0)return;const a=state.inventory.splice(ix,1)[0];a.stageIndex=0;a.integrity=100;a.complete=false;a.broken=false;a.shield=false;state.active=a;initStage();currentTab='work';mutate();}
+function activate(id){if(state.active)return notify('先に作業台の修理を終えてください。','error');const ix=state.inventory.findIndex(x=>x.id===id);if(ix<0)return;
+ if(!canRepairDifficulty(state.inventory[ix].difficulty)){notify(L('この修理には工房 LV.'+minimumHouse(state.inventory[ix].difficulty)+' の設備が必要です。改装してください。','This job requires WORKSHOP LV.'+minimumHouse(state.inventory[ix].difficulty)+'. Renovate your house first.'),'error');currentTab='shop';render();return;}
+ const a=state.inventory.splice(ix,1)[0];a.stageIndex=0;a.integrity=100;a.complete=false;a.broken=false;a.shield=false;state.active=a;initStage();currentTab='work';mutate();}
 function resetAll(){if(confirm('すべての進行状況を削除してニューゲームを始めますか？この操作は取り消せません。')){state=baseSave();refillOffers();currentTab='shop';mutate();notify('新しいお店をオープン！','good');}}
 function handleAction(action,id){
  if(townAction(action,id))return;
@@ -549,8 +712,31 @@ function handleAction(action,id){
  if(action==='screw-start'){const a=state.active;if(!a||taskOf()?.type!=='screws')return;a.stageState.started=true;mutate();return;}
  if(action==='screw-turn'){const a=state.active;if(!a||taskOf()?.type!=='screws'||!a.stageState.started)return;const st=a.stageState,seq=shuffleIndex(st.count,taskOf().seed),number=Number(id);if(st.removed.includes(number))return;if(number===seq[st.removed.length]){st.removed.push(number);if(st.removed.length===st.count)finishStep();else mutate();}else{st.started=a.difficulty<=2;damage();}return;}
  if(action==='circuit-turn'){const a=state.active;if(!a||taskOf()?.type!=='circuit')return;const i=Number(id),path=circuitPath(a.difficulty);if(!Number.isInteger(i)||i<0||i>=path.length)return;a.stageState.angles[i]=(a.stageState.angles[i]+1)%4;if(solvedCircuit(a))finishStep();else mutate();return;}
+ if(action==='diagnose-check'){
+ const a=state.active,t=taskOf();if(!a||!t||t.type!=='diagnose')return;
+ const target=diagnosisTargets(t.seed,a.difficulty),idx=Number(id);if(!Number.isInteger(idx)||idx<0||idx>=3+a.difficulty||a.stageState.found.includes(idx))return;
+ if(target.includes(idx)){a.stageState.found.push(idx);if(a.stageState.found.length===target.length)finishStep();else mutate();}else damage();
+ return;
+ }
+ if(action==='assemble-place'){
+ const a=state.active,t=taskOf();if(!a||!t||t.type!=='assemble')return;
+ const order=assemblyOrder(t.seed,a.difficulty),idx=Number(id);if(!Number.isInteger(idx)||idx<0||idx>=order.length||a.stageState.placed.includes(idx))return;
+ if(idx===order[a.stageState.placed.length]){a.stageState.placed.push(idx);if(a.stageState.placed.length===order.length)finishStep();else mutate();}else damage();
+ return;
+ }
+ if(action==='power-toggle'){
+ const a=state.active,t=taskOf();if(!a||!t||t.type!=='power')return;
+ const idx=Number(id),weights=powerWeights(a.difficulty);if(!Number.isInteger(idx)||idx<0||idx>=weights.length)return;
+ const enabled=a.stageState.enabled;const old=enabled.indexOf(idx);if(old>=0)enabled.splice(old,1);else enabled.push(idx);mutate();return;
+ }
+ if(action==='power-test'){
+ const a=state.active,t=taskOf();if(!a||!t||t.type!=='power')return;
+ const voltage=powerWeights(a.difficulty).reduce((v,w,i)=>v+(a.stageState.enabled.includes(i)?w:0),0);
+ if(voltage===powerTarget(t.seed,a.difficulty))finishStep();else damage();
+ return;
+ }
  if(action==='time-stop'){const a=state.active,t=taskOf();if(!a||!t||t.type!=='calibrate')return;const center=25+(t.seed%51),width=clamp(24-a.difficulty*3,6,21);if(Math.abs(lastTiming-center)<=width/2)finishStep();else damage();return;}
- if(action==='buy-tool'){const tool=TOOLS.find(x=>x.id===id);if(!tool)return;if(({clean:1,shield:1,wire:2,screw:2,precision:3,circuit:4,auto:3}[id]||1)>state.townLevel)return;if(state.coins<tool.cost)return notify('お金が足りません','error');state.coins-=tool.cost;state.spent+=tool.cost;state.tools[id]++;mutate();notify(`${tool.name} を購入した！`,'good');return;}
+ if(action==='buy-tool'){const tool=TOOLS.find(x=>x.id===id);if(!tool)return;if((TOOL_UNLOCK[id]||1)>state.townLevel)return;if(state.coins<tool.cost)return notify('お金が足りません','error');state.coins-=tool.cost;state.spent+=tool.cost;state.tools[id]++;mutate();notify(`${tool.name} を購入した！`,'good');return;}
  if(action==='use-tool'){const a=state.active,t=taskOf(),tool=TOOLS.find(x=>x.id===id);if(!a||!t||!tool||!state.tools[id]||a.complete||a.broken)return;
  if(tool.stage&&tool.stage!==t.type)return; if(id==='shield'){if(a.shield)return;state.tools.shield--;a.shield=true;mutate();notify('🛡️ 次の失敗を1回防ぎます','good');return;}
  state.tools[id]--;
