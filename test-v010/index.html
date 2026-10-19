@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111827" />
   <meta name="description" content="Flip & Fix Market — 中古品を仕入れ、修理して売る経営ゲームのプレイアブル試作版。" />
-  <title>Flip & Fix Market — Playtest v0.13.0</title>
+  <title>Flip & Fix Market — Playtest v0.14.0</title>
   <style>
 :root { color-scheme: dark; --base:#101522; --panel:#1c2537; --panel2:#242e42; --stroke:#364258; --text:#f3f4ec; --muted:#a7b1c5; --gold:#ffc977; --mint:#79e2c3; --coral:#ff917e; --blue:#8eafff; --ink:#121a29; --shadow:0 18px 70px #0006; }
 * {box-sizing:border-box} html, body { min-height:100%; } body {margin:0;background:radial-gradient(ellipse at 82% 0%,#263451 0,transparent 37%),radial-gradient(ellipse at 0% 60%,#213940 0,transparent 40%),var(--base);font:500 14px/1.6 'DM Sans','Noto Sans JP',system-ui,sans-serif;color:var(--text)}button {font:inherit;cursor:pointer} button:focus-visible,[tabindex]:focus-visible {outline:3px solid var(--mint);outline-offset:3px} button:disabled {cursor:not-allowed;opacity:.44} .shell {max-width:1260px;margin:0 auto;padding:23px 22px 65px} .topbar {display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:20px} .identity{display:flex;align-items:center;gap:13px}.logo-icon{background:var(--gold);width:48px;height:48px;color:var(--ink);border:3px solid #ffe3a9;display:grid;place-items:center;border-radius:14px;transform:rotate(-5deg);font-size:25px;box-shadow:4px 5px 0 #0004}.identity h1 {font-size:22px;line-height:1.1;letter-spacing:.4px;margin:0;color:var(--gold)}.identity p{margin:4px 0 0;color:var(--muted);font-size:11px;letter-spacing:1.6px;text-transform:uppercase}.top-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.money,.level-tag,.status-pill {background:#243045;border:1px solid var(--stroke);border-radius:13px;padding:8px 14px;display:flex;gap:8px;align-items:center;white-space:nowrap}.money b{color:var(--gold);font-size:19px}.level-tag b{color:var(--mint)}.status-pill{color:var(--muted);font-size:12px}.circle-icon{display:inline-flex;align-items:center;justify-content:center;color:#142030;width:24px;height:24px;border-radius:50%;background:var(--gold);font-size:15px;font-weight:900}.layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:21px}.sidebar{background:#1b2435;border:1px solid var(--stroke);border-radius:19px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:625px}.navbtn{width:100%;border:none;background:transparent;color:#b9c1d0;display:flex;align-items:center;gap:12px;text-align:left;padding:13px 12px;border-radius:12px;font-weight:750}.navbtn .symbol{display:grid;place-items:center;font-size:22px;width:29px;height:27px}.navbtn.active{color:#1b2631;background:var(--gold);box-shadow:0 4px 0 #a7752b55}.navbtn:hover:not(.active){background:#2c3850;color:white}.side-separator{height:1px;background:var(--stroke);margin:12px 0}.sidebar-foot{margin-top:auto;border-radius:14px;background:#111a2a;padding:14px}.sidebar-foot h3{font-size:12px;margin:0 0 7px;color:var(--mint)}.sidebar-foot p{margin:0;color:var(--muted);font-size:11px;line-height:1.9}.sidebar-foot button{margin-top:12px}.content{min-width:0}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:17px}.section-heading h2{font-size:24px;margin:0;letter-spacing:.2px}.eyebrow {text-transform:uppercase;color:var(--mint);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:2px}.sub{color:var(--muted);font-size:12px;margin:4px 0 0}.btn{border:1px solid transparent;background:var(--gold);color:#1e2632;border-radius:11px;padding:10px 15px;font-weight:800;transition:filter .12s,transform .12s;white-space:nowrap}.btn:hover:not(:disabled){filter:brightness(1.09);transform:translateY(-1px)}.btn.secondary{background:#313f55;border-color:#56627a;color:var(--text)}.btn.ghost{background:transparent;color:var(--mint);border-color:#41685d}.btn.danger{background:#663943;border-color:#b05d65;color:#fff3f1}.btn.sm{font-size:12px;padding:7px 12px}.btn.block{width:100%}.panel{background:#1b2537;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 7px 29px #0002}.padded{padding:20px}.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(235px,1fr);gap:16px}.shop-scene{position:relative;overflow:hidden;height:310px;border-radius:15px;background:linear-gradient(#39566b 0 59%,#38405a 59% 100%);border:4px solid #536b7e}.shop-scene:before{content:'';position:absolute;left:0;right:0;top:0;height:56%;background:repeating-linear-gradient(90deg,transparent 0 49px,#ffffff07 50px 51px)}.shop-sign{position:absolute;z-index:2;top:13px;left:50%;transform:translateX(-50%);background:#182639;color:#ffc977;border:3px solid #d3a45e;border-radius:9px;padding:2px 27px;font:800 19px 'DM Sans';letter-spacing:2px;white-space:nowrap;box-shadow:0 4px #152435aa}.shelf{position:absolute;z-index:2;left:6%;width:37%;height:13px;background:#a97860;border-bottom:6px solid #6e4b43;box-shadow:0 4px 0 #0003}.shelf.top{top:39%}.shelf.bottom{top:62%}.shelf-objects{position:absolute;left:7%;width:35%;top:23%;height:35%;display:flex;align-items:end;justify-content:space-around;z-index:2}.shelf-objects span{font-size:34px;filter:drop-shadow(2px 6px 1px #0005)}.wall-window{position:absolute;top:25%;right:7%;width:27%;height:30%;background:#b4dce5;border:9px solid #e0bc89;border-bottom-width:14px;border-radius:11px;box-shadow:inset 0 0 0 5px #7ca4b7}.wall-window:before{content:'';position:absolute;left:50%;height:100%;width:8px;background:#e0bc89;transform:translateX(-50%)}.wall-window:after{content:'';position:absolute;top:48%;width:100%;height:7px;background:#e0bc89}.counter{z-index:4;position:absolute;bottom:12%;left:22%;width:57%;height:26%;background:#b88664;border:6px solid #5f3e38;border-radius:7px 7px 12px 12px;box-shadow:0 9px 0 #17233355}.counter:after{content:'FLIP  •  FIX';position:absolute;left:50%;top:33%;transform:translateX(-50%);font-size:18px;font-weight:900;color:#684537;white-space:nowrap;letter-spacing:2px}.counter-top{position:absolute;left:19%;right:18%;height:12px;background:#eac08c;bottom:37%;z-index:5;border-radius:6px}.counter-items{position:absolute;z-index:6;left:35%;width:27%;bottom:37%;display:flex;justify-content:space-between;align-items:end}.counter-items span{font-size:44px;filter:drop-shadow(3px 2px #263441)}.plant{position:absolute;bottom:15%;right:8%;z-index:5;font-size:64px}.floor-line{position:absolute;top:78%;left:0;right:0;border-top:1px solid #e1a26738}.fame-bar {height:9px;background:#121a2b;border-radius:8px;overflow:hidden;margin-top:8px}.fame-bar>span{display:block;background:linear-gradient(90deg,var(--mint),#a3b9ff);height:100%;border-radius:8px}.metric-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.metric{background:#263349;padding:13px;border-radius:12px}.metric small{color:var(--muted);display:block;font-size:11px}.metric strong{font-size:21px;color:var(--text)}.main-card-title{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:0 0 12px}.main-card-title h3{font-size:15px;margin:0}.main-card-title small{font-size:11px;color:var(--muted)}.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.item-card{background:#202c3f;border:1px solid #3c4a62;padding:14px;border-radius:16px;min-width:0;display:flex;flex-direction:column;gap:10px}.item-card:hover{border-color:#62748d}.art-frame{display:grid;place-items:center;background:radial-gradient(circle at 50% 32%,#465773 0,#2a374f 71%);height:143px;border-radius:11px;overflow:hidden;position:relative}.art-frame svg{width:96%;height:98%;filter:drop-shadow(2px 10px 4px #0c13265c)}.art-frame.large{height:285px}.art-frame.large svg{max-height:285px}.tag{border:1px solid #425d61;border-radius:7px;background:#1e4946;color:var(--mint);font-size:10px;padding:2px 7px;font-weight:800;letter-spacing:.5px;display:inline-block}.tag.rare{background:#474057;border-color:#8367a2;color:#e5c4ff}.tag.epic{background:#604436;border-color:#b17a4b;color:#ffe2aa}.tag.legend{background:#53403c;border-color:#e6b160;color:#ffdb8c}.item-name{font-size:15px;font-weight:800;margin:0}.item-sub{font-size:11px;color:var(--muted);margin:0}.card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}.price{font-size:17px;color:var(--gold);font-weight:900}.stars{font-size:12px;color:#ffcf77;letter-spacing:1px;white-space:nowrap}.price-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff13;gap:8px;font-size:12px}.price-row strong{font-size:14px}.stack{display:flex;flex-direction:column;gap:13px}.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.muted{color:var(--muted)}.pill{padding:4px 8px;background:#2d3c51;border:1px solid #4b5972;border-radius:7px;font-size:11px;color:#c8d5eb}.workshop-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:17px}.workshop-controls{padding:19px}.statline{display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px;font-size:12px}.condition-track{height:11px;background:#0d1728;border-radius:20px;overflow:hidden}.condition-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#ec947a,#ffd071,#8ee5bd);transition:width .15s}.step-progress{display:flex;gap:6px;margin:16px 0}.step-progress span{height:7px;flex:1;background:#36465f;border-radius:8px}.step-progress .done{background:var(--mint)}.step-progress .current{background:var(--gold)}.minigame{min-height:260px;background:#121c2c;border:1px solid #3a4961;border-radius:15px;padding:17px;position:relative;overflow:hidden}.minigame h3{font-size:15px;margin:0}.minigame p{color:var(--muted);font-size:12px;margin:2px 0 10px}.clean-pad{height:197px;background:radial-gradient(ellipse,#435569,#263b49);position:relative;border-radius:12px;overflow:hidden;border:2px solid #617481;touch-action:none;user-select:none}.clean-pad:after{pointer-events:none;content:'✦  WIPE TO CLEAN  ✦';position:absolute;bottom:7px;right:11px;font-size:10px;letter-spacing:1px;color:#ecfaff5e}.clean-spot{position:absolute;width:51px;height:40px;border-radius:50%;transform:translate(-50%,-50%) rotate(-12deg);border:3px dotted #6c5348;background:radial-gradient(ellipse,#6b5048 7%,#987158b6 56%,transparent 72%);box-shadow:0 0 11px #59413188;pointer-events:none;transition:opacity .15s}.clean-spot.is-clean{opacity:0}.wire-pad{position:relative;display:flex;justify-content:space-between;padding:15px 20px 10px;height:176px;background:#202f40;border:1px solid #4d6277;border-radius:10px}.terminal-col{display:flex;flex-direction:column;justify-content:space-between;align-items:center;z-index:1}.terminal{border:3px solid #e5d9ae;box-shadow:0 4px #0003;width:37px;height:37px;border-radius:50%;position:relative;z-index:2}.terminal.selected{outline:4px solid #f8edb6;outline-offset:3px}.terminal.done{opacity:.27}.wire-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}.calibration-pad{height:173px;background:#1e2c43;border:1px solid #40556e;border-radius:10px;padding:24px 18px;display:flex;flex-direction:column;justify-content:center;gap:25px}.slider-rail{height:19px;border-radius:10px;background:linear-gradient(#60758d,#34485f);position:relative;border:2px solid #8294a5}.slider-target{position:absolute;top:-8px;bottom:-8px;border:2px solid #aaf2c8;background:#5ed4a64d;border-radius:8px}.slider-needle{position:absolute;top:-12px;bottom:-12px;width:5px;background:#ffcd6c;box-shadow:0 0 9px #ffcd6c;border-radius:3px;transform:translateX(-50%)}.game-tip{font-size:11px;color:#9db5c2;text-align:center}.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.tool-btn{border:1px solid #52637a;background:#2d3c51;color:#ecf3ef;padding:9px;border-radius:10px;font-size:12px;font-weight:750;text-align:left;line-height:1.65}.tool-btn small{font-size:10px;color:#abbed1;display:block}.tool-btn:hover:not(:disabled){border-color:var(--gold)}.tool-btn.selected{border-color:var(--mint);color:var(--mint)}.hint{background:#2d3142;border-left:3px solid var(--gold);color:#e2cfac;padding:11px 13px;font-size:12px;border-radius:8px}.result-card{background:linear-gradient(140deg,#273f4b,#27304a);border:1px solid #597885;padding:19px;border-radius:17px}.result-card h3{font-size:21px;margin:0}.result-card .total{font-size:32px;font-weight:900;color:var(--gold);margin:7px 0}.shop-item{display:flex;align-items:center;gap:12px;background:#26354a;border:1px solid #465771;border-radius:15px;padding:15px}.shop-icon{width:48px;height:48px;display:grid;place-items:center;background:#3c4e65;border-radius:11px;font-size:26px;flex-shrink:0}.shop-desc{flex:1;min-width:0}.shop-desc h3{margin:0;font-size:14px}.shop-desc p{font-size:11px;margin:2px 0;color:var(--muted)}.shop-price{font-weight:900;color:var(--gold);white-space:nowrap}.gallery-card{position:relative;background:#26354a;border:1px solid #4d5c74;padding:14px;border-radius:16px}.gallery-card .art-frame{height:135px}.empty{padding:55px 18px;text-align:center;border:1px dashed #57637a;border-radius:18px;background:#1b253749}.empty .big-emoji{font-size:56px}.empty h3{font-size:18px;margin:8px 0}.empty p{color:var(--muted);font-size:12px;max-width:430px;margin:0 auto 16px}.footer{font-size:11px;color:#9ca9be;text-align:center;padding:25px 0}.toast{position:fixed;z-index:60;bottom:22px;left:50%;transform:translateX(-50%);background:#ffdda0;color:#1b2631;border-radius:13px;padding:12px 21px;font-weight:800;box-shadow:0 12px 40px #0009;max-width:min(90vw,550px);text-align:center;animation:pop .2s ease}.toast.error{background:#ffc1b9}.toast.good{background:#a7efd3}@keyframes pop{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}.mini-caption{font-size:11px;color:var(--muted);margin:7px 0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.upgrade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.locked{filter:grayscale(.7);opacity:.7}.mobile-nav{display:none}.dashboard-bottom{margin-top:16px}.save-error{padding:14px;border:1px solid #c96e6e;background:#4b2c37;color:#ffdddd;border-radius:12px}.section-block{margin-top:17px}.checkbox-like{background:#283e45;color:var(--mint);border:1px solid #437065;padding:5px 8px;font-size:11px;border-radius:7px}.state-card{padding:17px;border:1px solid #415370;border-radius:14px;background:#24354b}.tiny{font-size:11px}.light{color:var(--gold)}
@@ -564,6 +564,32 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 .resident-level-panel strong{color:#ffdf98;font-size:13px}
 .resident-level-panel span{color:#d4e9e2;font-size:11px}
 @media(max-width:650px){.resident-level-panel{padding:8px 10px;margin:6px 0 9px;gap:4px}.resident-level-panel strong{font-size:12px}}
+.repair-support{margin-top:9px;padding:9px;border:1px solid #5a9e93;border-radius:11px;background:#193e49}
+.repair-support-title{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;margin-bottom:7px}
+.repair-support-title strong{font-size:13px;color:#ffe2a2}.repair-support-title span,.repair-support>small{font-size:10px;color:#b7ddcd}
+.repair-support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.repair-support-item{min-height:61px;background:#295863;border:1px solid #75b7a4;color:#ecfcf1;border-radius:9px;padding:5px 4px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;gap:4px;touch-action:manipulation}
+.repair-support-item span{font-size:11px;line-height:1.25;overflow-wrap:anywhere}.repair-support-item strong{font-size:12px;color:#ffe8ad}
+.repair-support-item:disabled{opacity:.46}.repair-support-item:active:not(:disabled){background:#387d7a}
+.repair-support>small{display:block;margin-top:5px}
+.upgrade-pips{display:flex;gap:5px;margin:6px 0}.upgrade-pips span{width:25px;height:5px;border-radius:4px;background:#365268}
+.upgrade-pips span.earned{background:#e8d596}
+.upgrade-tier-card .shop-desc{min-width:0}
+@media(max-width:650px){.repair-support{padding:7px;margin-top:7px}.repair-support-title span{font-size:9px}.repair-support-grid{gap:4px}.repair-support-item{min-height:55px;padding:4px 3px}.repair-support-item span{font-size:10px}.repair-support-item strong{font-size:11px}}
+.event-memory-note{background:#264e50;border:1px solid #b7d29c;border-radius:10px;padding:9px 10px;text-align:left;font-size:12px;color:#f7f0d6;margin:8px 0}
+.event-memory-note strong{display:block;color:#ffe19a;margin-top:4px}
+.event-town-preview{width:100%;height:200px;border:2px solid #fff0bc;border-radius:11px;background:#85c9bf;overflow:hidden;margin:8px 0}
+.event-town-preview .isometric-town{display:block;width:100%;height:100%}
+@media(max-width:650px){.event-memory-note{padding:7px;font-size:11px}.event-town-preview{height:min(23dvh,165px)}}
+.event-town-preview .resident-memory.active-memory{filter:drop-shadow(0 0 13px #fff7bc) drop-shadow(0 0 15px #ffe086)}
+.event-town-preview .resident-memory.active-memory>rect{stroke:#fffcee;stroke-width:4}
+.story-journal-entry{border:1px solid #547c78;border-radius:10px;background:#1a3d4b;margin:6px 0;overflow:hidden}
+.story-journal-entry summary{cursor:pointer;padding:9px 11px;color:#eff7dc;font-size:12px;line-height:1.5}
+.story-journal-entry summary span{float:right;color:#ffdea1;margin-left:7px}
+.story-journal-entry>div{padding:5px 11px 11px;border-top:1px solid #4b7778}
+.story-journal-entry strong{color:#ffe2a0;font-size:11px}
+.story-journal-entry p{color:#ebf6e9;margin:3px 0 9px;line-height:1.6;font-size:12px}
+@media(max-width:650px){.story-journal-entry summary{padding:8px}.story-journal-entry>div{padding:6px 9px 10px}}
 </style>
 </head>
 <body>
@@ -647,7 +673,9 @@ const TOOLS = [
  {id:'auto',icon:'⚡',name:'全自動修理キット',desc:'今の商品の残り工程をすべて完了',cost:245,stage:null},
  {id:'diagnose',icon:'🔍',name:'診断スキャナー',desc:'故障部品の診断工程をスキップ',cost:105,stage:'diagnose'},
  {id:'assemble',icon:'🧲',name:'組立ガイド',desc:'組み立て工程をスキップ',cost:95,stage:'assemble'},
- {id:'power',icon:'🔋',name:'自動通電テスター',desc:'通電調整工程をスキップ',cost:135,stage:'power'}
+ {id:'power',icon:'🔋',name:'自動通電テスター',desc:'通電調整工程をスキップ',cost:135,stage:'power'},
+ {id:'laser',icon:'🎯',name:'レーザー照準補正器',desc:'レーザー追尾工程を瞬時に完了',cost:145,stage:'laser'},
+ {id:'solder',icon:'🪄',name:'はんだ自動調温器',desc:'はんだ付け工程を瞬時に完了',cost:150,stage:'solder'}
 ];
 const STAGES = {
  clean:{name:'クリーニング',icon:'🧽',tip:'汚れの上をなぞって取り除こう。タップ操作でもOK。'},
@@ -662,18 +690,32 @@ const STAGES = {
  solder:{name:'はんだ付け',icon:'🪄',tip:'接点をタップして加熱を開始。緑の適温帯で加熱停止！ 長押しは不要。'}
 };
 const UPGRADES = [
-  {id:'bench',name:'精密作業台',icon:'🛠️',cost:320,desc:'修理完了時の品質 +5、失敗ダメージを少し軽減'},
-  {id:'dealer',name:'仕入れ交渉術',icon:'🤝',cost:480,desc:'市場での仕入れ価格が10%割引'},
-  {id:'showcase',name:'展示ショーケース',icon:'🏆',cost:600,desc:'展示で獲得する評判が1.5倍に'},
-  {id:'warehouse',name:'倉庫の増築',icon:'📦',cost:430,desc:'商品保管枠を3個から6個に拡張'}
+ {id:'bench',name:'精密作業台',icon:'🛠️',costs:[0,320,2800,17000],unlock:[0,1,4,8],desc:'品質補正 +5 → +7 → +9・修理ミスの損傷を軽減'},
+ {id:'dealer',name:'仕入れ交渉術',icon:'🤝',costs:[0,480,3800,23000],unlock:[0,1,5,9],desc:'仕入れ割引 10% → 13% → 15%'},
+ {id:'showcase',name:'展示ショーケース',icon:'🏆',costs:[0,600,4500,27000],unlock:[0,1,6,10],desc:'展示評判の倍率 ×1.50 → ×1.70 → ×1.85'},
+ {id:'warehouse',name:'倉庫の増築',icon:'📦',costs:[0,430,3200,19000],unlock:[0,1,5,9],desc:'保管枠 3 → 6 → 9 → 12'}
 ];
+const UPGRADE_MAX=3;
+function upgradeLevel(id){
+ const value=state.upgrades[id];
+ if(!Number.isInteger(value)||value<0||value>UPGRADE_MAX)throw Error('Invalid upgrade level: '+id);
+ return value;
+}
+function upgradeCost(up){const level=upgradeLevel(up.id);return level<UPGRADE_MAX?up.costs[level+1]:0;}
+function upgradeUnlocked(up){const lv=upgradeLevel(up.id);return lv<UPGRADE_MAX&&state.townLevel>=up.unlock[lv+1];}
+const TOOL_PRICE_FACTOR=[0,1,1.4,2,2.7,3.6,4.8,6.5,8.5,11,14,18,23];
+const AUTO_PRICE_FACTOR=[0,1,2,3.7,5,6.5,9,12,15,19,24,30,37];
+function toolPrice(tool){
+ if(!tool||!Number.isInteger(state.townLevel)||state.townLevel<1||state.townLevel>12)throw Error('Invalid tool or town level');
+ return Math.ceil(tool.cost*(tool.id==='auto'?AUTO_PRICE_FACTOR:TOOL_PRICE_FACTOR)[state.townLevel]/5)*5;
+}
 const COLORS = ['#ff987e','#75d5bd','#f7c66e','#9daefa','#d7a1f4'];
 let settingsOpen=false,settingsResetStage=0,state, currentTab='shop', selectedWire=-1, timingRaf=0, dragging=false, toastHandle=null, blockedSave=false, lastTiming=50, calibratePressTiming=null, lastRenderTab=null, lastRenderWorkKey=null;
 const app = document.getElementById('app');
 const n=(v)=>Number(v||0).toLocaleString('ja-JP');
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
-function baseSave(){return {version:SAVE_VERSION,coins:460,fame:0,completed:0,failures:0,revenue:0,spent:0,nextId:1,inventory:[],active:null,offers:[],collection:[],upgrades:{bench:false,dealer:false,showcase:false,warehouse:false},tools:{clean:1,wire:0,precision:0,screw:0,circuit:0,shield:1,auto:0,diagnose:0,assemble:0,power:0},townLevel:1,houseLevel:0,storySeen:false,seenCelebration:0,residentLove:{},residentSeen:{},residentTalkCount:{},eventsDone:{},residentChapters:{},residentFinals:{},residentSideStories:{},townFinaleSeen:false,projects:{},timedWon:0,timedFailed:0,timedLast:null,rushUsed:{},rushOffer:null,rushNormalCompleted:0,rushNextEligibleAt:2,pendingScene:null,locale:'en'};}
+function baseSave(){return {version:SAVE_VERSION,coins:460,fame:0,completed:0,failures:0,revenue:0,spent:0,nextId:1,inventory:[],active:null,offers:[],collection:[],upgrades:{bench:0,dealer:0,showcase:0,warehouse:0},tools:{clean:1,wire:0,precision:0,screw:0,circuit:0,shield:1,auto:0,diagnose:0,assemble:0,power:0,laser:0,solder:0},townLevel:1,houseLevel:0,storySeen:false,seenCelebration:0,residentLove:{},residentSeen:{},residentTalkCount:{},eventsDone:{},residentChapters:{},residentFinals:{},residentSideStories:{},townFinaleSeen:false,projects:{},timedWon:0,timedFailed:0,timedLast:null,rushUsed:{},rushOffer:null,rushNormalCompleted:0,rushNextEligibleAt:2,pendingScene:null,locale:'en'};}
 function load(){
  try{
    const raw=storage.getItem(KEY);
@@ -689,6 +731,11 @@ function load(){
     data.coins+=Number(data.active.deposit||0);
     data.active=null;
    }
+   for(const up of UPGRADES){
+    const old=data.upgrades[up.id];
+    if(typeof old==='boolean')data.upgrades[up.id]=old?1:0;
+    else if(!Number.isInteger(old)||old<0||old>UPGRADE_MAX)throw Error('Invalid saved upgrade '+up.id);
+   }
    data.townLevel=clamp(Number(data.townLevel||1),1,MAX_TOWN_LEVEL);data.residentLove||={};data.residentSeen||={};data.residentTalkCount||={};data.eventsDone||={};data.residentChapters||={};data.residentFinals||={};data.residentSideStories||={};data.townFinaleSeen??=false;data.projects||={};data.timedWon||=0;data.timedFailed||=0;data.timedLast||=null;data.rushUsed||={};data.pendingScene||=null;
    data.rushOffer??=null;data.rushNormalCompleted??=0;data.rushNextEligibleAt??=2;
    if(data.pendingScene?.type==='step'||data.active?.awaitingStage){
@@ -703,7 +750,7 @@ function load(){
    if(data.active?.stages?.[data.active.stageIndex]?.type==='laser'&&(!Number.isInteger(data.active.stageState?.round)||!Number.isFinite(data.active.stageState?.epoch))){
     data.active.stageState={round:0,total:laserRounds(data.active.difficulty),epoch:Date.now()};
    }
-   for(const id of ['diagnose','assemble','power'])if(data.tools[id]===undefined)data.tools[id]=0;
+   for(const id of ['diagnose','assemble','power','laser','solder'])if(data.tools[id]===undefined)data.tools[id]=0;
    if(data.active?.awaitingStage&&!data.pendingScene)data.pendingScene={type:'step',number:data.active.stageIndex,total:data.active.stages.length,stage:data.active.passedStage||'clean',isTimed:!!data.active.isTimed,residentId:data.active.residentId||null};
    state=data;
    ensureNormalTimer(state.active);
@@ -724,10 +771,10 @@ function persist(){if(blockedSave) return;try{storage.setItem(KEY,JSON.stringify
 function mutate(){persist();render();}
 function notify(message,type=''){const old=document.querySelector('.toast');if(old)old.remove();clearTimeout(toastHandle);const el=document.createElement('div');el.className='toast '+type;el.textContent=message;document.body.appendChild(el);toastHandle=setTimeout(()=>el.remove(),3100);}
 function tier(){return clamp(1+Math.floor((state.completed+state.fame/20)/4),1,5);}
-function limit(){return state.upgrades.warehouse?6:3;}
+function limit(){return 3+upgradeLevel('warehouse')*3;}
 function stars(d){return '★'.repeat(d)+'☆'.repeat(5-d);}
-const TOOL_UNLOCK={clean:1,shield:1,wire:2,screw:2,precision:3,circuit:4,auto:3,diagnose:2,assemble:3,power:4};
-function marketPrice(o){return Math.max(1,Math.round(o.price*(state.upgrades.dealer?.9:1)));}
+const TOOL_UNLOCK={clean:1,shield:1,wire:2,screw:2,precision:3,circuit:4,auto:3,diagnose:2,assemble:3,power:4,laser:1,solder:1};
+function marketPrice(o){return Math.max(1,Math.round(o.price*(1-[0,.10,.13,.15][upgradeLevel('dealer')])));}
 function minimumHouse(difficulty){return difficulty<=2?0:difficulty===3?1:difficulty===4?2:3;}
 function canRepairDifficulty(difficulty){return state.houseLevel>=minimumHouse(difficulty);}
 function canTakeRecoveryContract(){
@@ -892,7 +939,7 @@ function circuitPath(difficulty){return difficulty<3?[3,4,5]:difficulty<5?[0,1,4
 function directionBetween(from,to){const d=to-from;if(d===1)return 1;if(d===3)return 2;if(d===-1)return 3;if(d===-3)return 0;throw Error('回路のルートが不正です。');}
 function circuitConnectors(path,i){const prev=i===0?3:directionBetween(path[i],path[i-1]);const next=i===path.length-1?1:directionBetween(path[i],path[i+1]);return [prev,next];}
 function solvedCircuit(a){const path=circuitPath(a.difficulty);return path.every((_,i)=>{const d=circuitConnectors(path,i);const turned=d.map(x=>(x+a.stageState.angles[i])%4).sort().join(',');return turned===d.slice().sort().join(',');});}
-function repairQuality(a){return clamp(Math.round(100-(100-a.integrity)*.68+(state.upgrades.bench?5:0)),5,100);}
+function repairQuality(a){return clamp(Math.round(100-(100-a.integrity)*.68+[0,5,7,9][upgradeLevel('bench')]),5,100);}
 // A wealthier town has more buyers willing to pay for restored goods.
 // This increases payout in later chapters without making early purchases expensive.
 const CITY_DEMAND=[0,1,1,1.08,1.25,1.55,2.2,2.7,3,3.5,4.3,5.3,6.4];
@@ -900,7 +947,7 @@ function saleValue(a){return Math.round(a.baseValue*(.52+repairQuality(a)*.005)*
 function damage(){const a=state.active;if(!a||a.complete||a.broken)return;
  state.failures++;
  if(a.shield){a.shield=false;notify('🛡️ 保護フィルムが失敗を防いだ！','good');mutate();return;}
- const hit=11+a.difficulty*3-(state.upgrades.bench?3:0);
+ const hit=11+a.difficulty*3-[0,3,4,6][upgradeLevel('bench')];
  a.integrity=clamp(a.integrity-hit,0,100);
  if(a.integrity<=12){if(a.isTimed){finishTimed(false);return;}if(a.residentId){finishResident(false);return;}a.broken=true;notify('修復不能！ ジャンク品として処分できます。','error');}
  else notify(`失敗！ 本体の耐久度 -${hit}%`,'error');
@@ -908,6 +955,7 @@ function damage(){const a=state.active;if(!a||a.complete||a.broken)return;
 }
 
 const RESIDENT_EVENT_THANKS={
+ gen:['町時計がまた鳴った！ わしひとりでは直せなかったよ。ありがとう。','The village clock is ringing again! I could not have fixed it alone. Thank you.'],
  mia:['ありがとう！ これで朝からコーヒーを淹れられるわ。','Thank you! I can serve coffee from early morning now.'],
  leo:['試作機が動いた！ まだまだ実験したいことがあるんだ。','It works! I have so many more experiments to try.'],
  fumi:['これで看板が新しくなる。街の入口から塗り直そう。','Now I can redo the signs, starting with the town entrance.'],
@@ -1788,7 +1836,7 @@ function isoBox(x,y,w,d,h,left,right,roof,options={}){
 }
 function isoTree(x,y,size=1,modern=false){return `<g><ellipse cx="${x}" cy="${y+3}" rx="${23*size}" ry="${8*size}" fill="#255d48" opacity=".25"/><path d="M${x} ${y}v-${29*size}" stroke="#775a42" stroke-width="${7*size}"/><circle cx="${x}" cy="${y-33*size}" r="${21*size}" fill="${modern?'#5fd5ad':'#4f9f6d'}"/><circle cx="${x-11*size}" cy="${y-43*size}" r="${14*size}" fill="${modern?'#8df6d4':'#84c78b'}"/></g>`;}
 function isoPerson(x,y,shirt){return `<g class="iso-person"><ellipse cx="${x}" cy="${y+7}" rx="8" ry="3" fill="#355849" opacity=".4"/><circle cx="${x}" cy="${y-18}" r="7" fill="#f3cca7"/><path d="M${x-7} ${y-10}q7 -7 14 0v15h-14z" fill="${shirt}"/><path d="M${x-5} ${y+5}v5m9 -5v5" stroke="#554a53" stroke-width="3"/></g>`;}
-function scenery(lvl=state.townLevel,home=state.houseLevel){
+function scenery(lvl=state.townLevel,home=state.houseLevel,highlightResident=''){
  const modern=lvl>=6,future=lvl>=7;
  const grass=lvl===1?'#769673':lvl<4?'#90c99a':lvl<6?'#a0d5ac':future?'#70b5b8':'#8cccb3';
  let buildings='';
@@ -1884,15 +1932,22 @@ function scenery(lvl=state.townLevel,home=state.houseLevel){
  (lvl>=10&&projects.farm?'<g><ellipse cx="128" cy="273" rx="55" ry="19" fill="#b8f5c1" stroke="#f2ffdf" stroke-width="10"/><circle cx="110" cy="258" r="13" fill="#ffbfe2"/><circle cx="148" cy="266" r="12" fill="#e3ffa4"/></g>':'')+
  (lvl>=11&&projects.solar?'<g><ellipse cx="314" cy="289" rx="80" ry="28" fill="#3687aa" stroke="#f4ffbb" stroke-width="12"/><ellipse cx="314" cy="289" rx="51" ry="12" fill="#ffe7a3"/></g>':'')+
  (lvl>=12&&projects.memorial?'<g><rect x="307" y="483" rx="16" width="137" height="60" fill="#4c9daf" stroke="#e2ffcd" stroke-width="8"/><text x="319" y="521" font-size="19" font-weight="900" fill="#fff9c5">OLD TOWN</text></g>':'');
- const chapterIds=Object.keys(RESIDENT_FOLLOWUPS).filter(id=>state.residentChapters?.[id]);
- const chapterDecor=chapterIds.map((id)=>{
-  const r=RESIDENTS.find(r=>r.id===id);
-  if(!r||lvl<r.level)return '';
-  const idx=RESIDENTS.findIndex(r=>r.id===id),x=155+(idx%4)*170,y=260+Math.floor(idx/4)*128;
+ const chapterDecor=RESIDENTS.map((r,idx)=>{
+  if(lvl<r.level)return '';
+  const stages=[!!state.eventsDone[r.id],!!state.residentChapters[r.id],!!state.residentFinals[r.id],
+   !!state.residentSideStories[r.id+'_0'],!!state.residentSideStories[r.id+'_1']];
+  const progress=stages.filter(Boolean).length;
+  if(!progress)return '';
+  const x=155+(idx%4)*170,y=260+Math.floor(idx/4)*128;
   const hue=[38,76,169,18,195,238,289,155,48,142,39,206][idx];
-  return `<g class="resident-memory" data-resident="${id}" transform="translate(${x} ${y})">
-   <circle r="19" fill="#183a53" opacity=".8"/><circle r="${state.residentFinals?.[id]?19:15}" fill="${state.residentFinals?.[id]?'#ffd989':`hsl(${hue} 69% 71%)`}" stroke="#fff2be" stroke-width="2"/>
-   <text font-size="19" text-anchor="middle" y="6" fill="#153c4d" font-weight="900">${RESIDENT_FOLLOWUPS[id].icon}</text></g>`;
+  const fill=state.residentFinals[r.id]?'#ffe49a':`hsl(${hue} 69% 71%)`;
+  return `<g class="resident-memory ${highlightResident===r.id?'active-memory':''}" data-resident="${r.id}" data-story-count="${progress}" transform="translate(${x} ${y})">
+   <title>${r.name[0]} · ${progress}/5</title>
+   <rect x="-32" y="-25" width="64" height="61" rx="15" fill="#163a4c" opacity=".85" stroke="#ffe5a4" stroke-width="2"/>
+   <circle cy="-3" r="19" fill="${fill}" stroke="#fff2c4" stroke-width="2"/>
+   <text font-size="18" text-anchor="middle" y="4" fill="#17394e" font-weight="900">${RESIDENT_FOLLOWUPS[r.id].icon}</text>
+   ${stages.map((done,i)=>`<circle cx="${-22+i*11}" cy="25" r="4.3" fill="${done?'#ffe5a1':'#3d6470'}" stroke="${done?'#fff5cc':'#86adad'}" stroke-width=".8"/>`).join('')}
+  </g>`;
  }).join('');
  const people= lvl>=2?isoPerson(382,407,'#d86e55')+isoPerson(644,367,'#5287bc'):'';
  const extraPeople=lvl>=4?isoPerson(553,551,'#f5bb68')+isoPerson(487,326,'#8164ad'):'';
@@ -1972,7 +2027,7 @@ function eventResultOverlay(){
  const resident=e.residentId?RESIDENTS.find(r=>r.id===e.residentId):null;
  const event=resident?RESIDENT_EVENTS[resident.id]:null;
  const story=resident?residentChapterStory(resident.id,e.chapter||1):null;
- let icon='✨',heading='',subhead='',body='',button='',action='scene-close',color='success';
+ let icon='✨',heading='',subhead='',body='',button='',action='scene-close',color='success',visual='';
  if(e.type==='rush-intro'){
   icon='⏱️';heading=L('スピード修理、開始！','RUSH REPAIR READY!');
   subhead=e.stages+L('工程・各5秒',' stages · 5 sec each');
@@ -1999,11 +2054,24 @@ function eventResultOverlay(){
   button=L('依頼を引き受ける','Accept repair request');action='scene-start';
  }
  else if(e.type==='resident-result'){
-  icon=e.success?'🎉':'💥';heading=e.success?(e.chapter>=4?L('街の交流イベント達成！','NEIGHBOR STORY COMPLETE!'):L('住人イベント達成！','RESIDENT EVENT COMPLETE!')):L('修理に失敗…','REPAIR REQUEST FAILED');
+  icon=e.success?(resident?.emoji||'🎉'):'💥';heading=e.success?(e.chapter>=4?L('街の交流イベント達成！','NEIGHBOR STORY COMPLETE!'):L('住人イベント達成！','RESIDENT EVENT COMPLETE!')):L('修理に失敗…','REPAIR REQUEST FAILED');
   subhead=(resident?residentName(resident):'')+' · '+L(story?.ja||'',story?.en||'');
   body=e.success?((e.chapter>=2?L(...(story?.end||['修理成功！','Repair complete!'])):L(...(RESIDENT_EVENT_THANKS[e.residentId]||['修理成功！','Repair complete!'])))+' '+L('友情が深まった！報酬の道具','Friendship grew! Tool reward')+' ×'+e.amount):
     L('道具の報酬は未獲得。住人画面からまた挑戦できます。','No reward this time. You can retry from the Residents page.');
-  button=L('住人のところへ','Back to residents');color=e.success?'success':'fail';
+  if(e.success)visual=`<div class="event-memory-note">✨ ${L('住人の思い出が街の風景に記録されました。','A new neighbor memory now appears in your town.')}<strong>${L(story?.ja||'',story?.en||'')}</strong></div>`;
+  button=e.success?L('街に残った変化を見る','See the change in town'):L('住人のところへ','Back to residents');color=e.success?'success':'fail';
+ }
+ else if(e.type==='resident-town-reveal'){
+  icon=resident?.emoji||'🏡';
+  heading=L('街に思い出が増えました','A new memory in town');
+  subhead=(resident?residentName(resident):'')+' · '+L(story?.ja||'',story?.en||'');
+  const stages=[!!state.eventsDone[e.residentId],!!state.residentChapters[e.residentId],!!state.residentFinals[e.residentId],
+   !!state.residentSideStories[e.residentId+'_0'],!!state.residentSideStories[e.residentId+'_1']];
+  body=L('住人の場所に、物語の進行を表す印が追加されました。5つの小さな光が、この人との思い出です。',
+    'A new mark records your story at this resident’s place. Five small lights track your shared memories.')+
+    ' '+stages.filter(Boolean).length+'/5';
+  visual=`<div class="event-town-preview">${scenery(state.townLevel,state.houseLevel,e.residentId)}</div>`;
+  button=L('街へ戻る','Explore the town');
  }
  else if(e.type==='town-finale'){
   icon='🌠';heading=L('修理屋から、星の港へ','FROM WORKSHOP TO THE STARS');
@@ -2031,6 +2099,7 @@ function eventResultOverlay(){
    <h2>${heading}</h2>
    <h3>${subhead}</h3>
    <p>${body}</p>
+   ${visual}
    ${testedSummary(e)}
    <button class="btn block event-scene-button" data-action="${action}">${button} →</button>
   </div>
@@ -2063,8 +2132,14 @@ function handleSceneAction(action){
  if(action==='scene-close'&&e.type==='town-finale'){
   state.townFinaleSeen=true;state.pendingScene=null;currentTab='shop';mutate();return true;
  }
- if(action==='scene-close'&&e.type==='resident-result'&&e.success&&e.chapter===3&&!state.townFinaleSeen&&allResidentFinals()){
-  state.pendingScene={type:'town-finale'};mutate();return true;
+ if(action==='scene-close'&&e.type==='resident-result'&&e.success){
+  state.pendingScene={type:'resident-town-reveal',residentId:e.residentId,chapter:e.chapter};
+  currentTab='shop';mutate();return true;
+ }
+ if(action==='scene-close'&&e.type==='resident-town-reveal'){
+  if(e.chapter===3&&!state.townFinaleSeen&&allResidentFinals())state.pendingScene={type:'town-finale'};
+  else state.pendingScene=null;
+  currentTab='shop';mutate();return true;
  }
  if(action==='scene-close'&&['rush-result','resident-result','project-result','repair-complete','conversation'].includes(e.type)){
   state.pendingScene=null;mutate();return true;
@@ -2219,6 +2294,16 @@ function residentLevelStories(level){
  }
  return {total:all.length,finished:all.filter(Boolean).length};
 }
+function storyJournalEntry(r,chapter){
+ const story=residentChapterStory(r.id,chapter);
+ const intro=chapter===1?r.lines[0]:story.intro;
+ const ending=chapter===1?(RESIDENT_EVENT_THANKS[r.id]||['修理できた！','It works again!']):story.end;
+ if(!intro||!ending)throw Error('Missing story journal dialogue '+r.id+'/'+chapter);
+ const icon=['','✅','📖','🌟','🤝','🤝'][chapter];
+ return `<details class="story-journal-entry"><summary>${icon} <b>${residentName(r)}</b> · ${L(story.ja,story.en)} <span>${L('読み返す ▾','Read again ▾')}</span></summary>
+ <div><strong>${L('修理を頼まれたとき','Before the repair')}</strong><p>${L(...intro)}</p>
+ <strong>${L('修理が終わったあと','After the repair')}</strong><p>${L(...ending)}</p></div></details>`;
+}
 function renderPeople(){
  const unlockedForStory=r=>characterAvailable(r);
  const firstReady=r=>unlockedForStory(r)&&!state.eventsDone[r.id]&&RESIDENT_EVENTS[r.id]&&(r.id!=='gen'||state.completed>=1);
@@ -2274,15 +2359,12 @@ function renderPeople(){
     </div></div>`;
  }).join('');
  const diary=RESIDENTS.flatMap(r=>{
-  const items=[];
-  if(state.eventsDone[r.id])items.push(`<div class="story-journal-line">✅ <b>${residentName(r)}</b> · ${L(RESIDENT_EVENTS[r.id]?.ja||'',RESIDENT_EVENTS[r.id]?.en||'')}</div>`);
-  if(state.residentChapters?.[r.id])items.push(`<div class="story-journal-line story-journal-chapter">📖 <b>${residentName(r)}</b> · ${L(RESIDENT_FOLLOWUPS[r.id]?.ja||'',RESIDENT_FOLLOWUPS[r.id]?.en||'')}</div>`);
-  if(state.residentFinals?.[r.id])items.push(`<div class="story-journal-line story-journal-chapter">🌟 <b>${residentName(r)}</b> · ${L(RESIDENT_FINALES[r.id]?.ja||'',RESIDENT_FINALES[r.id]?.en||'')}</div>`);
-  for(const i of [0,1])if(state.residentSideStories?.[r.id+'_'+i]){
-    const side=RESIDENT_SIDE_STORIES[r.id][i];
-    items.push(`<div class="story-journal-line story-journal-chapter">🤝 <b>${residentName(r)}</b> · ${L(side.ja,side.en)}</div>`);
-   }
-   return items;
+ const entries=[];
+ if(state.eventsDone[r.id])entries.push(storyJournalEntry(r,1));
+ if(state.residentChapters[r.id])entries.push(storyJournalEntry(r,2));
+ if(state.residentFinals[r.id])entries.push(storyJournalEntry(r,3));
+ for(let i=0;i<2;i++)if(state.residentSideStories?.[r.id+'_'+i])entries.push(storyJournalEntry(r,4+i));
+ return entries;
  }).join('');
  const firstCount=RESIDENTS.filter(r=>state.eventsDone[r.id]).length,secondCount=Object.keys(state.residentChapters||{}).filter(k=>state.residentChapters[k]).length;
  const finalCount=Object.keys(state.residentFinals||{}).filter(k=>state.residentFinals[k]).length;
@@ -2446,7 +2528,7 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="settings">⚙ ${L('ゲーム設定','Game settings')}</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · PLAYTEST v0.13.0 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · PLAYTEST v0.14.0 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>${evolutionOverlay()}${eventResultOverlay()}${settingsOverlay()}${developmentPanel()}`;
  translateDOM();
  const newContent=app.querySelector('.content');
@@ -2476,6 +2558,26 @@ function renderMarket(){return `${title('DISCOVER & TRADE','仕入れ市場','�
  ${state.inventory.length?`<section class="panel padded section-block"><div class="main-card-title"><h3>📦 保管中の商品</h3><button class="btn ghost sm" data-action="tab" data-id="work">修理へ →</button></div><div class="row" style="flex-wrap:wrap">${state.inventory.map(x=>`<span class="pill">${x.name} ${stars(x.difficulty)}</span>`).join('')}</div></section>`:''}`;}
 function renderWork(){const a=state.active;return `${title('FIX IT UP','修理工房','ひとつずつ工程をクリアして、商品をよみがえらせよう。')}${a?activeWorkbench(a):recoveryContractCard()+(state.inventory.length?renderInventory()+timedPanel():renderInventory()+timedPanel())}`;}
 function renderInventory(){if(!state.inventory.length)return `<div class="empty"><div class="big-emoji">🛠️</div><h3>作業台は空っぽ</h3><p>市場で商品を仕入れたら、ここで修理に挑戦しよう。失敗すると耐久度が下がるので注意！</p><button class="btn" data-action="tab" data-id="market">📦 商品を仕入れる</button></div>`;return `<div class="cards-grid">${state.inventory.map(x=>itemCard(x,'inventory')).join('')}</div>`;}
+function renderRepairSupport(a){
+ const task=taskOf();if(!task)return '';
+ const current=TOOLS.find(x=>x.stage===task.type);
+ if(!current)throw Error('Missing support item for '+task.type);
+ const candidates=[current,TOOLS.find(x=>x.id==='shield'),TOOLS.find(x=>x.id==='auto')];
+ if(candidates.some(x=>!x))throw Error('Incomplete assistance list');
+ return `<section class="repair-support">
+  <div class="repair-support-title"><strong>🧰 ${L('修理サポート','Repair assistance')}</strong><span>${L('今の工程に使える道具だけ表示','Only relevant items shown')}</span></div>
+  <div class="repair-support-grid">${candidates.map(tool=>{
+   const owned=state.tools[tool.id]||0,locked=(TOOL_UNLOCK[tool.id]||1)>state.townLevel;
+   const activated=tool.id==='shield'&&a.shield;
+   const action=owned?'use-tool':'buy-tool',price=toolPrice(tool);
+   const disabled=activated||(!owned&&(locked||state.coins<price));
+   const label=activated?L('使用中','Active'):owned?L('使う','Use')+' ×'+owned:locked?'LV.'+TOOL_UNLOCK[tool.id]:L('購入','Buy')+' $'+n(price);
+   return `<button class="repair-support-item" data-action="${action}" data-id="${tool.id}" ${disabled?'disabled':''}>
+    <span>${tool.icon} ${tool.name}</span><strong>${label}</strong></button>`;
+  }).join('')}</div>
+  <small>${L('買いだめOK。手動修理なら道具代ゼロ、道具を使うと利益が減る。','Stock up if you like. Manual repairs cost no tools; assistance reduces profit.')}</small>
+ </section>`;
+}
 function activeWorkbench(a){
  const progress=a.stageIndex/a.stages.length;
  let stageArea;
@@ -2490,7 +2592,7 @@ function activeWorkbench(a){
  `<p class="normal-time-tip">${L('時間切れで耐久度減少・同じ工程を再挑戦','Timeout damages durability · retry allowed')} · ${L('難しい工程は時間を追加','Complex games have extra time')}</p>`}
  </section>`:''}
  ${a.isTimed?`<section class="timed-live"><div><strong>⏱️ ${L('5秒スピード修理','5-SECOND RUSH')} <small>${a.stageIndex+1}/${a.stages.length} · ★${a.rushRating||a.difficulty}</small></strong><span class="timed-clock" data-timed-clock aria-live="off">0:${String(Math.ceil(timeLeft(a)/1000)).padStart(2,"0")}</span></div><div class="timed-clock-rail"><span data-timed-bar style="width:${100*timeLeft(a)/((a.stageSeconds||a.budget)*1000)}%"></span></div><p>${L('各工程5秒以内でクリアすると報酬','Clear each mini-game within 5 seconds')} $${n(a.reward)} · <button class="btn secondary sm" data-action="timed-abandon">${L('依頼をやめる','Abandon')}</button></p></section>`:''}<div class="workshop-grid ${a.isTimed?'rush-layout':''}"><section class="panel padded"><div class="row between"><div><span class="tag ${a.rarity==='LEGENDARY'?'legend':''}">${a.rarity}</span><h3 style="margin:5px 0 0;font-size:19px">${a.name}</h3></div><div class="stars">${stars(a.difficulty)}</div></div><div class="art-frame large" style="margin-top:13px">${renderObjectSvg(a)}</div><div class="statline"><span class="muted">本体の耐久度（ミスで減少）</span><b>${a.integrity}% ${a.shield?'🛡️':''}</b></div><div class="condition-track"><span style="width:${a.integrity}%"></span></div><div class="statline"><span class="muted">修理の進捗</span><b>${a.stageIndex}/${a.stages.length} 工程</b></div><div class="step-progress">${a.stages.map((s,i)=>`<span class="${i<a.stageIndex?'done':i===a.stageIndex?'current':''}" title="${STAGES[s.type].name}"></span>`).join('')}</div><div class="row between"><span class="muted tiny">購入価格：$${n(a.purchasePrice)}</span>${a.broken||a.complete?'':'<button class="btn danger sm" data-action="scrap">途中で諦める</button>'}</div></section>
- <section class="panel workshop-controls">${stageArea}${!a.complete&&!a.broken&&!a.isTimed?`<div class="section-block"><div class="main-card-title"><h3>🧰 使い切りアイテム</h3><button class="btn ghost sm" data-action="tab" data-id="tools">買い足す →</button></div><div class="tools-grid">${TOOLS.map(tool=>`<button class="tool-btn" data-action="use-tool" data-id="${tool.id}" ${state.tools[tool.id]===0 || (tool.stage && tool.stage!==taskOf()?.type) || (tool.id==='shield'&&a.shield)?'disabled':''}>${tool.icon} ${tool.name}<small>所持 ${state.tools[tool.id]} 個${tool.id==='shield'&&a.shield?' • 使用中':''}</small></button>`).join('')}</div></div>`:''}</section></div>
+ <section class="panel workshop-controls">${stageArea}${!a.complete&&!a.broken&&!a.isTimed?renderRepairSupport(a):''}</section></div>
  ${state.inventory.length?`<section class="panel padded section-block"><div class="main-card-title"><h3>📦 倉庫の在庫（${state.inventory.length}個）</h3><span class="muted tiny">いまの修理を終えたら次の商品へ</span></div><div class="row" style="flex-wrap:wrap">${state.inventory.map(x=>`<span class="pill">${x.name} ${stars(x.difficulty)}</span>`).join('')}</div></section>`:''}`;
 }
 function cleanLocations(count,seed){const pos=[];let x=seed>>>0;for(let i=0;i<count;i++){x=(1664525*x+1013904223)>>>0;const xp=19+(x%63);x=(1664525*x+1013904223)>>>0;const yp=22+(x%55);pos.push([xp,yp]);}return pos;}
@@ -2556,9 +2658,27 @@ function renderMinigame(a){const t=taskOf(),st=a.stageState||{},def=STAGES[t.typ
  if(t.type==='calibrate'){const center=25+(t.seed%51),width=clamp(24-a.difficulty*3,6,21);inside=`<div class="calibration-pad"><div class="row between"><span class="muted tiny">MIN</span><b style="color:var(--mint)">SWEET SPOT</b><span class="muted tiny">MAX</span></div><div class="slider-rail"><div class="slider-target" style="left:${center-width/2}%;width:${width}%"></div><div class="slider-needle" id="needle" style="left:50%"></div></div><button class="btn block" data-action="time-stop">🎯 ここで止める！ (Space)</button></div><p class="game-tip">針が緑の範囲にある時だけ成功。精密操作ほど範囲が狭い。</p>`;}
  return `<div class="eyebrow">REPAIR TASK ${a.stageIndex+1} / ${a.stages.length}</div><div class="minigame"><h3>${def.icon} ${def.name}</h3><p>${def.tip}</p>${inside}</div><div class="hint section-block">⚠️ 修理ミスで本体耐久度が減少。残り12%以下になると修復不能。保護フィルムは次のミスを1回防ぎます。</div>`;
 }
-function renderTools(){return `${title('TOOLS & UPGRADES','アイテムショップ','ゲーム内のお金を使って、修理の効率を上げたりお店を育てよう。')}
- <div class="unlock-notice">⛩️ ${L('街が発展すると新しい道具が解放されます。','Develop your town to unlock more tools.')}</div><div class="eyebrow section-block">CONSUMABLES · 使い切りアイテム</div><div class="stack">${TOOLS.filter(x=>(TOOL_UNLOCK[x.id]||1)<=state.townLevel).map(x=>`<div class="shop-item"><div class="shop-icon">${x.icon}</div><div class="shop-desc"><h3>${x.name} <span class="pill">所持 ${state.tools[x.id]}</span></h3><p>${x.desc}</p></div><div class="shop-price">$${n(x.cost)}</div><button class="btn sm" data-action="buy-tool" data-id="${x.id}" ${state.coins<x.cost?'disabled':''}>購入</button></div>`).join('')}</div>
- <div class="eyebrow section-block" style="margin-top:25px">PERMANENT · 永続アップグレード</div><div class="upgrade-grid">${UPGRADES.map(x=>`<div class="shop-item"><div class="shop-icon">${x.icon}</div><div class="shop-desc"><h3>${x.name}</h3><p>${x.desc}</p><span class="shop-price">$${n(x.cost)}</span></div><button class="btn sm ${state.upgrades[x.id]?'secondary':''}" data-action="upgrade" data-id="${x.id}" ${state.upgrades[x.id]||state.coins<x.cost?'disabled':''}>${state.upgrades[x.id]?'購入済':'購入'}</button></div>`).join('')}</div><div class="hint section-block">💡 消耗品で手間と失敗リスクを減らせる一方、購入費用が利益を圧迫することも。何に投資するかが経営のポイント。</div>`;}
+function renderTools(){
+ return `${title('TOOLS & UPGRADES',L('アイテムショップ','Tools & upgrades'),L('お金の使い道を選び、修理屋を成長させよう。','Invest in your tools and workshop.'))}
+ <div class="unlock-notice">⛩️ ${L('消耗品の価格は街LV.で上昇。苦手な工程を飛ばすために買いだめできます。','Consumable prices rise with town level. Stock up to skip difficult stages.')} · LV.${state.townLevel}</div>
+ <div class="eyebrow section-block">CONSUMABLES · ${L('使い切りアイテム','One-time items')}</div>
+ <div class="stack">${TOOLS.filter(x=>(TOOL_UNLOCK[x.id]||1)<=state.townLevel).map(x=>{
+ const price=toolPrice(x);
+ return `<div class="shop-item"><div class="shop-icon">${x.icon}</div><div class="shop-desc"><h3>${x.name} <span class="pill">${L('所持','Owned')} ${state.tools[x.id]}</span></h3><p>${x.desc}</p></div><div class="shop-price">$${n(price)}</div><button class="btn sm" data-action="buy-tool" data-id="${x.id}" ${state.coins<price?'disabled':''}>${L('購入','Buy')}</button></div>`;
+ }).join('')}</div>
+ <div class="eyebrow section-block" style="margin-top:22px">PERMANENT · ${L('永続アップグレード','Permanent upgrades')}</div>
+ <div class="upgrade-grid">${UPGRADES.map(up=>{
+ const level=upgradeLevel(up.id),price=upgradeCost(up),ready=upgradeUnlocked(up);
+ const required=level<UPGRADE_MAX?up.unlock[level+1]:0;
+ return `<div class="shop-item upgrade-tier-card"><div class="shop-icon">${up.icon}</div>
+ <div class="shop-desc"><h3>${up.name} <span class="pill">LV.${level}/${UPGRADE_MAX}</span></h3>
+  <p>${up.desc}</p>
+  <div class="upgrade-pips">${Array.from({length:UPGRADE_MAX},(_,i)=>`<span class="${i<level?'earned':''}"></span>`).join('')}</div>
+  <span class="shop-price">${level===UPGRADE_MAX?L('最大強化','MAX'):ready?'$'+n(price):L('次の強化は街LV.','Next level at town LV.')+required}</span></div>
+ <button class="btn sm ${level===UPGRADE_MAX?'secondary':''}" data-action="upgrade" data-id="${up.id}" ${!ready||state.coins<price?'disabled':''}>${level===UPGRADE_MAX?'MAX':L('強化','Upgrade')}</button></div>`;
+ }).join('')}</div>
+ <div class="hint section-block">💡 ${L('修理を自力で終えるほど利益が残る。強化も段階ごとに費用が増えるので、次の街づくりとの配分が大切。','Manual repairs leave more profit. Every upgrade costs more, so choose your investment timing.')}</div>`;
+}
 function renderGallery(){return `${title('THE COLLECTION','コレクション','売らずに残した特別な修理品。展示すると評判が上がる。')}${state.collection.length?`<div class="cards-grid">${state.collection.map(x=>`<div class="gallery-card"><span class="tag ${x.rarity==='LEGENDARY'?'legend':''}">${x.rarity}</span><div class="art-frame" style="margin-top:8px">${renderObjectSvg(x)}</div><h3 class="item-name">${x.name}</h3><p class="item-sub">修復品質 ${x.quality}% • 難易度 ${stars(x.difficulty)}</p></div>`).join('')}</div>`:`<div class="empty"><div class="big-emoji">🏆</div><h3>まだ展示品がありません</h3><p>商品を修理したら、販売せずに「展示する」を選べます。貴重な品を集めて、伝説のお店を目指そう。</p><button class="btn" data-action="tab" data-id="market">📦 市場で探す</button></div>`}
  <section class="panel padded section-block"><div class="row between"><h3 style="margin:0">🌟 展示特典</h3><b class="light">評判 ${state.fame} pt</b></div><p class="sub">現在の仕入れ市場ティア ${tier()}/5。修理品を売っても少し評判が増え、展示すると多く増える。</p></section>`;}
 function bindCleaning(){const pad=document.getElementById('clean-pad');if(!pad)return;
@@ -2752,7 +2872,7 @@ function handleAction(action,id){
  return;
  }
  if(action==='time-stop'){const a=state.active,t=taskOf();if(!a||!t||t.type!=='calibrate')return;const center=25+(t.seed%51),width=clamp(24-a.difficulty*3,6,21);const reading=calibratePressTiming===null?lastTiming:calibratePressTiming;calibratePressTiming=null;if(Math.abs(reading-center)<=width/2+2)finishStep();else damage();return;}
- if(action==='buy-tool'){const tool=TOOLS.find(x=>x.id===id);if(!tool)return;if((TOOL_UNLOCK[id]||1)>state.townLevel)return;if(state.coins<tool.cost)return notify('お金が足りません','error');state.coins-=tool.cost;state.spent+=tool.cost;state.tools[id]++;mutate();notify(`${tool.name} を購入した！`,'good');return;}
+ if(action==='buy-tool'){const tool=TOOLS.find(x=>x.id===id);if(!tool)return;if((TOOL_UNLOCK[id]||1)>state.townLevel)return;const price=toolPrice(tool);if(state.coins<price)return notify('お金が足りません','error');state.coins-=price;state.spent+=price;state.tools[id]++;mutate();notify(`${tool.name} を $${n(price)} で購入した！`,'good');return;}
  if(action==='use-tool'){const a=state.active,t=taskOf(),tool=TOOLS.find(x=>x.id===id);if(!a||!t||!tool||!state.tools[id]||a.complete||a.broken)return;
  if(a.isTimed)return notify(L('スピード修理では補助アイテムは使えません','No assistance items in speedrun contracts'),'error');
  if(tool.stage&&tool.stage!==t.type)return; if(id==='shield'){if(a.shield)return;state.tools.shield--;a.shield=true;mutate();notify('🛡️ 次の失敗を1回防ぎます','good');return;}
@@ -2761,9 +2881,9 @@ function handleAction(action,id){
  finishStep(true);return;
  }
  if(action==='sell'){const a=state.active;if(!a?.complete)return;const price=saleValue(a);state.coins+=price;state.revenue+=price;state.fame+=3+a.difficulty*3+(a.integrity===100?5:0);state.completed++;state.active=null;maybeSpawnRush();mutate();notify(`${a.name} を $${n(price)} で販売！`,'good');return;}
- if(action==='collect'){const a=state.active;if(!a?.complete||a.isContract)return;const points=Math.round((11+a.difficulty*15)*(state.upgrades.showcase?1.5:1));a.quality=repairQuality(a);state.collection.push(a);state.fame+=points;state.completed++;state.active=null;maybeSpawnRush();mutate();notify(`🏆 コレクション追加！ 評判 +${points}`,'good');return;}
+ if(action==='collect'){const a=state.active;if(!a?.complete||a.isContract)return;const points=Math.round((11+a.difficulty*15)*[1,1.5,1.7,1.85][upgradeLevel('showcase')]);a.quality=repairQuality(a);state.collection.push(a);state.fame+=points;state.completed++;state.active=null;maybeSpawnRush();mutate();notify(`🏆 コレクション追加！ 評判 +${points}`,'good');return;}
  if(action==='scrap'){const a=state.active;if(!a)return;if(a.isTimed){finishTimed(false);return;}if(a.residentId){if(confirm(L('住人の修理依頼を中止しますか？','Abandon this resident request?')))finishResident(false);return;}const salvage=a.isContract?0:(a.broken?Math.round(a.baseValue*.11):Math.round(a.purchasePrice*.24));if(!a.broken&&!confirm(`修理をやめて $${n(salvage)} で処分しますか？`))return;state.coins+=salvage;state.revenue+=salvage;state.active=null;mutate();notify(`部品を回収して $${n(salvage)} を得た`);return;}
- if(action==='upgrade'){const up=UPGRADES.find(x=>x.id===id);if(!up||state.upgrades[id]||state.coins<up.cost)return;state.coins-=up.cost;state.spent+=up.cost;state.upgrades[id]=true;mutate();notify(`${up.name} を導入した！`,'good');return;}
+ if(action==='upgrade'){const up=UPGRADES.find(x=>x.id===id);if(!up||!upgradeUnlocked(up))return;const price=upgradeCost(up);if(!price||state.coins<price)return;state.coins-=price;state.spent+=price;state.upgrades[id]=upgradeLevel(id)+1;mutate();notify(`${up.name} LV.${state.upgrades[id]} に強化した！`,'good');return;}
 }
 // A mobile tap should be judged at touch-down, before click delivery latency.
 app.addEventListener('pointerdown',e=>{
