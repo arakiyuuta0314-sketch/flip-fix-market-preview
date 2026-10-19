@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111827" />
   <meta name="description" content="Flip & Fix Market — 中古品を仕入れ、修理して売る経営ゲームのプレイアブル試作版。" />
-  <title>Flip & Fix Market — Playtest v0.10.1</title>
+  <title>Flip & Fix Market — Playtest v0.10.2</title>
   <style>
 :root { color-scheme: dark; --base:#101522; --panel:#1c2537; --panel2:#242e42; --stroke:#364258; --text:#f3f4ec; --muted:#a7b1c5; --gold:#ffc977; --mint:#79e2c3; --coral:#ff917e; --blue:#8eafff; --ink:#121a29; --shadow:0 18px 70px #0006; }
 * {box-sizing:border-box} html, body { min-height:100%; } body {margin:0;background:radial-gradient(ellipse at 82% 0%,#263451 0,transparent 37%),radial-gradient(ellipse at 0% 60%,#213940 0,transparent 40%),var(--base);font:500 14px/1.6 'DM Sans','Noto Sans JP',system-ui,sans-serif;color:var(--text)}button {font:inherit;cursor:pointer} button:focus-visible,[tabindex]:focus-visible {outline:3px solid var(--mint);outline-offset:3px} button:disabled {cursor:not-allowed;opacity:.44} .shell {max-width:1260px;margin:0 auto;padding:23px 22px 65px} .topbar {display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:20px} .identity{display:flex;align-items:center;gap:13px}.logo-icon{background:var(--gold);width:48px;height:48px;color:var(--ink);border:3px solid #ffe3a9;display:grid;place-items:center;border-radius:14px;transform:rotate(-5deg);font-size:25px;box-shadow:4px 5px 0 #0004}.identity h1 {font-size:22px;line-height:1.1;letter-spacing:.4px;margin:0;color:var(--gold)}.identity p{margin:4px 0 0;color:var(--muted);font-size:11px;letter-spacing:1.6px;text-transform:uppercase}.top-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.money,.level-tag,.status-pill {background:#243045;border:1px solid var(--stroke);border-radius:13px;padding:8px 14px;display:flex;gap:8px;align-items:center;white-space:nowrap}.money b{color:var(--gold);font-size:19px}.level-tag b{color:var(--mint)}.status-pill{color:var(--muted);font-size:12px}.circle-icon{display:inline-flex;align-items:center;justify-content:center;color:#142030;width:24px;height:24px;border-radius:50%;background:var(--gold);font-size:15px;font-weight:900}.layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:21px}.sidebar{background:#1b2435;border:1px solid var(--stroke);border-radius:19px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:625px}.navbtn{width:100%;border:none;background:transparent;color:#b9c1d0;display:flex;align-items:center;gap:12px;text-align:left;padding:13px 12px;border-radius:12px;font-weight:750}.navbtn .symbol{display:grid;place-items:center;font-size:22px;width:29px;height:27px}.navbtn.active{color:#1b2631;background:var(--gold);box-shadow:0 4px 0 #a7752b55}.navbtn:hover:not(.active){background:#2c3850;color:white}.side-separator{height:1px;background:var(--stroke);margin:12px 0}.sidebar-foot{margin-top:auto;border-radius:14px;background:#111a2a;padding:14px}.sidebar-foot h3{font-size:12px;margin:0 0 7px;color:var(--mint)}.sidebar-foot p{margin:0;color:var(--muted);font-size:11px;line-height:1.9}.sidebar-foot button{margin-top:12px}.content{min-width:0}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:17px}.section-heading h2{font-size:24px;margin:0;letter-spacing:.2px}.eyebrow {text-transform:uppercase;color:var(--mint);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:2px}.sub{color:var(--muted);font-size:12px;margin:4px 0 0}.btn{border:1px solid transparent;background:var(--gold);color:#1e2632;border-radius:11px;padding:10px 15px;font-weight:800;transition:filter .12s,transform .12s;white-space:nowrap}.btn:hover:not(:disabled){filter:brightness(1.09);transform:translateY(-1px)}.btn.secondary{background:#313f55;border-color:#56627a;color:var(--text)}.btn.ghost{background:transparent;color:var(--mint);border-color:#41685d}.btn.danger{background:#663943;border-color:#b05d65;color:#fff3f1}.btn.sm{font-size:12px;padding:7px 12px}.btn.block{width:100%}.panel{background:#1b2537;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 7px 29px #0002}.padded{padding:20px}.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(235px,1fr);gap:16px}.shop-scene{position:relative;overflow:hidden;height:310px;border-radius:15px;background:linear-gradient(#39566b 0 59%,#38405a 59% 100%);border:4px solid #536b7e}.shop-scene:before{content:'';position:absolute;left:0;right:0;top:0;height:56%;background:repeating-linear-gradient(90deg,transparent 0 49px,#ffffff07 50px 51px)}.shop-sign{position:absolute;z-index:2;top:13px;left:50%;transform:translateX(-50%);background:#182639;color:#ffc977;border:3px solid #d3a45e;border-radius:9px;padding:2px 27px;font:800 19px 'DM Sans';letter-spacing:2px;white-space:nowrap;box-shadow:0 4px #152435aa}.shelf{position:absolute;z-index:2;left:6%;width:37%;height:13px;background:#a97860;border-bottom:6px solid #6e4b43;box-shadow:0 4px 0 #0003}.shelf.top{top:39%}.shelf.bottom{top:62%}.shelf-objects{position:absolute;left:7%;width:35%;top:23%;height:35%;display:flex;align-items:end;justify-content:space-around;z-index:2}.shelf-objects span{font-size:34px;filter:drop-shadow(2px 6px 1px #0005)}.wall-window{position:absolute;top:25%;right:7%;width:27%;height:30%;background:#b4dce5;border:9px solid #e0bc89;border-bottom-width:14px;border-radius:11px;box-shadow:inset 0 0 0 5px #7ca4b7}.wall-window:before{content:'';position:absolute;left:50%;height:100%;width:8px;background:#e0bc89;transform:translateX(-50%)}.wall-window:after{content:'';position:absolute;top:48%;width:100%;height:7px;background:#e0bc89}.counter{z-index:4;position:absolute;bottom:12%;left:22%;width:57%;height:26%;background:#b88664;border:6px solid #5f3e38;border-radius:7px 7px 12px 12px;box-shadow:0 9px 0 #17233355}.counter:after{content:'FLIP  •  FIX';position:absolute;left:50%;top:33%;transform:translateX(-50%);font-size:18px;font-weight:900;color:#684537;white-space:nowrap;letter-spacing:2px}.counter-top{position:absolute;left:19%;right:18%;height:12px;background:#eac08c;bottom:37%;z-index:5;border-radius:6px}.counter-items{position:absolute;z-index:6;left:35%;width:27%;bottom:37%;display:flex;justify-content:space-between;align-items:end}.counter-items span{font-size:44px;filter:drop-shadow(3px 2px #263441)}.plant{position:absolute;bottom:15%;right:8%;z-index:5;font-size:64px}.floor-line{position:absolute;top:78%;left:0;right:0;border-top:1px solid #e1a26738}.fame-bar {height:9px;background:#121a2b;border-radius:8px;overflow:hidden;margin-top:8px}.fame-bar>span{display:block;background:linear-gradient(90deg,var(--mint),#a3b9ff);height:100%;border-radius:8px}.metric-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.metric{background:#263349;padding:13px;border-radius:12px}.metric small{color:var(--muted);display:block;font-size:11px}.metric strong{font-size:21px;color:var(--text)}.main-card-title{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:0 0 12px}.main-card-title h3{font-size:15px;margin:0}.main-card-title small{font-size:11px;color:var(--muted)}.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.item-card{background:#202c3f;border:1px solid #3c4a62;padding:14px;border-radius:16px;min-width:0;display:flex;flex-direction:column;gap:10px}.item-card:hover{border-color:#62748d}.art-frame{display:grid;place-items:center;background:radial-gradient(circle at 50% 32%,#465773 0,#2a374f 71%);height:143px;border-radius:11px;overflow:hidden;position:relative}.art-frame svg{width:96%;height:98%;filter:drop-shadow(2px 10px 4px #0c13265c)}.art-frame.large{height:285px}.art-frame.large svg{max-height:285px}.tag{border:1px solid #425d61;border-radius:7px;background:#1e4946;color:var(--mint);font-size:10px;padding:2px 7px;font-weight:800;letter-spacing:.5px;display:inline-block}.tag.rare{background:#474057;border-color:#8367a2;color:#e5c4ff}.tag.epic{background:#604436;border-color:#b17a4b;color:#ffe2aa}.tag.legend{background:#53403c;border-color:#e6b160;color:#ffdb8c}.item-name{font-size:15px;font-weight:800;margin:0}.item-sub{font-size:11px;color:var(--muted);margin:0}.card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}.price{font-size:17px;color:var(--gold);font-weight:900}.stars{font-size:12px;color:#ffcf77;letter-spacing:1px;white-space:nowrap}.price-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff13;gap:8px;font-size:12px}.price-row strong{font-size:14px}.stack{display:flex;flex-direction:column;gap:13px}.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.muted{color:var(--muted)}.pill{padding:4px 8px;background:#2d3c51;border:1px solid #4b5972;border-radius:7px;font-size:11px;color:#c8d5eb}.workshop-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:17px}.workshop-controls{padding:19px}.statline{display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px;font-size:12px}.condition-track{height:11px;background:#0d1728;border-radius:20px;overflow:hidden}.condition-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#ec947a,#ffd071,#8ee5bd);transition:width .15s}.step-progress{display:flex;gap:6px;margin:16px 0}.step-progress span{height:7px;flex:1;background:#36465f;border-radius:8px}.step-progress .done{background:var(--mint)}.step-progress .current{background:var(--gold)}.minigame{min-height:260px;background:#121c2c;border:1px solid #3a4961;border-radius:15px;padding:17px;position:relative;overflow:hidden}.minigame h3{font-size:15px;margin:0}.minigame p{color:var(--muted);font-size:12px;margin:2px 0 10px}.clean-pad{height:197px;background:radial-gradient(ellipse,#435569,#263b49);position:relative;border-radius:12px;overflow:hidden;border:2px solid #617481;touch-action:none;user-select:none}.clean-pad:after{pointer-events:none;content:'✦  WIPE TO CLEAN  ✦';position:absolute;bottom:7px;right:11px;font-size:10px;letter-spacing:1px;color:#ecfaff5e}.clean-spot{position:absolute;width:51px;height:40px;border-radius:50%;transform:translate(-50%,-50%) rotate(-12deg);border:3px dotted #6c5348;background:radial-gradient(ellipse,#6b5048 7%,#987158b6 56%,transparent 72%);box-shadow:0 0 11px #59413188;pointer-events:none;transition:opacity .15s}.clean-spot.is-clean{opacity:0}.wire-pad{position:relative;display:flex;justify-content:space-between;padding:15px 20px 10px;height:176px;background:#202f40;border:1px solid #4d6277;border-radius:10px}.terminal-col{display:flex;flex-direction:column;justify-content:space-between;align-items:center;z-index:1}.terminal{border:3px solid #e5d9ae;box-shadow:0 4px #0003;width:37px;height:37px;border-radius:50%;position:relative;z-index:2}.terminal.selected{outline:4px solid #f8edb6;outline-offset:3px}.terminal.done{opacity:.27}.wire-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}.calibration-pad{height:173px;background:#1e2c43;border:1px solid #40556e;border-radius:10px;padding:24px 18px;display:flex;flex-direction:column;justify-content:center;gap:25px}.slider-rail{height:19px;border-radius:10px;background:linear-gradient(#60758d,#34485f);position:relative;border:2px solid #8294a5}.slider-target{position:absolute;top:-8px;bottom:-8px;border:2px solid #aaf2c8;background:#5ed4a64d;border-radius:8px}.slider-needle{position:absolute;top:-12px;bottom:-12px;width:5px;background:#ffcd6c;box-shadow:0 0 9px #ffcd6c;border-radius:3px;transform:translateX(-50%)}.game-tip{font-size:11px;color:#9db5c2;text-align:center}.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.tool-btn{border:1px solid #52637a;background:#2d3c51;color:#ecf3ef;padding:9px;border-radius:10px;font-size:12px;font-weight:750;text-align:left;line-height:1.65}.tool-btn small{font-size:10px;color:#abbed1;display:block}.tool-btn:hover:not(:disabled){border-color:var(--gold)}.tool-btn.selected{border-color:var(--mint);color:var(--mint)}.hint{background:#2d3142;border-left:3px solid var(--gold);color:#e2cfac;padding:11px 13px;font-size:12px;border-radius:8px}.result-card{background:linear-gradient(140deg,#273f4b,#27304a);border:1px solid #597885;padding:19px;border-radius:17px}.result-card h3{font-size:21px;margin:0}.result-card .total{font-size:32px;font-weight:900;color:var(--gold);margin:7px 0}.shop-item{display:flex;align-items:center;gap:12px;background:#26354a;border:1px solid #465771;border-radius:15px;padding:15px}.shop-icon{width:48px;height:48px;display:grid;place-items:center;background:#3c4e65;border-radius:11px;font-size:26px;flex-shrink:0}.shop-desc{flex:1;min-width:0}.shop-desc h3{margin:0;font-size:14px}.shop-desc p{font-size:11px;margin:2px 0;color:var(--muted)}.shop-price{font-weight:900;color:var(--gold);white-space:nowrap}.gallery-card{position:relative;background:#26354a;border:1px solid #4d5c74;padding:14px;border-radius:16px}.gallery-card .art-frame{height:135px}.empty{padding:55px 18px;text-align:center;border:1px dashed #57637a;border-radius:18px;background:#1b253749}.empty .big-emoji{font-size:56px}.empty h3{font-size:18px;margin:8px 0}.empty p{color:var(--muted);font-size:12px;max-width:430px;margin:0 auto 16px}.footer{font-size:11px;color:#9ca9be;text-align:center;padding:25px 0}.toast{position:fixed;z-index:60;bottom:22px;left:50%;transform:translateX(-50%);background:#ffdda0;color:#1b2631;border-radius:13px;padding:12px 21px;font-weight:800;box-shadow:0 12px 40px #0009;max-width:min(90vw,550px);text-align:center;animation:pop .2s ease}.toast.error{background:#ffc1b9}.toast.good{background:#a7efd3}@keyframes pop{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}.mini-caption{font-size:11px;color:var(--muted);margin:7px 0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.upgrade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.locked{filter:grayscale(.7);opacity:.7}.mobile-nav{display:none}.dashboard-bottom{margin-top:16px}.save-error{padding:14px;border:1px solid #c96e6e;background:#4b2c37;color:#ffdddd;border-radius:12px}.section-block{margin-top:17px}.checkbox-like{background:#283e45;color:var(--mint);border:1px solid #437065;padding:5px 8px;font-size:11px;border-radius:7px}.state-card{padding:17px;border:1px solid #415370;border-radius:14px;background:#24354b}.tiny{font-size:11px}.light{color:var(--gold)}
@@ -288,6 +288,41 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 .timed-stake strong{font-size:16px;color:#ffe3a3}
 .timed-panel button:disabled{opacity:.45}
 @media(max-width:650px){.timed-stake{font-size:11px;padding:7px 9px}.timed-stake span{width:100%}}
+
+.workshop-grid.rush-layout{display:block}
+.workshop-grid.rush-layout>.panel.padded{display:none}
+.workshop-grid.rush-layout>.workshop-controls{width:100%;max-width:100%;margin:0}
+.workshop-grid.rush-layout .minigame{margin-top:0}
+.timed-live small{font-size:12px;color:#f3e0ae;margin-left:6px}
+.timed-live p{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+@media(max-width:650px){.timed-live{margin:0 0 5px}.timed-live strong{font-size:12px}.timed-live small{font-size:10px}}
+
+/* During 5-second rounds the town must never consume the active game viewport. */
+.shell.rush-mode .town-world{display:none!important}
+.shell.rush-mode .workshop-grid{display:block}
+.shell.rush-mode .layout{min-height:0}
+.shell.rush-mode .workshop-controls{min-height:0}
+@media(max-width:650px){
+ .shell.rush-mode .layout{flex:1 1 auto!important;min-height:0!important;height:auto!important;max-height:none!important}
+ .shell.rush-mode .section-heading{margin-bottom:5px}
+ .shell.rush-mode .content{scroll-behavior:auto}
+}
+
+/* A five-second game must be playable without scrolling on short phones. */
+.shell.rush-mode .section-heading{display:none!important}
+.shell.rush-mode .timed-live{padding:5px 9px;margin-bottom:3px;border-radius:8px}
+.shell.rush-mode .timed-live p{margin:2px 0 0;line-height:1.2;font-size:10px;gap:5px}
+.shell.rush-mode .timed-live .btn{min-height:27px;padding:3px 8px;font-size:10px}
+.shell.rush-mode .timed-clock{font-size:25px;line-height:1.1}
+.shell.rush-mode .timed-clock-rail{height:5px;margin:4px 0}
+.shell.rush-mode .workshop-controls .eyebrow{display:none}
+.shell.rush-mode .workshop-controls{padding:5px!important}
+.shell.rush-mode .minigame{padding:6px!important;min-height:0!important}
+.shell.rush-mode .minigame>h3{font-size:14px;margin:0 0 3px}
+.shell.rush-mode .minigame>p{display:none}
+.shell.rush-mode .hint{display:none}
+.shell.rush-mode .game-tip{font-size:11px;padding:2px 0;margin:2px 0}
+.shell.rush-mode .section-block{margin-top:3px}
 </style>
 </head>
 <body>
@@ -405,6 +440,12 @@ function load(){
    if(data.version===1){data.tools.screw=0;data.tools.circuit=0;data.version=2;}
    if(data.version===2){data.townLevel=1;data.houseLevel=0;data.storySeen=false;data.seenCelebration=0;data.residentLove={};data.residentSeen={};data.eventsDone={};data.locale=(navigator.language||'ja').startsWith('ja')?'ja':'en';data.version=3;}
    if(data.version!==SAVE_VERSION) throw Error('未対応の保存データです。上書きせず停止します。');
+   // An in-progress old-style rush order had a multi-minute timer. Return its
+   // deposited cash once instead of silently converting it into a 5-second bet.
+   if(data.active?.isTimed&&!data.active.stageSeconds){
+    data.coins+=Number(data.active.deposit||0);
+    data.active=null;
+   }
    data.townLevel=clamp(Number(data.townLevel||1),1,MAX_TOWN_LEVEL);data.residentLove||={};data.residentSeen||={};data.eventsDone||={};data.projects||={};data.timedWon||=0;data.timedFailed||=0;data.timedLast||=null;
    for(const id of ['diagnose','assemble','power'])if(data.tools[id]===undefined)data.tools[id]=0;
    state=data;persist();
@@ -520,13 +561,19 @@ function damage(){const a=state.active;if(!a||a.complete||a.broken)return;
  mutate();
 }
 function timedDifficulty(){return Math.min(5,tier(),state.houseLevel+2);}
+const RUSH_SECONDS_PER_STAGE=5;
+function rushStages(stageCount){
+ // Quick formats only: long assembly and circuit puzzles remain normal, untimed repairs.
+ const pool=['calibrate','diagnose','wires','power','screws','clean'];
+ return shuffleIndex(pool.length,rnd(10001,999999)).slice(0,stageCount).map(i=>({type:pool[i],seed:rnd(101,99999)}));
+}
 function timedChallenge(){
  const difficulty=timedDifficulty(),stageCount=difficulty<=2?2:difficulty<=4?3:4;
  const pool=KIND.filter(x=>x.level<=state.townLevel).slice(-3);
  const kind=pool[(state.completed+state.timedWon+state.timedFailed)%pool.length];
- const budget=90+stageCount*65;
- const reward=Math.round((kind.base+difficulty*230)*CITY_DEMAND[state.townLevel]*1.45);
- const deposit=Math.max(50,Math.round(reward*0.2/10)*10);
+ const budget=stageCount*RUSH_SECONDS_PER_STAGE;
+ const reward=Math.round((kind.base+difficulty*230)*CITY_DEMAND[state.townLevel]*0.70);
+ const deposit=Math.max(50,Math.round(reward*0.30/10)*10);
  return {difficulty,stageCount,kind,budget,reward,deposit};
 }
 function finishTimed(success,draw=true){
@@ -534,8 +581,8 @@ function finishTimed(success,draw=true){
  const duration=Math.round((Date.now()-a.startedAt)/1000);
  const won=success && a.integrity>12 && a.deadline>Date.now();
  const reward=won?a.reward:0,deposit=a.deposit||0;
- state.timedLast={success:won,reward,loss:won?0:deposit,seconds:duration,difficulty:a.difficulty};
- if(won){state.timedWon++;state.completed++;state.fame+=10+a.difficulty*4;state.coins+=reward+deposit;state.revenue+=reward;}
+ state.timedLast={success:won,reward,loss:won?0:deposit,seconds:duration,difficulty:a.rushRating||a.difficulty};
+ if(won){state.timedWon++;state.completed++;state.fame+=10+(a.rushRating||a.difficulty)*4;state.coins+=reward+deposit;state.revenue+=reward;}
  else state.timedFailed++;
  state.active=null;
  if(draw)mutate();else persist();
@@ -546,8 +593,8 @@ function timedPanel(){
  if(state.townLevel<2||state.completed<1)return '';
  const m=timedChallenge(),prev=state.timedLast;
  return `<section class="timed-panel section-block"><div class="row between"><h3>⏱️ ${L('時間制限付きの特別依頼','RUSH REPAIR CONTRACT')}</h3><span class="tag">BONUS JOB</span></div>
- <p>${L('通常修理は時間無制限。特別依頼は受注時に保証金を預け、成功で全額返金＋報酬。時間切れ・修理失敗・中止なら保証金を失います。','Normal repairs have no deadline. The entry deposit is returned plus the reward on success. Timeout, damage or abandonment forfeits your deposit.')}</p>
- <div class="timed-info"><b>★${m.difficulty}</b><b>${m.stageCount} ${L('工程','stages')}</b><b>⏳ ${Math.floor(m.budget/60)}:${String(m.budget%60).padStart(2,'0')}</b><b>🏆 $${n(m.reward)}</b></div>
+ <p>${L('各ミニゲーム5秒！クリアすると次の5秒が開始。成功で保証金返金＋報酬、時間切れ・修理失敗・中止で保証金を失います。通常修理は時間無制限。','5 seconds PER minigame! The next 5 seconds begin on a clear. Win to reclaim your deposit plus reward; fail or quit to forfeit it. Normal repairs are untimed.')}</p>
+ <div class="timed-info"><b>★${m.difficulty}</b><b>${m.stageCount} ${L('工程','stages')}</b><b>⏱️ ${RUSH_SECONDS_PER_STAGE}${L('秒/工程',' sec/stage')}</b><b>🏆 $${n(m.reward)}</b></div>
  <div class="timed-stake"><span>⚠️ ${L('受注保証金','Entry deposit')} <strong>−$${n(m.deposit)}</strong></span><span>✅ ${L('成功','Success')}: +$${n(m.reward)} / ❌ ${L('失敗','Failed')}: −$${n(m.deposit)}</span></div>
  <button class="btn block" data-action="timed-start" ${state.coins<m.deposit?'disabled':''}>⏱️ ${L('保証金を預けて挑戦','Pay deposit & start')}</button>
  ${state.coins<m.deposit?`<p>💰 ${L('保証金にあと','Need')} $${n(m.deposit-state.coins)} ${L('必要','more for entry')}</p>`:''}
@@ -558,7 +605,8 @@ function finishStep(auto=false){const a=state.active;if(!a||a.complete||a.broken
  if(a.isTimed&&timeLeft(a)===0){finishTimed(false);return;}
  a.stageIndex++;
  if(a.stageIndex>=a.stages.length){if(a.isTimed){finishTimed(true);return;}a.complete=true;a.quality=repairQuality(a);notify(a.integrity===100?L('🌟 パーフェクト修理！','🌟 PERFECT REPAIR!'):(auto?'⚡ 自動修理完了！':'✨ 修理成功！ お見事！'),'good');}
- else {initStage();if(auto)notify('⚡ 工程を自動で完了！','good');else notify('工程クリア！ 次の修理へ','good');}
+ else {if(a.isTimed)a.deadline=Date.now()+(a.stageSeconds||RUSH_SECONDS_PER_STAGE)*1000;
+ initStage();if(auto)notify('⚡ 工程を自動で完了！','good');else if(!a.isTimed)notify('工程クリア！ 次の修理へ','good');}
  mutate();
 }
 function renderObjectSvg(item){
@@ -1096,12 +1144,12 @@ function render(){if(blockedSave)return;
  const currentWorkKey=currentTab==='work'&&state.active?state.active.id+':'+state.active.stageIndex+':'+(state.active.complete?'done':'open'):'none';
  const keepScroll=lastRenderTab===currentTab&&lastRenderWorkKey===currentWorkKey&&oldContent;
  const oldScroll=keepScroll?oldContent.scrollTop:0;
- document.documentElement.lang=state.locale;cancelAnimationFrame(timingRaf);app.innerHTML=`<div class="shell ${currentTab==='work'&&state.active?'repair-mode':''}">
+ document.documentElement.lang=state.locale;cancelAnimationFrame(timingRaf);app.innerHTML=`<div class="shell ${currentTab==='work'&&state.active?(state.active.isTimed?'repair-mode rush-mode':'repair-mode'):''}">
  <header class="topbar"><div class="identity"><div class="logo-icon">🔧</div><div><h1>FLIP & FIX</h1><p>Repair • Trade • Collect</p></div></div><div class="top-right"><div class="language-switch"><button data-action="language" data-id="ja" class="${state.locale==='ja'?'selected':''}">日本語</button><button data-action="language" data-id="en" class="${state.locale==='en'?'selected':''}">EN</button></div><div class="level-tag">⭐ <b>${currentLevel()}</b></div><div class="money">${money()}</div><div class="status-pill" id="save-state">${storageAvailable?'● オートセーブ済み':'⚠ 保存不可・体験のみ'}</div></div></header>
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="reset">最初からやり直す</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · PLAYTEST v0.10.1 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · PLAYTEST v0.10.2 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>${evolutionOverlay()}${developmentPanel()}`;
  translateDOM();
  const newContent=app.querySelector('.content');
@@ -1135,8 +1183,8 @@ function activeWorkbench(a){
  if(a.broken) stageArea=`<div class="result-card"><h3>💥 修理不能になった…</h3><p>本体が損傷してしまった。少しだけ部品代を回収できる。</p><div class="total">$${n(Math.round(a.baseValue*.11))}</div><button class="btn danger block" data-action="scrap">ジャンク品として処分</button></div>`;
  else if(a.complete)stageArea=`<div class="result-card ${a.integrity===100?"perfect-result":""}"><div class="eyebrow">${a.integrity===100?"🌟 PERFECT REPAIR":"REPAIR COMPLETE"}</div><h3>✨ ${state.locale==='en'?(KIND.find(k=>k.id===a.kind)?.en||a.name):a.name} ${L('復活！','restored!')}</h3><p class="sub">修復品質 ${repairQuality(a)}% • 仕入れ価格 $${n(a.purchasePrice)}</p><div class="total">$${n(saleValue(a))}</div><p class="sub">仕入れ差額：$${n(saleValue(a)-a.purchasePrice)}（消耗品代は別）</p><p class="sub">販売すれば資金を獲得。展示すれば評判が上がり、より難しい商品が出現。</p><div class="inline-actions section-block"><button class="btn" data-action="sell">💰 この価格で売る</button>${a.isContract?'':`<button class="btn secondary" data-action="collect">🏆 展示する</button>`}</div></div>`;
  else stageArea=renderMinigame(a);
- return `${a.isTimed?`<section class="timed-live"><div><strong>⏱️ ${L('時間制限依頼','RUSH REPAIR')}</strong><span class="timed-clock" data-timed-clock aria-live="off">--:--</span></div><div class="timed-clock-rail"><span data-timed-bar style="width:${100*timeLeft(a)/(a.budget*1000)}%"></span></div><p>${L('時間内に全工程を終えれば特別報酬','Finish every stage before the clock runs out')} $${n(a.reward)} · <button class="btn secondary sm" data-action="timed-abandon">${L('依頼をやめる','Abandon')}</button></p></section>`:''}<div class="workshop-grid"><section class="panel padded"><div class="row between"><div><span class="tag ${a.rarity==='LEGENDARY'?'legend':''}">${a.rarity}</span><h3 style="margin:5px 0 0;font-size:19px">${a.name}</h3></div><div class="stars">${stars(a.difficulty)}</div></div><div class="art-frame large" style="margin-top:13px">${renderObjectSvg(a)}</div><div class="statline"><span class="muted">本体の耐久度（ミスで減少）</span><b>${a.integrity}% ${a.shield?'🛡️':''}</b></div><div class="condition-track"><span style="width:${a.integrity}%"></span></div><div class="statline"><span class="muted">修理の進捗</span><b>${a.stageIndex}/${a.stages.length} 工程</b></div><div class="step-progress">${a.stages.map((s,i)=>`<span class="${i<a.stageIndex?'done':i===a.stageIndex?'current':''}" title="${STAGES[s.type].name}"></span>`).join('')}</div><div class="row between"><span class="muted tiny">購入価格：$${n(a.purchasePrice)}</span>${a.broken||a.complete?'':'<button class="btn danger sm" data-action="scrap">途中で諦める</button>'}</div></section>
- <section class="panel workshop-controls">${stageArea}${!a.complete&&!a.broken?`<div class="section-block"><div class="main-card-title"><h3>🧰 使い切りアイテム</h3><button class="btn ghost sm" data-action="tab" data-id="tools">買い足す →</button></div><div class="tools-grid">${TOOLS.map(tool=>`<button class="tool-btn" data-action="use-tool" data-id="${tool.id}" ${state.tools[tool.id]===0 || (tool.stage && tool.stage!==taskOf()?.type) || (tool.id==='shield'&&a.shield)?'disabled':''}>${tool.icon} ${tool.name}<small>所持 ${state.tools[tool.id]} 個${tool.id==='shield'&&a.shield?' • 使用中':''}</small></button>`).join('')}</div></div>`:''}</section></div>
+ return `${a.isTimed?`<section class="timed-live"><div><strong>⏱️ ${L('5秒スピード修理','5-SECOND RUSH')} <small>${a.stageIndex+1}/${a.stages.length} · ★${a.rushRating||a.difficulty}</small></strong><span class="timed-clock" data-timed-clock aria-live="off">0:${String(Math.ceil(timeLeft(a)/1000)).padStart(2,"0")}</span></div><div class="timed-clock-rail"><span data-timed-bar style="width:${100*timeLeft(a)/((a.stageSeconds||a.budget)*1000)}%"></span></div><p>${L('各工程5秒以内でクリアすると報酬','Clear each mini-game within 5 seconds')} $${n(a.reward)} · <button class="btn secondary sm" data-action="timed-abandon">${L('依頼をやめる','Abandon')}</button></p></section>`:''}<div class="workshop-grid ${a.isTimed?'rush-layout':''}"><section class="panel padded"><div class="row between"><div><span class="tag ${a.rarity==='LEGENDARY'?'legend':''}">${a.rarity}</span><h3 style="margin:5px 0 0;font-size:19px">${a.name}</h3></div><div class="stars">${stars(a.difficulty)}</div></div><div class="art-frame large" style="margin-top:13px">${renderObjectSvg(a)}</div><div class="statline"><span class="muted">本体の耐久度（ミスで減少）</span><b>${a.integrity}% ${a.shield?'🛡️':''}</b></div><div class="condition-track"><span style="width:${a.integrity}%"></span></div><div class="statline"><span class="muted">修理の進捗</span><b>${a.stageIndex}/${a.stages.length} 工程</b></div><div class="step-progress">${a.stages.map((s,i)=>`<span class="${i<a.stageIndex?'done':i===a.stageIndex?'current':''}" title="${STAGES[s.type].name}"></span>`).join('')}</div><div class="row between"><span class="muted tiny">購入価格：$${n(a.purchasePrice)}</span>${a.broken||a.complete?'':'<button class="btn danger sm" data-action="scrap">途中で諦める</button>'}</div></section>
+ <section class="panel workshop-controls">${stageArea}${!a.complete&&!a.broken&&!a.isTimed?`<div class="section-block"><div class="main-card-title"><h3>🧰 使い切りアイテム</h3><button class="btn ghost sm" data-action="tab" data-id="tools">買い足す →</button></div><div class="tools-grid">${TOOLS.map(tool=>`<button class="tool-btn" data-action="use-tool" data-id="${tool.id}" ${state.tools[tool.id]===0 || (tool.stage && tool.stage!==taskOf()?.type) || (tool.id==='shield'&&a.shield)?'disabled':''}>${tool.icon} ${tool.name}<small>所持 ${state.tools[tool.id]} 個${tool.id==='shield'&&a.shield?' • 使用中':''}</small></button>`).join('')}</div></div>`:''}</section></div>
  ${state.inventory.length?`<section class="panel padded section-block"><div class="main-card-title"><h3>📦 倉庫の在庫（${state.inventory.length}個）</h3><span class="muted tiny">いまの修理を終えたら次の商品へ</span></div><div class="row" style="flex-wrap:wrap">${state.inventory.map(x=>`<span class="pill">${x.name} ${stars(x.difficulty)}</span>`).join('')}</div></section>`:''}`;
 }
 function cleanLocations(count,seed){const pos=[];let x=seed>>>0;for(let i=0;i<count;i++){x=(1664525*x+1013904223)>>>0;const xp=19+(x%63);x=(1664525*x+1013904223)>>>0;const yp=22+(x%55);pos.push([xp,yp]);}return pos;}
@@ -1217,13 +1265,14 @@ function handleAction(action,id){
  if(action==='timed-start'){
   if(state.active||state.townLevel<2||state.completed<1)return;
   const m=timedChallenge();if(state.coins<m.deposit)return;
-  const stages=offerStages(m.kind,m.difficulty).slice(0,m.stageCount);
+  const stages=rushStages(m.stageCount);
   state.coins-=m.deposit;
   const now=Date.now();
-  state.active={id:state.nextId++,kind:m.kind.id,name:m.kind.name,difficulty:m.difficulty,
+  state.active={id:state.nextId++,kind:m.kind.id,name:m.kind.name,
+   difficulty:m.difficulty>=3?2:1,rushRating:m.difficulty,
    baseValue:m.kind.base,purchasePrice:0,price:0,rarity:'RUSH',stageIndex:0,stages,stageState:{},
-   integrity:100,complete:false,broken:false,shield:false,isTimed:true,budget:m.budget,startedAt:now,
-   deadline:now+m.budget*1000,reward:m.reward,deposit:m.deposit};
+   integrity:100,complete:false,broken:false,shield:false,isTimed:true,budget:m.budget,stageSeconds:RUSH_SECONDS_PER_STAGE,
+   startedAt:now,deadline:now+RUSH_SECONDS_PER_STAGE*1000,reward:m.reward,deposit:m.deposit};
   initStage();currentTab='work';mutate();return;
  }
  if(action==='timed-abandon'){if(!state.active?.isTimed)return;if(confirm(L('特別依頼を中止すると保証金は返金されません。中止しますか？','Abandoning forfeits your deposit. Continue?')))finishTimed(false);return;}
@@ -1276,7 +1325,8 @@ function handleAction(action,id){
  if(action==='time-stop'){const a=state.active,t=taskOf();if(!a||!t||t.type!=='calibrate')return;const center=25+(t.seed%51),width=clamp(24-a.difficulty*3,6,21);const reading=calibratePressTiming===null?lastTiming:calibratePressTiming;calibratePressTiming=null;if(Math.abs(reading-center)<=width/2+2)finishStep();else damage();return;}
  if(action==='buy-tool'){const tool=TOOLS.find(x=>x.id===id);if(!tool)return;if((TOOL_UNLOCK[id]||1)>state.townLevel)return;if(state.coins<tool.cost)return notify('お金が足りません','error');state.coins-=tool.cost;state.spent+=tool.cost;state.tools[id]++;mutate();notify(`${tool.name} を購入した！`,'good');return;}
  if(action==='use-tool'){const a=state.active,t=taskOf(),tool=TOOLS.find(x=>x.id===id);if(!a||!t||!tool||!state.tools[id]||a.complete||a.broken)return;
- if(tool.stage&&tool.stage!==t.type)return; if(a.isTimed&&id==='auto')return notify(L('時間制限依頼では全自動修理は使えません','Auto-repair cannot be used in rush contracts'),'error'); if(id==='shield'){if(a.shield)return;state.tools.shield--;a.shield=true;mutate();notify('🛡️ 次の失敗を1回防ぎます','good');return;}
+ if(a.isTimed)return notify(L('スピード修理では補助アイテムは使えません','No assistance items in speedrun contracts'),'error');
+ if(tool.stage&&tool.stage!==t.type)return; if(id==='shield'){if(a.shield)return;state.tools.shield--;a.shield=true;mutate();notify('🛡️ 次の失敗を1回防ぎます','good');return;}
  state.tools[id]--;
  if(id==='auto'){a.stageIndex=a.stages.length;a.complete=true;a.quality=repairQuality(a);mutate();notify('⚡ 全工程の修理が完了！','good');return;}
  finishStep(true);return;
@@ -1331,8 +1381,8 @@ setInterval(()=>{
  if(remaining===0){finishTimed(false);return;}
  const clock=app.querySelector('[data-timed-clock]');
  if(clock){const sec=Math.ceil(remaining/1000);clock.textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
- const bar=app.querySelector('[data-timed-bar]');if(bar)bar.style.width=100*remaining/(a.budget*1000)+'%';
- clock.classList.toggle('urgent',remaining<=30000);
+ const bar=app.querySelector('[data-timed-bar]');if(bar)bar.style.width=100*remaining/((a.stageSeconds||a.budget)*1000)+'%';
+ clock.classList.toggle('urgent',remaining<=2000);
  }
 },200);
 })();
