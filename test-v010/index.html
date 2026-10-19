@@ -604,6 +604,9 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 .stage-tutorial-count{font-size:clamp(80px,21vw,140px);font-weight:1000;color:#ffe1a3;line-height:1.2}
 .stage-tutorial-ready{font-size:17px;color:#afffe6}
 @media(max-width:650px){.stage-tutorial-card{padding:18px 15px}.stage-tutorial-card h2{font-size:21px}.stage-tutorial-card p{font-size:14px}.mini-help{padding:4px 6px;font-size:10px}}
+.normal-time-tip{min-height:2.4em;display:flex;align-items:center}
+.normal-time-tip.repair-time-error,.rush-repair-message.repair-time-error{color:#ffb9ad!important;font-weight:900;text-shadow:0 1px 5px #301321}
+@media(max-width:650px){.normal-time-tip{min-height:2.6em}}
 </style>
 </head>
 <body>
@@ -783,7 +786,51 @@ function load(){
 }
 function persist(){if(blockedSave) return;try{storage.setItem(KEY,JSON.stringify(state));const e=document.querySelector('#save-state');if(e)e.textContent=storageAvailable?'● オートセーブ済み':'⚠ 保存不可・体験のみ';}catch(e){notify('セーブに失敗しました。ブラウザの保存設定を確認してください。','error');}}
 function mutate(){persist();render();}
-function notify(message,type=''){const old=document.querySelector('.toast');if(old)old.remove();clearTimeout(toastHandle);const el=document.createElement('div');el.className='toast '+type+(state?.active&&!state.active.complete&&!state.active.broken?' in-repair':'');el.textContent=message;document.body.appendChild(el);toastHandle=setTimeout(()=>el.remove(),3100);}
+let repairNotice=null;
+function currentRepairNotice(){
+ const a=state?.active;
+ return repairNotice&&a&&repairNotice.key===a.id+':'+a.stageIndex&&Date.now()<repairNotice.until?repairNotice:null;
+}
+function dismissToast(){
+ clearTimeout(toastHandle);
+ toastHandle=null;
+ document.querySelector('.toast')?.remove();
+ repairNotice=null;
+ const tip=document.querySelector('.normal-time-tip.repair-time-error');
+ if(tip){
+  tip.textContent=L('時間切れで耐久度減少・同じ工程を再挑戦','Timeout damages durability · retry allowed')+' · '+L('難しい工程は時間を追加','Complex games have extra time');
+  tip.classList.remove('repair-time-error');
+ }
+ const rush=document.querySelector('.rush-repair-message.repair-time-error');
+ if(rush){
+  rush.textContent=L('各工程5秒以内でクリアすると報酬','Clear each mini-game within 5 seconds');
+  rush.classList.remove('repair-time-error');
+ }
+}
+function notify(message,type=''){
+ dismissToast();
+ // A temporary notice must never cover tutorial or story dialog controls.
+ if(state?.pendingScene||state?.active?.tutorialPending)return;
+ // Show repair failures in the existing timer hint, not over the minigame.
+ if(type==='error'&&currentTab==='work'&&state?.active&&!state.active.complete&&!state.active.broken){
+  // The retry panel already explains timeouts; do not duplicate the warning.
+  if(state.active.normalRetryNeeded)return;
+  const target=document.querySelector('.normal-time-tip,.rush-repair-message');
+  if(target){
+   const a=state.active;
+   repairNotice={message,key:a.id+':'+a.stageIndex,until:Date.now()+1500};
+   target.textContent=message;
+   target.classList.add('repair-time-error');
+   toastHandle=setTimeout(dismissToast,1500);
+   return;
+  }
+ }
+ const el=document.createElement('div');
+ el.className='toast '+type+(state?.active&&!state.active.complete&&!state.active.broken?' in-repair':'');
+ el.textContent=message;
+ document.body.appendChild(el);
+ toastHandle=setTimeout(()=>{el.remove();toastHandle=null;},1500);
+}
 function tier(){return clamp(1+Math.floor((state.completed+state.fame/20)/4),1,5);}
 function limit(){return 3+upgradeLevel('warehouse')*3;}
 function stars(d){return '★'.repeat(d)+'☆'.repeat(5-d);}
@@ -2559,6 +2606,8 @@ function navButton(id,icon,text){return `<button class="navbtn ${currentTab===id
 function money(){return `<span class="circle-icon">$</span><b>${n(state.coins)}</b>`;}
 function currentLevel(){return `Lv.${tier()}`;}
 function render(){if(blockedSave)return;
+ // Clear earlier notifications whenever a blocking screen opens.
+ if(state?.pendingScene||state?.active?.tutorialPending||settingsOpen||sceneReveal&&sceneReveal.phase!=='summary')dismissToast();
  if(state.active?.isTimed&&!state.active.awaitingStage&&!state.active.awaitingStart&&timeLeft(state.active)===0)finishTimed(false,false);
  const oldContent=app.querySelector('.content');
  const currentWorkKey=currentTab==='work'&&state.active?state.active.id+':'+state.active.stageIndex+':'+(state.active.complete?'done':'open'):'none';
@@ -2569,7 +2618,7 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="settings">⚙ ${L('ゲーム設定','Game settings')}</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · PLAYTEST v0.15.0 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · PLAYTEST v0.15.1 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>${evolutionOverlay()}${eventResultOverlay()}${tutorialOverlay()}${settingsOverlay()}${developmentPanel()}`;
  translateDOM();
  const newContent=app.querySelector('.content');
@@ -2686,9 +2735,9 @@ function activeWorkbench(a){
  <span class="normal-time-clock ${a.normalRetryNeeded?'urgent':''}" data-normal-clock>${a.normalRetryNeeded?'0:00':Math.floor(normalTimeLeft(a)/60000)+':'+String(Math.ceil(normalTimeLeft(a)/1000)%60).padStart(2,'0')}</span></div>
  <div class="normal-time-rail"><span data-normal-bar style="width:${a.normalRetryNeeded?0:100*normalTimeLeft(a)/(a.normalStageSeconds*1000)}%"></span></div>
  ${a.normalRetryNeeded?`<div class="normal-retry-banner"><p>⌛ ${L('時間切れ！耐久度が下がりました。同じ工程に再挑戦できます。','TIME UP! Durability decreased. Retry this stage.')}</p><button class="btn" data-action="normal-retry">↻ ${L('同じ工程をやり直す','Retry stage')}</button></div>`:
- `<p class="normal-time-tip">${L('時間切れで耐久度減少・同じ工程を再挑戦','Timeout damages durability · retry allowed')} · ${L('難しい工程は時間を追加','Complex games have extra time')}</p>`}
+ `<p class="normal-time-tip${currentRepairNotice()?' repair-time-error':''}" aria-live="polite">${currentRepairNotice()?.message||L('時間切れで耐久度減少・同じ工程を再挑戦','Timeout damages durability · retry allowed')+' · '+L('難しい工程は時間を追加','Complex games have extra time')}</p>`}
  </section>`:''}
- ${a.isTimed?`<section class="timed-live"><div><strong>⏱️ ${L('5秒スピード修理','5-SECOND RUSH')} <small>${a.stageIndex+1}/${a.stages.length} · ★${a.rushRating||a.difficulty}</small></strong><span class="timed-clock" data-timed-clock aria-live="off">0:${String(Math.ceil(timeLeft(a)/1000)).padStart(2,"0")}</span></div><div class="timed-clock-rail"><span data-timed-bar style="width:${100*timeLeft(a)/((a.stageSeconds||a.budget)*1000)}%"></span></div><p>${L('各工程5秒以内でクリアすると報酬','Clear each mini-game within 5 seconds')} $${n(a.reward)} · <button class="btn secondary sm" data-action="timed-abandon">${L('依頼をやめる','Abandon')}</button></p></section>`:''}<div class="workshop-grid ${a.isTimed?'rush-layout':''}"><section class="panel padded"><div class="row between"><div><span class="tag ${a.rarity==='LEGENDARY'?'legend':''}">${a.rarity}</span><h3 style="margin:5px 0 0;font-size:19px">${a.name}</h3></div><div class="stars">${stars(a.difficulty)}</div></div><div class="art-frame large" style="margin-top:13px">${renderObjectSvg(a)}</div><div class="statline"><span class="muted">本体の耐久度（ミスで減少）</span><b>${a.integrity}% ${a.shield?'🛡️':''}</b></div><div class="condition-track"><span style="width:${a.integrity}%"></span></div><div class="statline"><span class="muted">修理の進捗</span><b>${a.stageIndex}/${a.stages.length} 工程</b></div><div class="step-progress">${a.stages.map((s,i)=>`<span class="${i<a.stageIndex?'done':i===a.stageIndex?'current':''}" title="${STAGES[s.type].name}"></span>`).join('')}</div><div class="row between"><span class="muted tiny">購入価格：$${n(a.purchasePrice)}</span>${a.broken||a.complete?'':'<button class="btn danger sm" data-action="scrap">途中で諦める</button>'}</div></section>
+ ${a.isTimed?`<section class="timed-live"><div><strong>⏱️ ${L('5秒スピード修理','5-SECOND RUSH')} <small>${a.stageIndex+1}/${a.stages.length} · ★${a.rushRating||a.difficulty}</small></strong><span class="timed-clock" data-timed-clock aria-live="off">0:${String(Math.ceil(timeLeft(a)/1000)).padStart(2,"0")}</span></div><div class="timed-clock-rail"><span data-timed-bar style="width:${100*timeLeft(a)/((a.stageSeconds||a.budget)*1000)}%"></span></div><p><span class="rush-repair-message${currentRepairNotice()?' repair-time-error':''}" aria-live="polite">${currentRepairNotice()?.message||L('各工程5秒以内でクリアすると報酬','Clear each mini-game within 5 seconds')}</span> $${n(a.reward)} · <button class="btn secondary sm" data-action="timed-abandon">${L('依頼をやめる','Abandon')}</button></p></section>`:''}<div class="workshop-grid ${a.isTimed?'rush-layout':''}"><section class="panel padded"><div class="row between"><div><span class="tag ${a.rarity==='LEGENDARY'?'legend':''}">${a.rarity}</span><h3 style="margin:5px 0 0;font-size:19px">${a.name}</h3></div><div class="stars">${stars(a.difficulty)}</div></div><div class="art-frame large" style="margin-top:13px">${renderObjectSvg(a)}</div><div class="statline"><span class="muted">本体の耐久度（ミスで減少）</span><b>${a.integrity}% ${a.shield?'🛡️':''}</b></div><div class="condition-track"><span style="width:${a.integrity}%"></span></div><div class="statline"><span class="muted">修理の進捗</span><b>${a.stageIndex}/${a.stages.length} 工程</b></div><div class="step-progress">${a.stages.map((s,i)=>`<span class="${i<a.stageIndex?'done':i===a.stageIndex?'current':''}" title="${STAGES[s.type].name}"></span>`).join('')}</div><div class="row between"><span class="muted tiny">購入価格：$${n(a.purchasePrice)}</span>${a.broken||a.complete?'':'<button class="btn danger sm" data-action="scrap">途中で諦める</button>'}</div></section>
  <section class="panel workshop-controls">${stageArea}${!a.complete&&!a.broken&&!a.isTimed?renderRepairSupport(a):''}</section></div>
  ${state.inventory.length?`<section class="panel padded section-block"><div class="main-card-title"><h3>📦 倉庫の在庫（${state.inventory.length}個）</h3><span class="muted tiny">いまの修理を終えたら次の商品へ</span></div><div class="row" style="flex-wrap:wrap">${state.inventory.map(x=>`<span class="pill">${x.name} ${stars(x.difficulty)}</span>`).join('')}</div></section>`:''}`;
 }
@@ -2987,6 +3036,12 @@ function handleAction(action,id){
  if(action==='scrap'){const a=state.active;if(!a)return;if(a.isTimed){finishTimed(false);return;}if(a.residentId){if(confirm(L('住人の修理依頼を中止しますか？','Abandon this resident request?')))finishResident(false);return;}const salvage=a.isContract?0:(a.broken?Math.round(a.baseValue*.11):Math.round(a.purchasePrice*.24));if(!a.broken&&!confirm(`修理をやめて $${n(salvage)} で処分しますか？`))return;state.coins+=salvage;state.revenue+=salvage;state.active=null;mutate();notify(`部品を回収して $${n(salvage)} を得た`);return;}
  if(action==='upgrade'){const up=UPGRADES.find(x=>x.id===id);if(!up||!upgradeUnlocked(up))return;const price=upgradeCost(up);if(!price||state.coins<price)return;state.coins-=price;state.spent+=price;state.upgrades[id]=upgradeLevel(id)+1;mutate();notify(`${up.name} LV.${state.upgrades[id]} に強化した！`,'good');return;}
 }
+// Dismiss the prior notice immediately on any new touch or click, while
+// preserving the actual interaction. Newly generated notices are unaffected.
+document.addEventListener('pointerdown',dismissToast,{capture:true});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Enter'||e.key===' ')dismissToast();
+},{capture:true});
 // A mobile tap should be judged at touch-down, before click delivery latency.
 app.addEventListener('pointerdown',e=>{
  if(e.target.closest('[data-action="time-stop"]'))calibratePressTiming=lastTiming;
