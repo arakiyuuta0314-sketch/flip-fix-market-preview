@@ -624,15 +624,16 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 @keyframes focusTimerPulse{from{box-shadow:0 0 0 1px #ff8e87aa,0 0 6px #ff696933}to{box-shadow:0 0 0 3px #ff8e87,0 0 18px #ff6969aa}}
 .minigame.focus-failed{border-color:#ff9b9b!important;box-shadow:inset 0 0 0 3px #ff777790,0 0 19px #ff737366!important;animation:focusFailFlash .21s ease-in-out 2 alternate!important}
 @keyframes focusFailFlash{from{filter:none}to{filter:brightness(1.18)}}
-.focus-feedback{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);z-index:7;max-width:calc(100% - 18px);width:max-content;pointer-events:none;border:2px solid #ffd4ca;border-radius:12px;padding:9px 14px;background:#8b3038ed;color:#fff5e9;font-weight:950;font-size:clamp(13px,3.8vw,18px);line-height:1.3;text-align:center;box-shadow:0 5px 22px #000b;animation:focusFailurePop .2s ease both}
-@keyframes focusFailurePop{from{opacity:0;transform:translate(-50%,-42%) scale(.91)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.focus-feedback-slot{height:28px;min-height:28px;margin:0 1px 5px;display:flex;justify-content:center;align-items:center;overflow:visible;pointer-events:none}
+.focus-feedback{display:block;position:relative;z-index:7;max-width:100%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;border:1.5px solid #ffb1a1;border-radius:7px;padding:3px 11px;background:#89373c;color:#fff3e8;font-weight:900;font-size:clamp(11px,3.5vw,14px);line-height:1.35;text-align:center;box-shadow:0 1px 8px #0006;animation:focusFailurePop .14s ease both}
+@keyframes focusFailurePop{from{opacity:0}to{opacity:1}}
 @media(max-width:650px){
  .mini-heading-actions{gap:4px}
  .focus-time-pill{min-width:61px;padding:5px 5px;font-size:10px}
  .focus-time-pill b{font-size:16px}
  .focus-time-track{margin-bottom:6px}
  .mini-heading h3{font-size:14px}
- .focus-feedback{padding:7px 9px;font-size:13px}
+ .focus-feedback{padding:3px 7px;font-size:12px}
 }
 
 .minigame.focus-timed-out{animation:none!important;box-shadow:0 0 0 2px #e79b8c55!important}
@@ -845,12 +846,14 @@ function dismissToast(){
 }
 function showFocusFeedback(game,message){
  game.classList.add('focus-failed');
- game.querySelector('.focus-feedback')?.remove();
+ const slot=game.querySelector('.focus-feedback-slot');
+ if(!slot)throw Error('Missing in-game feedback slot');
+ slot.querySelector('.focus-feedback')?.remove();
  const badge=document.createElement('div');
  badge.className='focus-feedback';
  badge.setAttribute('role','status');
  badge.textContent='✖ '+message;
- game.appendChild(badge);
+ slot.appendChild(badge);
 }
 function focusTimeDisplay(ms){
  const sec=Math.max(0,Math.ceil(ms/1000));
@@ -2679,7 +2682,7 @@ function render(){if(blockedSave)return;
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="settings">⚙ ${L('ゲーム設定','Game settings')}</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · PLAYTEST v0.15.2 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · PLAYTEST v0.15.3 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>${evolutionOverlay()}${eventResultOverlay()}${tutorialOverlay()}${settingsOverlay()}${developmentPanel()}`;
  translateDOM();
  const newContent=app.querySelector('.content');
@@ -2875,13 +2878,13 @@ function renderMinigame(a){const t=taskOf(),st=a.stageState||{},def=STAGES[t.typ
    <button class="mini-help" data-action="tutorial-help" aria-label="${L('遊び方を確認','Show instructions')}">？ ${L('遊び方','Help')}</button>
   </div></div>
  <div class="focus-time-track" aria-hidden="true"><span data-focus-progress style="width:${pct}%"></span></div>
+ <div class="focus-feedback-slot" aria-live="polite">${failure?`<div class="focus-feedback" role="status">✖ ${failure.message}</div>`:''}</div>
  ${inside}
  ${a.normalRetryNeeded?`<div class="focus-timeout-panel" role="alert">
   <strong>⌛ ${L('時間切れ！','TIME UP!')}</strong>
   <span>${L('耐久度が下がりました','Durability decreased')}</span>
   <button class="btn" data-action="normal-retry">↻ ${L('同じ工程をやり直す','Retry stage')}</button>
  </div>`:''}
- ${failure?`<div class="focus-feedback" role="status">✖ ${failure.message}</div>`:''}
  </div><div class="hint section-block">⚠️ 修理ミスで本体耐久度が減少。残り12%以下になると修復不能。保護フィルムは次のミスを1回防ぎます。</div>`;
 }
 function renderTools(){
