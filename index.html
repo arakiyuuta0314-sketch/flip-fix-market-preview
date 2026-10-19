@@ -20,7 +20,19 @@
 /* TOWN REVIVAL • vertical slice v0.4 */
 :root{--base:#112032;--panel:#21334b;--panel2:#28415d;--stroke:#435c70;--gold:#ffcf75;--mint:#88ebc7}
 body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100%)}
-.town-world{position:relative;min-height:290px;background:#9bd2df;border:5px solid #476d7b;border-radius:20px;box-shadow:0 12px 40px #0005;overflow:hidden;margin:0 0 21px;isolation:isolate}
+ .town-hotspot{cursor:pointer;outline:none;touch-action:manipulation}
+ .town-hotspot .tap-sign rect{fill:#17495be8;stroke:#fff4a7;stroke-width:3}
+ .town-hotspot .tap-sign text{font-size:17px;font-weight:900;fill:#fff5db;pointer-events:none}
+ .town-hotspot:hover .tap-sign rect,.town-hotspot:focus .tap-sign rect{fill:#25818b;stroke:#fff5b4}
+ .town-hotspot .tap-hit{fill:transparent;stroke:transparent}
+ .town-scene-tip{position:absolute;right:10px;top:10px;z-index:4;background:#153d52dc;color:#ffe4a3;border:1px solid #c2dace;border-radius:9px;padding:4px 7px;font-size:11px;font-weight:850;pointer-events:none}
+ .repair-mode .town-scene-tip,.repair-mode .town-hotspot .tap-sign{display:none}
+ .town-compare{display:flex;align-items:center;justify-content:center;gap:7px;margin:4px 0}
+ .town-compare>div{width:44%;min-width:0;overflow:hidden;border:2px solid #ffe4a8;border-radius:9px;background:#b5e4cb}
+ .town-compare>div svg{height:92px!important;width:100%;display:block}
+ .town-compare>div small{display:block;background:#1b4a5f;color:#fff0c8;padding:1px;font-size:9px}
+ @media(max-width:650px){.town-hotspot .tap-sign text{font-size:21px}.town-scene-tip{top:auto;bottom:6px;right:6px;font-size:9px}.town-compare>div svg{height:65px!important}}
+ .town-world{position:relative;min-height:290px;background:#9bd2df;border:5px solid #476d7b;border-radius:20px;box-shadow:0 12px 40px #0005;overflow:hidden;margin:0 0 21px;isolation:isolate}
 .town-world svg{display:block;width:100%;height:260px;object-fit:cover;object-position:center}
 .town-head{position:absolute;top:12px;left:14px;display:flex;align-items:center;gap:9px;z-index:4;flex-wrap:wrap}
 .town-label{border-radius:13px;background:#122941dc;border:1px solid #ffffff52;color:#ffecbb;padding:8px 13px;font-weight:850;box-shadow:0 5px 15px #0003;font-size:13px;backdrop-filter:blur(8px)}
@@ -75,7 +87,22 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
  .world-actions{right:5px;bottom:5px;gap:4px}.world-actions .btn{font-size:10px;padding:5px 7px;min-height:30px;box-shadow:none}
  .village-stat{left:6px;bottom:6px;padding:5px 7px;font-size:9px;max-width:48%;border-radius:8px}
  .layout{flex:0 0 clamp(238px,39dvh,370px);height:clamp(238px,39dvh,370px);max-height:43dvh;display:block;overflow:hidden;background:#1a2d3f;border:1px solid #517073;border-radius:13px;margin:0;box-shadow:inset 0 1px #ffffff19,0 -3px 12px #0004}
- .layout .content{height:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch; padding:10px 11px 15px}
+  .layout .content{height:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:10px 11px 15px}
+  .shell.repair-mode .town-world{flex:0 0 115px!important;min-height:115px;height:115px!important}
+  .shell.repair-mode .layout{flex:1 1 auto;height:auto;max-height:none;min-height:0}
+  .shell.repair-mode .workshop-grid{display:flex;flex-direction:column;gap:7px}
+  .shell.repair-mode .workshop-grid .workshop-controls{order:-1;padding:9px}
+  .shell.repair-mode .workshop-grid .panel.padded{padding:10px}
+  .shell.repair-mode .art-frame.large{height:70px;max-height:70px;margin-top:4px!important}
+  .shell.repair-mode .art-frame.large svg{max-height:70px}
+  .shell.repair-mode .section-heading{margin-bottom:6px}
+  .shell.repair-mode .minigame{padding:9px;min-height:160px}
+  .shell.repair-mode .minigame p{margin-bottom:6px}
+  .shell.repair-mode .circuit-grid{width:min(100%,235px);gap:5px}
+  .shell.repair-mode .town-head,.shell.repair-mode .village-stat{display:none}
+  .shell.repair-mode .world-actions{right:5px;bottom:4px}
+  .shell.repair-mode .world-actions .btn{font-size:9px}
+  .shell.repair-mode .town-world::before{content:'🔧 REPAIR';position:absolute;z-index:7;top:4px;left:5px;background:#143e4de8;color:#ffdf99;border-radius:6px;font-size:11px;padding:2px 6px;font-weight:800}
  .section-heading{margin-bottom:7px}.section-heading h2{font-size:18px}.section-heading .sub{font-size:11px;line-height:1.35}.eyebrow{font-size:9px}
  .town-banner{padding:10px 12px;margin-bottom:8px}.town-banner h2{font-size:16px}.town-banner p{font-size:11px;line-height:1.45}
  .quest{margin:7px 0;padding:8px 10px;gap:7px}.quest b{font-size:11px}.quest p{font-size:10px;line-height:1.4}.quest .btn{font-size:10px;padding:5px 9px}
@@ -155,7 +182,7 @@ const UPGRADES = [
   {id:'warehouse',name:'倉庫の増築',icon:'📦',cost:430,desc:'商品保管枠を3個から6個に拡張'}
 ];
 const COLORS = ['#ff987e','#75d5bd','#f7c66e','#9daefa','#d7a1f4'];
-let state, currentTab='shop', selectedWire=-1, timingRaf=0, dragging=false, toastHandle=null, blockedSave=false, lastTiming=50;
+let state, currentTab='shop', selectedWire=-1, timingRaf=0, dragging=false, toastHandle=null, blockedSave=false, lastTiming=50, lastRenderTab=null, lastRenderWorkKey=null;
 const app = document.getElementById('app');
 const n=(v)=>Number(v||0).toLocaleString('ja-JP');
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -301,9 +328,9 @@ function isoBox(x,y,w,d,h,left,right,roof,options={}){
 }
 function isoTree(x,y,size=1,modern=false){return `<g><ellipse cx="${x}" cy="${y+3}" rx="${23*size}" ry="${8*size}" fill="#255d48" opacity=".25"/><path d="M${x} ${y}v-${29*size}" stroke="#775a42" stroke-width="${7*size}"/><circle cx="${x}" cy="${y-33*size}" r="${21*size}" fill="${modern?'#5fd5ad':'#4f9f6d'}"/><circle cx="${x-11*size}" cy="${y-43*size}" r="${14*size}" fill="${modern?'#8df6d4':'#84c78b'}"/></g>`;}
 function isoPerson(x,y,shirt){return `<g class="iso-person"><ellipse cx="${x}" cy="${y+7}" rx="8" ry="3" fill="#355849" opacity=".4"/><circle cx="${x}" cy="${y-18}" r="7" fill="#f3cca7"/><path d="M${x-7} ${y-10}q7 -7 14 0v15h-14z" fill="${shirt}"/><path d="M${x-5} ${y+5}v5m9 -5v5" stroke="#554a53" stroke-width="3"/></g>`;}
-function scenery(){
- const lvl=state.townLevel,home=state.houseLevel,modern=lvl>=6,future=lvl>=7;
- const grass=lvl===1?'#79aa77':lvl<5?'#8fcf9a':future?'#75baad':'#8dcaac';
+function scenery(lvl=state.townLevel,home=state.houseLevel){
+ const modern=lvl>=6,future=lvl>=7;
+ const grass=lvl===1?'#769673':lvl<4?'#90c99a':lvl<6?'#a0d5ac':future?'#70b5b8':'#8cccb3';
  let buildings='';
  // Neighborhood gradually moves closer to the workshop, increasing density and height.
  const sites=[
@@ -327,16 +354,42 @@ function scenery(){
  const heroW=home>=3?113:home>=2?105:94;
  const heroH=home===0?80:home===1?95:home===2?119:home===3?140:165;
  const heroRoof=home===0?'#6a5654':home===1?'#db7e5c':home===2?'#d59b50':home===3?'#418d83':'#4094c2';
- const repairHouse=isoBox(251,431,heroW,88,heroH,home===0?'#96846d':'#fff0c6',home===0?'#877665':'#e7c48e',heroRoof,{sign:'FIX',damaged:home===0,windows:home>=2,neon:home>=4});
- const shopExtension=home>=2?isoBox(111,465,49,38,48,'#ecbe9e','#c7a786',home>=3?'#d8856c':'#c9ad70',{sign:home>=3?'LAB':''}):'';
+ const repairHouse=isoBox(251,431,heroW,88,heroH,
+ home===0?'#8f816d':home>=4?'#bbf6ed':home>=3?'#ffdb94':'#fff0c6',
+ home===0?'#776456':home>=4?'#3788aa':home>=3?'#e8a065':'#e7c48e',
+ home===0?'#66534c':home===1?'#e77d5d':home===2?'#f0b44d':home===3?'#398f8a':'#49e6dd',
+ {sign:home>=3?'FIX LAB':'FIX',damaged:home===0,windows:home>=2,neon:home>=4});
+ const shopExtension=home>=2?isoBox(111,465,home>=3?68:52,45,home>=3?115:59,
+ home>=4?'#9cebee':'#efca9f',home>=4?'#4b94a6':'#cb9c7b',
+ home>=4?'#6bf4e2':home>=3?'#d77c5b':'#c9ad70',{windows:home>=3,neon:home>=4,sign:home>=3?'LAB':''}):'';
+ const houseDecor=home===0?'<path d="M118 478l-23 18m16 15l-9 -23m232-37l19 25" stroke="#87614b" stroke-width="9"/>':
+ home===1?'<g fill="#ffca67"><circle cx="175" cy="493" r="13"/><circle cx="334" cy="466" r="12"/></g>':
+ home===2?'<g><path d="M102 379l54 -12" stroke="#fae2a3" stroke-width="15"/><path d="M132 364v-35" stroke="#f8e7ab" stroke-width="8"/></g>':
+ home===3?'<g><rect x="147" y="272" width="148" height="37" rx="6" fill="#2e6a76" stroke="#ffd790" stroke-width="4"/><text x="161" y="297" font-size="19" fill="#fff6c7" font-weight="900">FIX LAB ✦</text></g>':
+ '<g><rect x="131" y="222" width="160" height="43" rx="8" fill="#1d5878" stroke="#7cfff1" stroke-width="5"/><text x="145" y="251" font-size="24" fill="#bcfff1" font-weight="900">FIX LAB ✦</text></g>';
  const chimney=home>=3?`<path d="M270 251v-48" stroke="#fff4d9" stroke-width="15"/><path d="M260 202h20" stroke="#a65e53" stroke-width="12"/>`:'';
  const gate=lvl>=2?`<g><path d="M661 181v75M744 181v75" stroke="#b94743" stroke-width="14"/><path d="M644 184h116" stroke="#b94743" stroke-width="17"/><path d="M659 167h87" stroke="#ec7658" stroke-width="10"/></g>`:'';
  const shrine=isoBox(700,184,54,47,48,'#d5b792','#bda279','#a8544b',{});
- const roadColor=future?'#5c8a9b':lvl>=5?'#aaa9a1':lvl===1?'#b3a982':'#dec89c';
+ const roadColor=future?'#3a819b':lvl>=6?'#a7bcc0':lvl>=4?'#bac7c1':lvl===1?'#967b62':'#dfc7a2';
  const fountain=lvl>=5?`<g><ellipse cx="525" cy="344" rx="53" ry="28" fill="#d8f0d6" stroke="#fff6de" stroke-width="8"/><ellipse cx="525" cy="340" rx="34" ry="17" fill="${future?'#58e9f1':'#66bdd0'}"/><path d="M525 339v-35" stroke="#cdfdff" stroke-width="7" stroke-linecap="round"/><circle cx="525" cy="301" r="7" fill="#ecffff"/></g>`:'';
  const market=lvl>=4?`<g>${isoBox(515,508,61,34,42,'#eab895','#ba8b66','#dc7061',{sign:'MARKET'})}<path d="M449 466l66 -32 68 31 -69 36z" fill="#fff0bc" opacity=".2"/></g>`:'';
  const tower=lvl>=7?isoBox(479,265,63,54,lvl===8?210:145,'#8cbcd0','#4c849f','#78fbef',{windows:true,neon:true}):'';
  const adornment=lvl>=8?`<path d="M380 170Q465 115 560 182" fill="none" stroke="#8ffff4" stroke-width="11" stroke-linecap="round" opacity=".8"/><g><ellipse cx="760" cy="137" rx="42" ry="13" fill="#4ba1be"/><path d="M729 135l20 -18h20l20 18" fill="#a2f5e9"/><path d="M735 139h49" stroke="#f3ffff" stroke-width="6"/></g>`:'';
+ const district=lvl===1?isoBox(760,442,54,44,40,'#b1a28b','#8a7568','#86685a',{damaged:true}):
+ lvl===2?isoBox(765,446,83,61,74,'#ffe2af','#e5a47d','#f18d69',{sign:'CAFE'}):
+ lvl===3?isoBox(767,451,85,61,157,'#f4dda9','#d8ae86','#d07752',{windows:true,sign:'CLOCK'}):
+ lvl===4?isoBox(764,455,89,68,174,'#ffe0ad','#d2a074','#e47a62',{windows:true,sign:'TOWN'})+isoBox(557,526,64,43,68,'#f8d7a3','#e3a070','#e77858',{sign:'BAZAAR'}):
+ lvl===5?isoBox(772,459,99,74,204,'#d6f1dd','#9cbcaf','#58aaa9',{windows:true,sign:'CITY'}):
+ lvl===6?isoBox(766,453,100,74,243,'#b3dbe4','#679eb8','#488fa5',{windows:true,sign:'CITY'}):
+ lvl===7?isoBox(767,453,104,78,269,'#a5f1e1','#64b6be','#69e7e3',{windows:true,neon:true,sign:'NEO'}):
+ isoBox(768,457,111,82,301,'#8ae8df','#4e9eb9','#a9ffff',{windows:true,neon:true,sign:'FUTURE'});
+ const marketStall=lvl>=4?'':isoBox(548,513,60,43,lvl===1?48:75,lvl===1?'#e0ba96':'#ffdbb7','#bf9874',lvl===1?'#93755c':'#f19a6c',{sign:lvl===1?'JUNK':'MARKET'});
+ const atmosphere=lvl<=3?'<g fill="#ffe5a1"><circle cx="524" cy="548" r="9"/><circle cx="609" cy="475" r="9"/></g>':
+ lvl===4?'<path d="M310 280Q517 204 755 304" stroke="#ffdd93" stroke-width="9" fill="none" stroke-dasharray="17 10"/>':
+ lvl===5?'<g><ellipse cx="557" cy="390" rx="55" ry="25" fill="#e2f5de" stroke="#7ac1cc" stroke-width="10"/><path d="M557 390v-39" stroke="#d6ffff" stroke-width="9"/></g>':
+ lvl===6?'<path d="M342 561l464 -249" stroke="#fff4d2" stroke-width="9" stroke-dasharray="26 19"/>':
+ '<g><path d="M360 551l439 -244" stroke="#78fff0" stroke-width="11"/><path d="M360 568l439 -244" stroke="#d0fff6" stroke-width="4"/></g>';
+ const urbanSky=lvl>=6?Array.from({length:lvl===6?2:lvl===7?3:4},(_,i)=>isoBox(415+i*80,249-i%2*35,47,38,155+((i*47)%80),'#a8d3df','#6098ba',lvl>=7?'#63deec':'#538ea8',{windows:true,neon:lvl>=7})).join(''):'';
  const people= lvl>=2?isoPerson(382,407,'#d86e55')+isoPerson(644,367,'#5287bc'):'';
  const extraPeople=lvl>=4?isoPerson(553,551,'#f5bb68')+isoPerson(487,326,'#8164ad'):'';
  const streetlights=lvl>=3?Array.from({length:Math.min(7,lvl)},(_,i)=>{const x=330+i*62,y=543-i*39;return `<path d="M${x} ${y}v-41" stroke="#566b65" stroke-width="5"/><circle cx="${x}" cy="${y-41}" r="8" fill="${future?'#a7fffa':'#fff2ac'}"/>`;}).join(''):'';
@@ -353,14 +406,24 @@ function scenery(){
  <path d="M76 349L400 192 877 435 548 589Z" fill="${roadColor}" opacity=".96"/>
  <path d="M158 487L693 213 799 269 270 547Z" fill="${roadColor}"/>
  ${lvl>=5?`<path d="M91 353L402 202 856 433" fill="none" stroke="#fff8d0" stroke-width="4" stroke-dasharray="30 19" opacity=".8"/>`:''}
- ${trees}${shrine}${gate}${buildings}${market}${fountain}${tower}
- ${shopExtension}${repairHouse}${chimney}${streetlights}${people}${extraPeople}${adornment}
+ ${trees}${urbanSky}${shrine}${gate}${buildings}${marketStall}${market}${district}${fountain}${tower}
+ ${atmosphere}${shopExtension}${repairHouse}${houseDecor}${chimney}${streetlights}${people}${extraPeople}${adornment}
  <g><path d="M185 519l-4 24 40 22 4-23" fill="#f4e2af" stroke="#825e47" stroke-width="2"/><path d="M181 519l24 -14 42 21 -24 16z" fill="#e6d28f" stroke="#947357" stroke-width="2"/><text x="201" y="532" font-size="11" fill="#56483c" font-weight="900">HOME</text></g>
+<g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="work" aria-label="${L('修理屋','Workshop')}">
+ <path class="tap-hit" d="M128 293L261 175L402 298L394 516L123 539Z"/>
+ <g class="tap-sign" transform="translate(146 458)"><rect x="0" y="0" rx="11" width="156" height="49"/><text x="9" y="31">${L('🔧 修理屋','🔧 REPAIR')}</text></g></g>
+ <g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="shrine" aria-label="${L('神社','Shrine')}">
+ <path class="tap-hit" d="M638 77L817 75L825 268L639 293Z"/>
+ <g class="tap-sign" transform="translate(654 267)"><rect x="0" y="0" rx="11" width="154" height="49"/><text x="9" y="31">${L('⛩ 神社','⛩ SHRINE')}</text></g></g>
+ <g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="market" aria-label="${L('仕入れ','Market')}">
+ <path class="tap-hit" d="M439 421L634 412L634 553L429 585Z"/>
+ <g class="tap-sign" transform="translate(439 529)"><rect x="0" y="0" rx="11" width="161" height="49"/><text x="8" y="31">${L('📦 仕入れ','📦 MARKET')}</text></g></g>
+ ${lvl>=2?'<g class="town-hotspot" role="button" tabindex="0" data-action="tab" data-id="people"><path class="tap-hit" d="M746 305L890 312L893 498L743 498Z"/><g class="tap-sign" transform="translate(713 480)"><rect width="159" height="43" rx="10"/><text x="9" y="28">💬 PEOPLE</text></g></g>':''}
  </svg>`;
 }
 function world(){
- const milestone=sceneReveal?`<div class="town-milestone" role="status"><small>${sceneReveal.kind==='town'?L('神社への奉納が届いた！','Your offering was received!'):L('改装が完成した！','Renovation complete!')}</small><strong>${sceneReveal.kind==='town'?L('街 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'TOWN LV.'+sceneReveal.from+' → LV.'+sceneReveal.to):L('家 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'HOME LV.'+sceneReveal.from+' → LV.'+sceneReveal.to)}</strong><small>${sceneReveal.kind==='town'?L('新しい建物・商品・住人が解放！','New buildings, products and neighbors!'):L('工房の外観が新しくなった！','Your workshop has a new look!')}</small><button class="btn" data-action="reveal-dismiss">${L('新しい街を見に行く','Explore the new town')} →</button></div>`:'';
- return `<section class="town-world ${sceneReveal?'town-cinematic fx-celebrate':''}" aria-label="${L('街の箱庭','Town diorama')}">${scenery()}<div class="town-head"><div class="town-label"><small>${L('わたしの街','MY TOWN')}</small>${getTownName()}</div><span class="town-badge">LV.${state.townLevel}/8</span></div><div class="village-stat">🏠 ${L('家','Home')} ${state.houseLevel}/4 · ⛩️ ${L('街','Town')} ${state.townLevel}/8</div><div class="world-actions"><button class="btn secondary sm" data-action="tab" data-id="shop">🏠 ${L('改装','Home')}</button><button class="btn sm" data-action="tab" data-id="shrine">⛩️ ${L('奉納','Shrine')}</button></div>${milestone}</section>`;
+ const milestone=sceneReveal?`<div class="town-milestone" role="status"><small>${sceneReveal.kind==='town'?L('神社への奉納が届いた！','Your offering was received!'):L('改装が完成した！','Renovation complete!')}</small><strong>${sceneReveal.kind==='town'?L('街 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'TOWN LV.'+sceneReveal.from+' → LV.'+sceneReveal.to):L('家 LV.'+sceneReveal.from+' → LV.'+sceneReveal.to,'HOME LV.'+sceneReveal.from+' → LV.'+sceneReveal.to)}</strong><div class="town-compare"><div><small>BEFORE</small>${scenery(sceneReveal.kind==='town'?sceneReveal.from:state.townLevel,sceneReveal.kind==='house'?sceneReveal.from:state.houseLevel)}</div><div><small>AFTER</small>${scenery()}</div></div><small>${sceneReveal.kind==='town'?L('新しい建物・商品・住人が解放！','New buildings, products and neighbors!'):L('工房の外観が新しくなった！','Your workshop has a new look!')}</small><button class="btn" data-action="reveal-dismiss">${L('新しい街を見に行く','Explore the new town')} →</button></div>`:'';
+ return `<section class="town-world ${sceneReveal?'town-cinematic fx-celebrate':''}" aria-label="${L('街の箱庭','Town diorama')}">${scenery()}<div class="town-head"><div class="town-label"><small>${L('わたしの街','MY TOWN')}</small>${getTownName()}</div><span class="town-badge">LV.${state.townLevel}/8</span></div><div class="town-scene-tip">${L("建物をタップして移動","Tap buildings to visit")}</div><div class="village-stat">🏠 ${L('家','Home')} ${state.houseLevel}/4 · ⛩️ ${L('街','Town')} ${state.townLevel}/8</div><div class="world-actions"><button class="btn secondary sm" data-action="tab" data-id="shop">🏠 ${L('改装','Home')}</button><button class="btn sm" data-action="tab" data-id="shrine">⛩️ ${L('奉納','Shrine')}</button></div>${milestone}</section>`;
 }
 function questView(){const q=objective();return `<div class="quest"><div><b>✦ ${L('次の目標','NEXT GOAL')} · ${q.title}</b><p>${q.desc}</p></div><button class="btn sm" data-action="tab" data-id="${q.tab}">${q.label} →</button></div>`;}
 function storyIntro(){return !state.storySeen?`<div class="story-cut"><b>PROLOGUE · ${L('修理屋と忘れられた村','The repairer and the forgotten town')}</b><h2>${L('ようこそ、小さな修理屋へ。','Welcome to your little workshop.')}</h2><p>${L('新しい生活を始めようと、あなたは静かな田舎町にやってきた。空き家だらけの通り、壊れた看板、誰も使わない古い神社。','You arrive in a quiet village to start a new life. Empty houses, broken signs, and a lonely old shrine line the streets.')}</p><p>${L('残っていた古道具屋の源さんが言う。「壊れたものを直せるなら、この街もきっと直せるさ」','An old antique dealer named Gen smiles: “If you can fix broken things, perhaps you can fix this town too.”')}</p><p><b>${L('修理で稼ぎ、神社に奉納して、街を未来まで育てよう。','Repair, earn, offer at the shrine, and grow the town into the future.')}</b></p><button class="btn" data-action="story-done">${L('さあ、修理屋を開店！','Open the workshop!')} →</button></div>`:'';}
@@ -398,14 +461,23 @@ function translateDOM(){if(state.locale!=='en')return;const walk=document.create
 function navButton(id,icon,text){return `<button class="navbtn ${currentTab===id?'active':''}" data-action="tab" data-id="${id}"><span class="symbol">${icon}</span><span>${text}</span></button>`;}
 function money(){return `<span class="circle-icon">$</span><b>${n(state.coins)}</b>`;}
 function currentLevel(){return `Lv.${tier()}`;}
-function render(){if(blockedSave)return;document.documentElement.lang=state.locale;cancelAnimationFrame(timingRaf);app.innerHTML=`<div class="shell">
+function render(){if(blockedSave)return;
+ const oldContent=app.querySelector('.content');
+ const currentWorkKey=currentTab==='work'&&state.active?state.active.id+':'+state.active.stageIndex+':'+(state.active.complete?'done':'open'):'none';
+ const keepScroll=lastRenderTab===currentTab&&lastRenderWorkKey===currentWorkKey&&oldContent;
+ const oldScroll=keepScroll?oldContent.scrollTop:0;
+ document.documentElement.lang=state.locale;cancelAnimationFrame(timingRaf);app.innerHTML=`<div class="shell ${currentTab==='work'&&state.active?'repair-mode':''}">
  <header class="topbar"><div class="identity"><div class="logo-icon">🔧</div><div><h1>FLIP & FIX</h1><p>Repair • Trade • Collect</p></div></div><div class="top-right"><div class="language-switch"><button data-action="language" data-id="ja" class="${state.locale==='ja'?'selected':''}">日本語</button><button data-action="language" data-id="en" class="${state.locale==='en'?'selected':''}">EN</button></div><div class="level-tag">⭐ <b>${currentLevel()}</b></div><div class="money">${money()}</div><div class="status-pill" id="save-state">${storageAvailable?'● オートセーブ済み':'⚠ 保存不可・体験のみ'}</div></div></header>
  ${world()}<div class="layout"><aside class="sidebar">${navButton('shop','🏠','マイショップ')}${navButton('market','📦','仕入れ市場')}${navButton('work','🔧','修理工房')}${navButton('tools','🛒','アイテムショップ')}${navButton('gallery','🏆','コレクション')}${navButton('shrine','⛩️','神社')}${navButton('people','💬','住人')}<div class="side-separator"></div><div class="sidebar-foot"><h3>SHOP LOG</h3><p>修理完了：${n(state.completed)} 個<br>修理ミス：${n(state.failures)} 回<br>累計売上：$${n(state.revenue)}<br>評判：${n(state.fame)} pt</p><button class="btn secondary sm block" data-action="reset">最初からやり直す</button></div></aside>
  <main class="content">${renderTab()}</main></div>
  <nav class="mobile-nav" aria-label="ゲームメニュー">${navButton('shop','🏠','お店')}${navButton('market','📦','仕入れ')}${navButton('work','🔧','修理')}${navButton('tools','🛒','道具')}${navButton('people','💬','住人')}</nav>
- <div class="footer">TOWN REVIVAL · FIRST 10 MINUTES v0.5 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
+ <div class="footer">TOWN REVIVAL · FIRST 10 MINUTES v0.6 • ${storageAvailable?'保存先：このブラウザ内':'この環境は保存不可（画面を閉じるとリセット）'} • ゲーム内通貨のみ / 実際の課金はありません</div>
  </div>`;
  translateDOM();
+ const newContent=app.querySelector('.content');
+ if(newContent && keepScroll) newContent.scrollTop=oldScroll;
+ lastRenderTab=currentTab;
+ lastRenderWorkKey=currentWorkKey;
  if(state.seenCelebration<state.townLevel){state.seenCelebration=state.townLevel;persist();}
  if(currentTab==='work'&&taskOf()?.type==='calibrate')startCalibration();
  if(currentTab==='work'&&taskOf()?.type==='clean')bindCleaning();
@@ -490,7 +562,8 @@ function handleAction(action,id){
  if(action==='scrap'){const a=state.active;if(!a)return;const salvage=a.isContract?0:(a.broken?Math.round(a.baseValue*.11):Math.round(a.purchasePrice*.24));if(!a.broken&&!confirm(`修理をやめて $${n(salvage)} で処分しますか？`))return;state.coins+=salvage;state.revenue+=salvage;state.active=null;mutate();notify(`部品を回収して $${n(salvage)} を得た`);return;}
  if(action==='upgrade'){const up=UPGRADES.find(x=>x.id===id);if(!up||state.upgrades[id]||state.coins<up.cost)return;state.coins-=up.cost;state.spent+=up.cost;state.upgrades[id]=true;mutate();notify(`${up.name} を導入した！`,'good');return;}
 }
-app.addEventListener('click',e=>{const btn=e.target.closest('button[data-action]');if(!btn||btn.disabled)return;handleAction(btn.dataset.action,btn.dataset.id);});
+app.addEventListener('click',e=>{const c=e.target.closest('[data-action]');if(!c||c.disabled)return;handleAction(c.dataset.action,c.dataset.id);});
+app.addEventListener('keydown',e=>{const c=e.target.closest('.town-hotspot[data-action]');if(!c||!(e.key==='Enter'||e.key===' '))return;e.preventDefault();handleAction(c.dataset.action,c.dataset.id);});
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&currentTab==='work'&&taskOf()?.type==='calibrate'&&!e.repeat){e.preventDefault();handleAction('time-stop');}});
 load();if(!blockedSave)render();
 })();
