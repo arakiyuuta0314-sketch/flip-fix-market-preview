@@ -30,6 +30,7 @@
 - 日本語App Storeスクリーンショット5枚が登録済み。「アプリプレビューとスクリーンショット」で実際のサムネイル5枚を確認。新しいスパナアイコンは最終IPA未ビルドのためApp Store Connectでは旧アイコン表示。
 - アプリ本体は無料 (現在の価格モーダルでUSD $0.00を確認)、175地域で配信予定。Mac配信はOFF、Vision Proの配信もOFFに変更して保存、再読み込み後OFFを再確認。
 - App Storeバージョン1.0のビルド欄は空欄。古いビルドは審査用に選ばない。
+- アプリ／利用パッケージ調査で独自の暗号アルゴリズムは確認されず、Apple OSの標準暗号通信のみを前提にInfo.plistへITSAppUsesNonExemptEncryption=falseを追加。新規IPAで輸出コンプライアンス表示を確認する（Apple公式 https://developer.apple.com/documentation/bundleresources/information-property-list/itsappusesnonexemptencryption）。
 - 中国本土のゲーム配信にはNPPA承認番号、ベトナムにはゲームライセンスが必要となり得る（Apple公式）。175地域からの除外はユーザー未承認のため未変更。Apple審査・配信ができない地域がある可能性。
 - Codemagic最終ビルド、正式審査提出は未実行。
 

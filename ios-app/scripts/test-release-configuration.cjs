@@ -23,6 +23,7 @@ assert.equal(families.length, 2, 'Both Debug and Release must target iPhone only
 assert(!xcode.includes('TARGETED_DEVICE_FAMILY = "1,2"'));
 assert.match(plist, /ca-app-pub-2233916147865641~1831639104/, 'Production AdMob app ID missing');
 assert.match(plist, /NSUserTrackingUsageDescription/, 'ATT purpose string required');
+assert.match(plist, /<key>ITSAppUsesNonExemptEncryption<\/key>\s*<false\/>/, 'Only exempt Apple OS cryptography is used');
 assert(source.includes('trackingAuthorizationStatus()'), 'ATT authorization check required');
 assert(source.includes('requestTrackingAuthorization()'), 'ATT request on iOS required');
 const skids = [...plist.matchAll(/<string>([a-z0-9]{10}\.skadnetwork)<\/string>/g)].map(m=>m[1]);
