@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:monetization": "esbuild monetization-entry.js --bundle --format=iife --platform=browser --outfile=www/monetization.js",
-    "test": "node --check www/monetization.js",
+    "test": "node --check www/monetization.js && node scripts/test-monetization-flow.cjs && node scripts/test-release-configuration.cjs",
     "postinstall": "node scripts/patch-admob-consent.cjs"
   },
   "keywords": [],

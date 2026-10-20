@@ -1,6 +1,6 @@
 import { store, ProductType, Platform } from 'capacitor-plugin-cdv-purchase';
 const PRODUCT_ID = 'com.flipfixmarket.game.remove_ads';
-// Enable non-consumable Remove Ads for Apple Sandbox / TestFlight verification.
+// Non-consumable Remove Ads is enabled for App Store release and Sandbox.
 const PURCHASES_ENABLED = true;
 const BANNER_AD_ID = 'ca-app-pub-2233916147865641/3865855634';
 const INTERSTITIAL_AD_ID = 'ca-app-pub-2233916147865641/3103438301';
