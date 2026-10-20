@@ -8899,6 +8899,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
     "monetization-entry.js"() {
       init_dist2();
       var PRODUCT_ID = "com.flipfixmarket.game.remove_ads";
+      var PURCHASES_ENABLED = false;
       var SAMPLE_BANNER = "ca-app-pub-3940256099942544/2934735716";
       var SAMPLE_INTERSTITIAL = "ca-app-pub-3940256099942544/4411468910";
       var native = window.Capacitor?.getPlatform?.() === "ios";
@@ -8986,6 +8987,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         }
       }
       window.flipFixPurchase = async () => {
+        if (!PURCHASES_ENABLED) return notify("\u5E83\u544A\u524A\u9664\u306E\u8CFC\u5165\u6A5F\u80FD\u306F\u6E96\u5099\u4E2D\u3067\u3059\u3002");
         if (!native) return notify("\u8CFC\u5165\u306FiPhone\u30A2\u30D7\u30EA\u304B\u3089\u5229\u7528\u3067\u304D\u307E\u3059\u3002");
         if (unlocked) return notify("\u5E83\u544A\u524A\u9664\u306F\u8CFC\u5165\u6E08\u307F\u3067\u3059\u3002");
         if (!initialized) return notify("App Store\u3078\u306E\u63A5\u7D9A\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
@@ -8999,6 +9001,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         }
       };
       window.flipFixRestore = async () => {
+        if (!PURCHASES_ENABLED) return notify("\u5E83\u544A\u524A\u9664\u306E\u8CFC\u5165\u6A5F\u80FD\u306F\u6E96\u5099\u4E2D\u3067\u3059\u3002");
         if (!native || !initialized) return notify("App Store\u3078\u306E\u63A5\u7D9A\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
         try {
           const error = await store.restorePurchases();
@@ -9107,8 +9110,13 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       });
       if (native) {
         $html.classList.add("native-ios", "native-ad-hidden");
-        status("loading");
-        initializePurchases().then(initializeAds);
+        if (PURCHASES_ENABLED) {
+          status("loading");
+          initializePurchases().then(initializeAds);
+        } else {
+          status("\u6E96\u5099\u4E2D\uFF08\u8CFC\u5165\u4E0D\u53EF\uFF09");
+          initializeAds();
+        }
       }
     }
   });

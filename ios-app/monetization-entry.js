@@ -1,5 +1,7 @@
 import { store, ProductType, Platform } from 'capacitor-plugin-cdv-purchase';
 const PRODUCT_ID = 'com.flipfixmarket.game.remove_ads';
+// In-app purchases are paused until App Store Connect is ready.
+const PURCHASES_ENABLED = false;
 const SAMPLE_BANNER = 'ca-app-pub-3940256099942544/2934735716';
 const SAMPLE_INTERSTITIAL = 'ca-app-pub-3940256099942544/4411468910';
 const native = window.Capacitor?.getPlatform?.() === 'ios';
@@ -73,6 +75,7 @@ async function initializePurchases() {
   }
 }
 window.flipFixPurchase = async () => {
+  if (!PURCHASES_ENABLED) return notify('広告削除の購入機能は準備中です。');
   if (!native) return notify('購入はiPhoneアプリから利用できます。');
   if (unlocked) return notify('広告削除は購入済みです。');
   if (!initialized) return notify('App Storeへの接続を確認してください。');
@@ -83,6 +86,7 @@ window.flipFixPurchase = async () => {
   if (error) { log('purchase failed', error); notify('購入を完了できませんでした。'); }
 };
 window.flipFixRestore = async () => {
+  if (!PURCHASES_ENABLED) return notify('広告削除の購入機能は準備中です。');
   if (!native || !initialized) return notify('App Storeへの接続を確認してください。');
   try {
     const error = await store.restorePurchases();
@@ -193,6 +197,11 @@ window.flipFixAdDebug = () => ({
 
 if (native) {
   $html.classList.add('native-ios', 'native-ad-hidden');
-  status('loading');
-  initializePurchases().then(initializeAds);
+  if (PURCHASES_ENABLED) {
+    status('loading');
+    initializePurchases().then(initializeAds);
+  } else {
+    status('準備中（購入不可）');
+    initializeAds();
+  }
 }
