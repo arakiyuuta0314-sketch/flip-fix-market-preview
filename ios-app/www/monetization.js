@@ -8900,8 +8900,8 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       init_dist2();
       var PRODUCT_ID = "com.flipfixmarket.game.remove_ads";
       var PURCHASES_ENABLED = false;
-      var SAMPLE_BANNER = "ca-app-pub-3940256099942544/2934735716";
-      var SAMPLE_INTERSTITIAL = "ca-app-pub-3940256099942544/4411468910";
+      var BANNER_AD_ID = "ca-app-pub-2233916147865641/3865855634";
+      var INTERSTITIAL_AD_ID = "ca-app-pub-2233916147865641/3103438301";
       var native = window.Capacitor?.getPlatform?.() === "ios";
       var adMob = window.Capacitor?.Plugins?.AdMob;
       var MIN_COMPLETED_JOBS_PER_INTERSTITIAL = 10;
@@ -9027,7 +9027,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       async function prepareInterstitial() {
         if (!adReady || unlocked) return;
         try {
-          await adMob.prepareInterstitial({ adId: SAMPLE_INTERSTITIAL, isTesting: true });
+          await adMob.prepareInterstitial({ adId: INTERSTITIAL_AD_ID, isTesting: false });
           window.flipFixInterstitialStatus = "\u6E96\u5099\u5B8C\u4E86";
         } catch (error) {
           window.flipFixInterstitialStatus = "\u8AAD\u307F\u8FBC\u307F\u5931\u6557: " + (error?.message || String(error));
@@ -9072,21 +9072,21 @@ Enter "E" to fail with an error.Anything else to cancel.`);
             return;
           }
           adDiagnostic("SDK\u521D\u671F\u5316\u4E2D");
-          await adMob.initialize({ initializeForTesting: true });
+          await adMob.initialize({ initializeForTesting: false });
           adReady = true;
           adDiagnostic("SDK\u6E96\u5099\u5B8C\u4E86\u30FB\u30D0\u30CA\u30FC\u8AAD\u8FBC\u4E2D");
           await prepareInterstitial();
           try {
             await adMob.showBanner({
-              adId: SAMPLE_BANNER,
+              adId: BANNER_AD_ID,
               adSize: "BANNER",
               position: "BOTTOM_CENTER",
               margin: 0,
-              isTesting: true
+              isTesting: false
             });
             bannerLayout(true);
-            adDiagnostic("\u30C6\u30B9\u30C8\u30D0\u30CA\u30FC\u8868\u793A\u6210\u529F");
-            log("test banner displayed");
+            adDiagnostic("\u30D0\u30CA\u30FC\u8868\u793A\u6210\u529F");
+            log("banner displayed");
           } catch (error) {
             bannerLayout(false);
             adDiagnostic("\u30D0\u30CA\u30FC\u8AAD\u8FBC\u5931\u6557: " + (error?.message || String(error)));

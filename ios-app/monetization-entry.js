@@ -2,8 +2,8 @@ import { store, ProductType, Platform } from 'capacitor-plugin-cdv-purchase';
 const PRODUCT_ID = 'com.flipfixmarket.game.remove_ads';
 // In-app purchases are paused until App Store Connect is ready.
 const PURCHASES_ENABLED = false;
-const SAMPLE_BANNER = 'ca-app-pub-3940256099942544/2934735716';
-const SAMPLE_INTERSTITIAL = 'ca-app-pub-3940256099942544/4411468910';
+const BANNER_AD_ID = 'ca-app-pub-2233916147865641/3865855634';
+const INTERSTITIAL_AD_ID = 'ca-app-pub-2233916147865641/3103438301';
 const native = window.Capacitor?.getPlatform?.() === 'ios';
 const adMob = window.Capacitor?.Plugins?.AdMob;
 // Interstitials are restricted to natural post-repair breaks.
@@ -112,7 +112,7 @@ window.flipFixPrivacyOptions = async () => {
 async function prepareInterstitial() {
   if (!adReady || unlocked) return;
   try {
-    await adMob.prepareInterstitial({ adId: SAMPLE_INTERSTITIAL, isTesting: true });
+    await adMob.prepareInterstitial({ adId: INTERSTITIAL_AD_ID, isTesting: false });
     window.flipFixInterstitialStatus = '準備完了';
   } catch (error) {
     window.flipFixInterstitialStatus = '読み込み失敗: ' + (error?.message || String(error));
@@ -157,22 +157,22 @@ async function initializeAds() {
       return;
     }
     adDiagnostic('SDK初期化中');
-    await adMob.initialize({ initializeForTesting: true });
+    await adMob.initialize({ initializeForTesting: false });
     adReady = true;
     adDiagnostic('SDK準備完了・バナー読込中');
     // The interstitial lifecycle must be independent of the banner lifecycle.
     await prepareInterstitial();
     try {
       await adMob.showBanner({
-        adId: SAMPLE_BANNER,
+        adId: BANNER_AD_ID,
         adSize: 'BANNER',
         position: 'BOTTOM_CENTER',
         margin: 0,
-        isTesting: true
+        isTesting: false
       });
       bannerLayout(true);
-      adDiagnostic('テストバナー表示成功');
-      log('test banner displayed');
+      adDiagnostic('バナー表示成功');
+      log('banner displayed');
     } catch (error) {
       bannerLayout(false);
       adDiagnostic('バナー読込失敗: ' + (error?.message || String(error)));
