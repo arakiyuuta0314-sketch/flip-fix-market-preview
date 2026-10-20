@@ -20,6 +20,10 @@ const status = (message) => {
   window.dispatchEvent(new CustomEvent('flipfix-monetization-status'));
 };
 const notify = (message) => window.alert(message);
+const errorText = error => {
+  const code = error?.code ? String(error.code) + ': ' : '';
+  return (code + (error?.message || error?.localizedDescription || String(error))).slice(0, 340);
+};
 function bannerLayout(show) {
   $html.classList.toggle('native-ad-visible', Boolean(show) && !unlocked);
   $html.classList.toggle('native-ad-hidden', !show || unlocked);
@@ -51,16 +55,16 @@ async function initializePurchases() {
       log('product updated', { id: product.id, price: product.getOffer?.()?.pricing?.price });
     }
   });
-  store.error(error => { log('StoreKit error', error); status('error'); });
+  store.error(error => { log('StoreKit error', error); status('error: ' + errorText(error)); });
   try {
     const errors = await store.initialize([Platform.APPLE_APPSTORE]);
-    if (errors?.length) throw new Error(errors.map(e => e.message).join('; '));
+    if (errors?.length) throw new Error(errors.map(errorText).join('; '));
     if (store.owned(PRODUCT_ID)) unlockAds();
     initialized = true;
     status(unlocked ? 'purchased' : 'ready');
     log('StoreKit initialized');
   } catch (error) {
-    status('error');
+    status('error: ' + errorText(error));
     log('StoreKit initialization failed', error);
   }
 }

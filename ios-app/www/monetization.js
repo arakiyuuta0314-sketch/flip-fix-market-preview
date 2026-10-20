@@ -8924,6 +8924,10 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         window.dispatchEvent(new CustomEvent("flipfix-monetization-status"));
       };
       var notify = (message) => window.alert(message);
+      var errorText = (error) => {
+        const code = error?.code ? String(error.code) + ": " : "";
+        return (code + (error?.message || error?.localizedDescription || String(error))).slice(0, 340);
+      };
       function bannerLayout(show) {
         $html.classList.toggle("native-ad-visible", Boolean(show) && !unlocked);
         $html.classList.toggle("native-ad-hidden", !show || unlocked);
@@ -8965,17 +8969,17 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         });
         store.error((error) => {
           log("StoreKit error", error);
-          status("error");
+          status("error: " + errorText(error));
         });
         try {
           const errors = await store.initialize([Platform.APPLE_APPSTORE]);
-          if (errors?.length) throw new Error(errors.map((e) => e.message).join("; "));
+          if (errors?.length) throw new Error(errors.map(errorText).join("; "));
           if (store.owned(PRODUCT_ID)) unlockAds();
           initialized = true;
           status(unlocked ? "purchased" : "ready");
           log("StoreKit initialized");
         } catch (error) {
-          status("error");
+          status("error: " + errorText(error));
           log("StoreKit initialization failed", error);
         }
       }
