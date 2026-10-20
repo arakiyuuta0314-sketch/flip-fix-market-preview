@@ -708,6 +708,15 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
   .mobile-nav{height:48px}
 }@media(max-width:650px){html.native-ios .mobile-nav::after{content:"";background:#152235}}
 </style>
+<style>
+@media(max-width:650px){
+html.native-ios.native-ad-hidden .mobile-nav{bottom:env(safe-area-inset-bottom)}
+html.native-ios.native-ad-hidden .mobile-nav::after{display:none}
+html.native-ios.native-ad-hidden .shell{padding-bottom:calc(70px + env(safe-area-inset-bottom))!important}
+html.native-ios.native-ad-visible .mobile-nav{bottom:calc(50px + env(safe-area-inset-bottom))}
+html.native-ios.native-ad-visible .mobile-nav::after{background:#152235}
+}
+</style>
 </head>
 <body>
   <div id="app"><div style="max-width:600px;margin:12vh auto;color:#f3f4ec;background:#1c2537;border:1px solid #364258;padding:24px;border-radius:16px;font:16px/1.7 system-ui,sans-serif"><h1>🔧 Flip &amp; Fix Market</h1><p>ゲームを読み込み中です…</p><p>しばらく経っても変わらない場合、このアプリ内のHTMLビューアーはゲームの実行に対応していません。通常のブラウザーでゲームURLを開いてください。</p></div></div>
@@ -2506,6 +2515,7 @@ function settingsOverlay(){
    <div class="settings-heading">⚙ ${L('ゲーム設定','Game settings')}</div>
    <p>${L('進行状況はこのブラウザに自動保存されています。ブラウザのデータを消すと続きから遊べません。','Progress is automatically stored in this browser. Clearing browser data may erase it.')}</p>
    <div class="settings-info">🏠 ${L('工房','Workshop')} LV.${state.houseLevel} · ⛩️ ${L('街','Town')} LV.${state.townLevel} · 🔧 ${n(state.completed)} ${L('回修理','repairs')}</div>
+   <div class="settings-info" id="purchase-panel"><strong>広告を削除 / Remove Ads</strong><p>一度購入すると、バナーと全画面広告がなくなります。価格はApp Storeの購入画面で確認できます。</p><button class="btn secondary block" data-action="purchase-remove-ads">広告を永久に削除</button><button class="btn secondary block" data-action="restore-remove-ads">購入を復元</button></div>
    ${settingsResetStage===0?`<div class="settings-actions"><button class="btn danger block" data-action="settings-reset-prompt">↻ ${L('最初から始める','Start a new game')}</button><button class="btn secondary block" data-action="settings-close">${L('ゲームに戻る','Return to game')}</button></div>`:
    `<div class="settings-danger"><h3>⚠️ ${L('セーブデータを初期化しますか？','Permanently erase this save?')}</h3>
       <p>${L('所持金、街や工房の発展、住人の物語、道具、コレクションがすべて最初に戻ります。元には戻せません。','Coins, town and workshop upgrades, resident stories, tools, and collections will all be reset. This cannot be undone.')}</p>
@@ -3226,7 +3236,9 @@ function resetAll(){
 function handleAction(action,id){
  if(DEV_MODE&&handleDevAction(action))return;
  if(settingsOpen){
-  if(action==='settings-close'){settingsOpen=false;settingsResetStage=0;render();return;}
+  if(action==='purchase-remove-ads'){window.flipFixPurchase?.();return;}
+   if(action==='restore-remove-ads'){window.flipFixRestore?.();return;}
+   if(action==='settings-close'){settingsOpen=false;settingsResetStage=0;render();return;}
   if(action==='settings-reset-prompt'){settingsResetStage=1;render();return;}
   if(action==='settings-reset-cancel'){settingsResetStage=0;render();return;}
   if(action==='settings-reset-confirm'&&settingsResetStage===1){resetAll();return;}
@@ -3368,8 +3380,8 @@ function handleAction(action,id){
  }
  finishStep(true);return;
  }
- if(action==='sell'){const a=state.active;if(!a?.complete)return;const price=saleValue(a);state.coins+=price;state.revenue+=price;state.fame+=3+a.difficulty*3+(a.integrity===100?5:0);state.completed++;state.active=null;maybeSpawnRush();mutate();notify(`${a.name} を $${n(price)} で販売！`,'good');return;}
- if(action==='collect'){const a=state.active;if(!a?.complete||a.isContract)return;const points=Math.round((11+a.difficulty*15)*[1,1.5,1.7,1.85][upgradeLevel('showcase')]);a.quality=repairQuality(a);state.collection.push(a);state.fame+=points;state.completed++;state.active=null;maybeSpawnRush();mutate();notify(`🏆 コレクション追加！ 評判 +${points}`,'good');return;}
+ if(action==='sell'){const a=state.active;if(!a?.complete)return;const price=saleValue(a);state.coins+=price;state.revenue+=price;state.fame+=3+a.difficulty*3+(a.integrity===100?5:0);state.completed++;state.active=null;maybeSpawnRush();mutate();window.flipFixAdBreak?.();notify(`${a.name} を $${n(price)} で販売！`,'good');return;}
+ if(action==='collect'){const a=state.active;if(!a?.complete||a.isContract)return;const points=Math.round((11+a.difficulty*15)*[1,1.5,1.7,1.85][upgradeLevel('showcase')]);a.quality=repairQuality(a);state.collection.push(a);state.fame+=points;state.completed++;state.active=null;maybeSpawnRush();mutate();window.flipFixAdBreak?.();notify(`🏆 コレクション追加！ 評判 +${points}`,'good');return;}
  if(action==='scrap'){const a=state.active;if(!a)return;if(a.isTimed){finishTimed(false);return;}if(a.residentId){if(confirm(L('住人の修理依頼を中止しますか？','Abandon this resident request?')))finishResident(false);return;}const salvage=a.isContract?0:(a.broken?Math.round(a.baseValue*.11):Math.round(a.purchasePrice*.24));if(!a.broken&&!confirm(`修理をやめて $${n(salvage)} で処分しますか？`))return;state.coins+=salvage;state.revenue+=salvage;state.active=null;mutate();notify(`部品を回収して $${n(salvage)} を得た`);return;}
  if(action==='upgrade'){const up=UPGRADES.find(x=>x.id===id);if(!up||!upgradeUnlocked(up))return;const price=upgradeCost(up);if(!price||state.coins<price)return;state.coins-=price;state.spent+=price;state.upgrades[id]=upgradeLevel(id)+1;mutate();notify(`${up.name} LV.${state.upgrades[id]} に強化した！`,'good');return;}
 }
@@ -3450,6 +3462,6 @@ setInterval(()=>{
 })();
 
 </script>
-<script src="admob-test.js"></script>
+<script src="monetization.js"></script>
 </body>
 </html>

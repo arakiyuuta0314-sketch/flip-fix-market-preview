@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:monetization": "esbuild monetization-entry.js --bundle --format=iife --platform=browser --outfile=www/monetization.js",
+    "test": "node --check www/monetization.js"
   },
   "keywords": [],
   "author": "",
@@ -13,9 +14,11 @@
   "dependencies": {
     "@capacitor-community/admob": "^8.2.1",
     "@capacitor/core": "^8.5.3",
-    "@capacitor/ios": "^8.5.3"
+    "@capacitor/ios": "^8.5.3",
+    "capacitor-plugin-cdv-purchase": "^13.19.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^8.4.3"
+    "@capacitor/cli": "^8.4.3",
+    "esbuild": "^0.28.2"
   }
 }
