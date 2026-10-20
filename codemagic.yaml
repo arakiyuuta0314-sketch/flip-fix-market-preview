@@ -41,7 +41,7 @@ workflows:
           npx cap sync ios
       - name: Set unique TestFlight build number
         script: |
-          cd ios-app
+          cd ios-app/ios/App
           xcrun agvtool new-version -all "$PROJECT_BUILD_NUMBER"
       - name: Set up signing
         script: |
