@@ -464,6 +464,8 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 .story-journal-chapter{color:#ffe5aa}
 
 .settings-overlay{position:fixed;z-index:12000;inset:0;display:flex;align-items:center;justify-content:center;background:#061c2ac9;backdrop-filter:blur(8px);padding:16px;box-sizing:border-box;color:#f4f5e9}
+.native-ios.native-ad-visible .settings-overlay{bottom:calc(50px + env(safe-area-inset-bottom))}
+.native-ios.native-ad-visible .settings-card{max-height:calc(100dvh - 92px - env(safe-area-inset-bottom))}
 .settings-card{width:min(440px,100%);max-height:calc(100dvh - 30px);overflow:auto;background:linear-gradient(160deg,#244d59,#1b3044);border:2px solid #a7e5cb;border-radius:18px;box-shadow:0 18px 68px #000a;padding:20px}
 .settings-heading{font-weight:900;font-size:22px;color:#ffe9b6;margin-bottom:10px}
 .settings-card p{line-height:1.6;font-size:13px}
@@ -2517,7 +2519,6 @@ function settingsOverlay(){
    <div class="settings-info">🏠 ${L('工房','Workshop')} LV.${state.houseLevel} · ⛩️ ${L('街','Town')} LV.${state.townLevel} · 🔧 ${n(state.completed)} ${L('回修理','repairs')}</div>
    <div class="settings-info" id="purchase-panel"><strong>${L("広告削除（準備中）","Remove Ads (Coming Soon)")}</strong><p>${L("広告削除の買い切り機能は現在準備中です。販売開始まで購入できません。","The one-time remove-ads purchase is being prepared and is unavailable for now.")}</p><button class="btn secondary block" type="button" disabled aria-disabled="true">${L("現在準備中","Coming soon")}</button></div>
    ${window.Capacitor?.getPlatform?.() === 'ios' ? `<div class="settings-info"><strong>${L('広告・プライバシー','Ads & privacy')}</strong><p>${L('広告に関する同意やプライバシー設定を変更できます。','Review or change your advertising privacy choices.')}</p><button class="btn secondary block" data-action="ad-privacy-options">${L('広告の同意設定を開く','Advertising privacy choices')}</button><p><a href="https://arakiyuuta0314-sketch.github.io/app-legal-pages/flip-fix-market/privacy/" target="_blank" rel="noopener noreferrer">${L('プライバシーポリシー','Privacy Policy')}</a></p></div>` : ''}
-    ${window.Capacitor?.getPlatform?.() === 'ios' ? `<div class="settings-info" style="font-size:12px;line-height:1.5"><strong>動作確認</strong><p style="margin:5px 0">バナー: <span id="ad-diagnostic-status">${window.flipFixAdDiagnostic || '準備中'}</span></p><p style="margin:5px 0">全画面広告: ${window.flipFixInterstitialStatus || '未準備'}</p><p style="margin:5px 0">購入機能: <span id="purchase-diagnostic-status">${window.flipFixMonetizationStatus || '準備中'}</span></p></div>` : ''}
    ${settingsResetStage===0?`<div class="settings-actions"><button class="btn danger block" data-action="settings-reset-prompt">↻ ${L('最初から始める','Start a new game')}</button><button class="btn secondary block" data-action="settings-close">${L('ゲームに戻る','Return to game')}</button></div>`:
    `<div class="settings-danger"><h3>⚠️ ${L('セーブデータを初期化しますか？','Permanently erase this save?')}</h3>
       <p>${L('所持金、街や工房の発展、住人の物語、道具、コレクションがすべて最初に戻ります。元には戻せません。','Coins, town and workshop upgrades, resident stories, tools, and collections will all be reset. This cannot be undone.')}</p>
