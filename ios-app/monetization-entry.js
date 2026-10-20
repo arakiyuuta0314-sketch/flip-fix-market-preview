@@ -174,6 +174,15 @@ async function initializeAds() {
       bannerLayout(false);
       return;
     }
+    // iOS ATT is independent of UMP. Respect denial and continue with ads
+    // that do not require the advertising identifier.
+    try {
+      const tracking = await adMob.trackingAuthorizationStatus();
+      if (tracking.status === 'notDetermined') await adMob.requestTrackingAuthorization();
+    } catch (error) {
+      log('ATT authorization unavailable; continuing without IDFA permission', error);
+    }
+    if (unlocked) { await hideAds(); return; }
     adDiagnostic('SDK初期化中');
     await adMob.initialize({ initializeForTesting: false });
     adReady = true;

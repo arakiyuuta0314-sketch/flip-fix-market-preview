@@ -64,6 +64,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>アプリ内広告の表示と効果測定のため、許可された場合にのみ他社のアプリやWebサイトを横断したトラッキングを利用します。許可しなくてもゲームをプレイできます。</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-2233916147865641~1831639104</string>
 	<key>SKAdNetworkItems</key>

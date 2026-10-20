@@ -12,7 +12,7 @@ const testSource = entry.replace(
 assert.notEqual(testSource, entry, 'Expected StoreKit import not found');
 
 async function boot(options = {}) {
-  const calls = { order: 0, restore: 0, finish: 0, banners: 0, hide: 0, interstitials: 0, prepare: 0, alerts: [], statuses: [], events: [] };
+  const calls = { order: 0, restore: 0, finish: 0, banners: 0, hide: 0, interstitials: 0, prepare: 0, attPrompt: 0, attStatus: 0, alerts: [], statuses: [], events: [] };
   let owned = Boolean(options.owned);
   let releaseBanner;
   let callback = {};
@@ -67,6 +67,8 @@ async function boot(options = {}) {
     }
   };
   const admob = {
+    async trackingAuthorizationStatus() { calls.attStatus++; if (options.attError) throw Error('ATT unavailable'); return { status: options.attStatus || 'denied' }; },
+    async requestTrackingAuthorization() { calls.attPrompt++; },
     async requestConsentInfo() { return { canRequestAds: true, status: 'NOT_REQUIRED' }; },
     async showConsentForm() { throw Error('unexpected consent form'); },
     async initialize() {},
@@ -163,10 +165,17 @@ async function boot(options = {}) {
     'Store registration exceptions must be visible on iPhone');
   assert.equal(registrationFailure.calls.banners, 1, 'Store registration failure must not prevent advertisements');
 
+  const undeterminedTracking = await boot({ attStatus: 'notDetermined' });
+  assert.equal(undeterminedTracking.calls.attPrompt, 1, 'Request ATT once when not determined');
+  assert.equal(undeterminedTracking.calls.banners, 1, 'Ads can display after ATT prompt');
+  assert.equal(normal.calls.attPrompt, 0, 'Do not repeat ATT prompt when already denied');
+  const trackingError = await boot({ attError: true });
+  assert.equal(trackingError.calls.banners, 1, 'ATT errors must not block non-IDFA ads');
+
   const web = await boot({ platform: 'web' });
   await web.window.flipFixPurchase();
   assert.equal(web.calls.banners, 0);
   assert(web.calls.alerts.some(v => v.includes('iPhoneアプリ')));
 
-  console.log('PASS 11 monetization scenarios: purchase/hide, concurrent banner, restart, restore, no-owned restore, missing product, failed purchase, failed restore, initialization failure, registration exception, web guard.');
+  console.log('PASS 13 monetization scenarios: purchase/hide, concurrent banner, restart, restore, no-owned restore, missing product, failed purchase, failed restore, initialization failure, registration exception, web guard, ATT prompt, ATT failure.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

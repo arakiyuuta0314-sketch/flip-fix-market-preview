@@ -9089,6 +9089,16 @@ Enter "E" to fail with an error.Anything else to cancel.`);
             bannerLayout(false);
             return;
           }
+          try {
+            const tracking = await adMob.trackingAuthorizationStatus();
+            if (tracking.status === "notDetermined") await adMob.requestTrackingAuthorization();
+          } catch (error) {
+            log("ATT authorization unavailable; continuing without IDFA permission", error);
+          }
+          if (unlocked) {
+            await hideAds();
+            return;
+          }
           adDiagnostic("SDK\u521D\u671F\u5316\u4E2D");
           await adMob.initialize({ initializeForTesting: false });
           adReady = true;
