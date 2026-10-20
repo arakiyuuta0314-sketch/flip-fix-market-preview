@@ -2515,7 +2515,7 @@ function settingsOverlay(){
  return `<div class="settings-overlay" role="dialog" aria-modal="true" aria-label="${L('ゲーム設定','Game settings')}">
   <div class="settings-card">
    <div class="settings-heading">⚙ ${L('ゲーム設定','Game settings')}</div>
-   <p>${L('進行状況はこのブラウザに自動保存されています。ブラウザのデータを消すと続きから遊べません。','Progress is automatically stored in this browser. Clearing browser data may erase it.')}</p>
+   <p>${L('進行状況はこの端末に自動保存されます。アプリやブラウザのデータを削除するとセーブデータが失われる場合があります。','Progress is saved on this device. Removing the app or browser data may erase your progress.')}</p>
    <div class="settings-info">🏠 ${L('工房','Workshop')} LV.${state.houseLevel} · ⛩️ ${L('街','Town')} LV.${state.townLevel} · 🔧 ${n(state.completed)} ${L('回修理','repairs')}</div>
    <div class="settings-info" id="purchase-panel"><strong>${L("広告削除（準備中）","Remove Ads (Coming Soon)")}</strong><p>${L("広告削除の買い切り機能は現在準備中です。販売開始まで購入できません。","The one-time remove-ads purchase is being prepared and is unavailable for now.")}</p><button class="btn secondary block" type="button" disabled aria-disabled="true">${L("現在準備中","Coming soon")}</button></div>
    ${window.Capacitor?.getPlatform?.() === 'ios' ? `<div class="settings-info"><strong>${L('広告・プライバシー','Ads & privacy')}</strong><p>${L('広告に関する同意やプライバシー設定を変更できます。','Review or change your advertising privacy choices.')}</p><button class="btn secondary block" data-action="ad-privacy-options">${L('広告の同意設定を開く','Advertising privacy choices')}</button><p><a href="https://arakiyuuta0314-sketch.github.io/app-legal-pages/flip-fix-market/privacy/" target="_blank" rel="noopener noreferrer">${L('プライバシーポリシー','Privacy Policy')}</a></p></div>` : ''}
