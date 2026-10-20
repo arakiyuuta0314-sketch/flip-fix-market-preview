@@ -696,7 +696,17 @@ body{background:radial-gradient(ellipse at top,#1c4560 0,#12273b 56%,#101b2b 100
 @keyframes stepSuccessOutline{0%{box-shadow:0 0 0 3px #fff2ae,0 0 23px #96ffcb}100%{box-shadow:0 0 0 0 transparent}}
 @keyframes rewardArrive{from{transform:scale(.88);opacity:.5}to{transform:scale(1);opacity:1}}
 @media(max-width:650px){.shop-item .shop-icon{min-width:40px;min-height:40px;font-size:21px}.repair-reward-art svg{max-height:85px}.repair-reward-art span{font-size:11px}}
-</style>
+/* iOS ad-slot layout preview: no AdMob SDK or live advertising. */
+@media(max-width:650px){
+  :root{--ad-preview-height:50px}
+  .shell{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
+  .mobile-nav{bottom:calc(var(--ad-preview-height) + env(safe-area-inset-bottom));height:63px;padding:5px 5px 6px}
+  .mobile-nav::after{content:"AD TEST SPACE - 320 x 50";position:absolute;left:0;right:0;top:100%;height:calc(var(--ad-preview-height) + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:center;padding-bottom:env(safe-area-inset-bottom);background:#203346;color:#b9c9d3;border-top:1px solid #536d7a;font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.5px;pointer-events:none}
+}
+@media(max-width:650px) and (orientation:landscape){
+  .shell{padding-bottom:calc(103px + env(safe-area-inset-bottom))!important}
+  .mobile-nav{height:48px}
+}</style>
 </head>
 <body>
   <div id="app"><div style="max-width:600px;margin:12vh auto;color:#f3f4ec;background:#1c2537;border:1px solid #364258;padding:24px;border-radius:16px;font:16px/1.7 system-ui,sans-serif"><h1>🔧 Flip &amp; Fix Market</h1><p>ゲームを読み込み中です…</p><p>しばらく経っても変わらない場合、このアプリ内のHTMLビューアーはゲームの実行に対応していません。通常のブラウザーでゲームURLを開いてください。</p></div></div>
