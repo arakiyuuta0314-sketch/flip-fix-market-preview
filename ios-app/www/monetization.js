@@ -8903,11 +8903,13 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       var SAMPLE_INTERSTITIAL = "ca-app-pub-3940256099942544/4411468910";
       var native = window.Capacitor?.getPlatform?.() === "ios";
       var adMob = window.Capacitor?.Plugins?.AdMob;
+      var MIN_COMPLETED_JOBS_PER_INTERSTITIAL = 10;
+      var MIN_INTERSTITIAL_INTERVAL_MS = 10 * 60 * 1e3;
       var unlocked = false;
       var initialized = false;
       var adReady = false;
       var adsInitializing = false;
-      var lastInterstitial = 0;
+      var lastInterstitial = Date.now();
       var eligibleEvents = 0;
       var adDiagnostic = (message) => {
         window.flipFixAdDiagnostic = message;
@@ -9032,7 +9034,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       window.flipFixAdBreak = async () => {
         if (!adReady || unlocked) return;
         eligibleEvents++;
-        if (eligibleEvents < 4 || Date.now() - lastInterstitial < 18e4) return;
+        if (eligibleEvents < MIN_COMPLETED_JOBS_PER_INTERSTITIAL || Date.now() - lastInterstitial < MIN_INTERSTITIAL_INTERVAL_MS) return;
         try {
           await adMob.showInterstitial();
           lastInterstitial = Date.now();

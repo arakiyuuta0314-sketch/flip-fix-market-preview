@@ -4,7 +4,11 @@ const SAMPLE_BANNER = 'ca-app-pub-3940256099942544/2934735716';
 const SAMPLE_INTERSTITIAL = 'ca-app-pub-3940256099942544/4411468910';
 const native = window.Capacitor?.getPlatform?.() === 'ios';
 const adMob = window.Capacitor?.Plugins?.AdMob;
-let unlocked = false, initialized = false, adReady = false, adsInitializing = false, lastInterstitial = 0, eligibleEvents = 0;
+// Interstitials are restricted to natural post-repair breaks.
+// The initial cooldown starts when the application boots.
+const MIN_COMPLETED_JOBS_PER_INTERSTITIAL = 10;
+const MIN_INTERSTITIAL_INTERVAL_MS = 10 * 60 * 1000;
+let unlocked = false, initialized = false, adReady = false, adsInitializing = false, lastInterstitial = Date.now(), eligibleEvents = 0;
 const adDiagnostic = (message) => {
   window.flipFixAdDiagnostic = message;
   const label = document.getElementById('ad-diagnostic-status');
@@ -114,7 +118,7 @@ async function prepareInterstitial() {
 window.flipFixAdBreak = async () => {
   if (!adReady || unlocked) return;
   eligibleEvents++;
-  if (eligibleEvents < 4 || Date.now() - lastInterstitial < 180000) return;
+  if (eligibleEvents < MIN_COMPLETED_JOBS_PER_INTERSTITIAL || Date.now() - lastInterstitial < MIN_INTERSTITIAL_INTERVAL_MS) return;
   // An unsuccessful or unfilled ad should not interrupt game progress.
   try {
     await adMob.showInterstitial();
