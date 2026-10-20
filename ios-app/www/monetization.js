@@ -9009,6 +9009,16 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         }
       };
       window.flipFixAdsRemoved = () => unlocked;
+      window.flipFixPrivacyOptions = async () => {
+        if (!native || !adMob) return notify("\u5E83\u544A\u30D7\u30E9\u30A4\u30D0\u30B7\u30FC\u8A2D\u5B9A\u306FiPhone\u30A2\u30D7\u30EA\u3067\u5229\u7528\u3067\u304D\u307E\u3059\u3002");
+        try {
+          await adMob.showPrivacyOptionsForm();
+          window.location.reload();
+        } catch (error) {
+          log("privacy options unavailable", error);
+          notify("\u3053\u306E\u5730\u57DF\u3067\u306F\u5E83\u544A\u306E\u540C\u610F\u8A2D\u5B9A\u3092\u8868\u793A\u3067\u304D\u306A\u3044\u5834\u5408\u304C\u3042\u308A\u307E\u3059\u3002");
+        }
+      };
       async function prepareInterstitial() {
         if (!adReady || unlocked) return;
         try {

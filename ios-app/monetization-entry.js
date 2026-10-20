@@ -88,6 +88,19 @@ window.flipFixRestore = async () => {
   } catch (error) { log('restore failed', error); notify('復元に失敗しました。時間をおいて再試行してください。'); }
 };
 window.flipFixAdsRemoved = () => unlocked;
+// Google UMP requires a persistent way for eligible users to withdraw consent.
+window.flipFixPrivacyOptions = async () => {
+  if (!native || !adMob) return notify('広告プライバシー設定はiPhoneアプリで利用できます。');
+  try {
+    await adMob.showPrivacyOptionsForm();
+    // Reload the app only after the UMP dialog closes so ad loading
+    // uses the user's updated consent state before any new ad request.
+    window.location.reload();
+  } catch (error) {
+    log('privacy options unavailable', error);
+    notify('この地域では広告の同意設定を表示できない場合があります。');
+  }
+};
 async function prepareInterstitial() {
   if (!adReady || unlocked) return;
   try {
