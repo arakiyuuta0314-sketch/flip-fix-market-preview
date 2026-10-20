@@ -8944,6 +8944,10 @@ Enter "E" to fail with an error.Anything else to cancel.`);
             log("finish transaction failed", error);
           }
         });
+        store.when().receiptsReady(() => {
+          if (store.owned(PRODUCT_ID)) unlockAds();
+          log("StoreKit receipts ready", { owned: store.owned(PRODUCT_ID) });
+        });
         store.when().productUpdated((product) => {
           if (product.id === PRODUCT_ID) {
             status(unlocked ? "purchased" : "available");
@@ -8955,7 +8959,9 @@ Enter "E" to fail with an error.Anything else to cancel.`);
           status("error");
         });
         try {
-          await store.initialize([Platform.APPLE_APPSTORE]);
+          const errors = await store.initialize([Platform.APPLE_APPSTORE]);
+          if (errors?.length) throw new Error(errors.map((e) => e.message).join("; "));
+          if (store.owned(PRODUCT_ID)) unlockAds();
           initialized = true;
           status(unlocked ? "purchased" : "ready");
           log("StoreKit initialized");
@@ -8980,8 +8986,10 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       window.flipFixRestore = async () => {
         if (!native || !initialized) return notify("App Store\u3078\u306E\u63A5\u7D9A\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
         try {
-          await store.restorePurchases();
-          notify(unlocked ? "\u8CFC\u5165\u3092\u5FA9\u5143\u3057\u307E\u3057\u305F\u3002" : "\u5FA9\u5143\u3067\u304D\u308B\u8CFC\u5165\u306F\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\u3002");
+          const error = await store.restorePurchases();
+          if (error) throw new Error(error.message);
+          if (store.owned(PRODUCT_ID)) unlockAds();
+          notify(unlocked ? "\u8CFC\u5165\u3092\u5FA9\u5143\u3057\u307E\u3057\u305F\u3002" : "\u5FA9\u5143\u51E6\u7406\u3092\u53D7\u3051\u4ED8\u3051\u307E\u3057\u305F\u3002\u8CFC\u5165\u5C65\u6B74\u3092\u78BA\u8A8D\u3057\u3066\u3044\u307E\u3059\u3002");
         } catch (error) {
           log("restore failed", error);
           notify("\u5FA9\u5143\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u6642\u9593\u3092\u304A\u3044\u3066\u518D\u8A66\u884C\u3057\u3066\u304F\u3060\u3055\u3044\u3002");

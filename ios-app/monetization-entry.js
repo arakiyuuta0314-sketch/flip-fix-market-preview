@@ -30,6 +30,10 @@ async function initializePurchases() {
     unlockAds();
     try { await transaction.finish(); } catch (error) { log('finish transaction failed', error); }
   });
+  store.when().receiptsReady(() => {
+    if (store.owned(PRODUCT_ID)) unlockAds();
+    log('StoreKit receipts ready', { owned: store.owned(PRODUCT_ID) });
+  });
   store.when().productUpdated(product => {
     if (product.id === PRODUCT_ID) {
       status(unlocked ? 'purchased' : 'available');
@@ -38,7 +42,9 @@ async function initializePurchases() {
   });
   store.error(error => { log('StoreKit error', error); status('error'); });
   try {
-    await store.initialize([Platform.APPLE_APPSTORE]);
+    const errors = await store.initialize([Platform.APPLE_APPSTORE]);
+    if (errors?.length) throw new Error(errors.map(e => e.message).join('; '));
+    if (store.owned(PRODUCT_ID)) unlockAds();
     initialized = true;
     status(unlocked ? 'purchased' : 'ready');
     log('StoreKit initialized');
@@ -60,8 +66,10 @@ window.flipFixPurchase = async () => {
 window.flipFixRestore = async () => {
   if (!native || !initialized) return notify('App Storeへの接続を確認してください。');
   try {
-    await store.restorePurchases();
-    notify(unlocked ? '購入を復元しました。' : '復元できる購入は見つかりませんでした。');
+    const error = await store.restorePurchases();
+    if (error) throw new Error(error.message);
+    if (store.owned(PRODUCT_ID)) unlockAds();
+    notify(unlocked ? '購入を復元しました。' : '復元処理を受け付けました。購入履歴を確認しています。');
   } catch (error) { log('restore failed', error); notify('復元に失敗しました。時間をおいて再試行してください。'); }
 };
 window.flipFixAdsRemoved = () => unlocked;
