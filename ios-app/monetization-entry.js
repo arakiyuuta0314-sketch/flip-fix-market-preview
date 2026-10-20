@@ -171,6 +171,11 @@ async function initializeAds() {
     adDiagnostic('SDK準備完了・バナー読込中');
     // The interstitial lifecycle must be independent of the banner lifecycle.
     await prepareInterstitial();
+    if (unlocked) {
+      await hideAds();
+      adDiagnostic('広告削除済み');
+      return;
+    }
     try {
       await adMob.showBanner({
         adId: BANNER_AD_ID,
@@ -179,6 +184,12 @@ async function initializeAds() {
         margin: 0,
         isTesting: false
       });
+      // A purchase may finish while native AdMob is still presenting the banner.
+      if (unlocked) {
+        await hideAds();
+        adDiagnostic('広告削除済み');
+        return;
+      }
       bannerLayout(true);
       adDiagnostic('バナー表示成功');
       log('banner displayed');

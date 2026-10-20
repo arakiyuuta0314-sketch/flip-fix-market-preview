@@ -9085,6 +9085,11 @@ Enter "E" to fail with an error.Anything else to cancel.`);
           adReady = true;
           adDiagnostic("SDK\u6E96\u5099\u5B8C\u4E86\u30FB\u30D0\u30CA\u30FC\u8AAD\u8FBC\u4E2D");
           await prepareInterstitial();
+          if (unlocked) {
+            await hideAds();
+            adDiagnostic("\u5E83\u544A\u524A\u9664\u6E08\u307F");
+            return;
+          }
           try {
             await adMob.showBanner({
               adId: BANNER_AD_ID,
@@ -9093,6 +9098,11 @@ Enter "E" to fail with an error.Anything else to cancel.`);
               margin: 0,
               isTesting: false
             });
+            if (unlocked) {
+              await hideAds();
+              adDiagnostic("\u5E83\u544A\u524A\u9664\u6E08\u307F");
+              return;
+            }
             bannerLayout(true);
             adDiagnostic("\u30D0\u30CA\u30FC\u8868\u793A\u6210\u529F");
             log("banner displayed");
