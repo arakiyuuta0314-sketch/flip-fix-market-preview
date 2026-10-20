@@ -8906,12 +8906,21 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       var unlocked = false;
       var initialized = false;
       var adReady = false;
+      var adsInitializing = false;
       var lastInterstitial = 0;
       var eligibleEvents = 0;
+      var adDiagnostic = (message) => {
+        window.flipFixAdDiagnostic = message;
+        const label = document.getElementById("ad-diagnostic-status");
+        if (label) label.textContent = message;
+        console.info("[AdMob] diagnostic:", message);
+      };
       var $html = document.documentElement;
       var log = (message, detail) => console.info("[Monetization]", message, detail ?? "");
       var status = (message) => {
         window.flipFixMonetizationStatus = message;
+        const label = document.getElementById("purchase-diagnostic-status");
+        if (label) label.textContent = message;
         window.dispatchEvent(new CustomEvent("flipfix-monetization-status"));
       };
       var notify = (message) => window.alert(message);
@@ -9000,7 +9009,9 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         if (!adReady || unlocked) return;
         try {
           await adMob.prepareInterstitial({ adId: SAMPLE_INTERSTITIAL, isTesting: true });
+          window.flipFixInterstitialStatus = "\u6E96\u5099\u5B8C\u4E86";
         } catch (error) {
+          window.flipFixInterstitialStatus = "\u8AAD\u307F\u8FBC\u307F\u5931\u6557: " + (error?.message || String(error));
           log("interstitial preload failed", error);
         }
       }
@@ -9008,10 +9019,10 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         if (!adReady || unlocked) return;
         eligibleEvents++;
         if (eligibleEvents < 4 || Date.now() - lastInterstitial < 18e4) return;
-        eligibleEvents = 0;
         try {
           await adMob.showInterstitial();
           lastInterstitial = Date.now();
+          eligibleEvents = 0;
         } catch (error) {
           log("interstitial show failed", error);
         }
@@ -9019,30 +9030,65 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       };
       async function initializeAds() {
         if (!adMob) {
-          status("admob-unavailable");
+          adDiagnostic("AdMob\u30D7\u30E9\u30B0\u30A4\u30F3\u672A\u691C\u51FA");
           bannerLayout(false);
           return;
         }
+        if (adsInitializing) return;
+        adsInitializing = true;
         try {
-          await adMob.initialize({ initializeForTesting: true });
+          adDiagnostic("\u5E83\u544A\u540C\u610F\u3092\u78BA\u8A8D\u4E2D");
           let consent = await adMob.requestConsentInfo();
-          if (consent.status === "REQUIRED" && consent.isConsentFormAvailable) consent = await adMob.showConsentForm();
+          if (consent.status === "REQUIRED" && consent.isConsentFormAvailable) {
+            consent = await adMob.showConsentForm();
+          }
           if (!consent.canRequestAds) {
-            log("consent does not allow ads", consent);
+            adDiagnostic("\u5E83\u544A\u30EA\u30AF\u30A8\u30B9\u30C8\u4E0D\u53EF\uFF08\u540C\u610F\u72B6\u614B: " + consent.status + "\uFF09");
             bannerLayout(false);
             return;
           }
-          if (unlocked) return;
-          await adMob.showBanner({ adId: SAMPLE_BANNER, adSize: "BANNER", position: "BOTTOM_CENTER", margin: 0, isTesting: true });
+          if (unlocked) {
+            adDiagnostic("\u5E83\u544A\u524A\u9664\u6E08\u307F");
+            bannerLayout(false);
+            return;
+          }
+          adDiagnostic("SDK\u521D\u671F\u5316\u4E2D");
+          await adMob.initialize({ initializeForTesting: true });
           adReady = true;
-          bannerLayout(true);
-          log("test banner displayed");
+          adDiagnostic("SDK\u6E96\u5099\u5B8C\u4E86\u30FB\u30D0\u30CA\u30FC\u8AAD\u8FBC\u4E2D");
           await prepareInterstitial();
+          try {
+            await adMob.showBanner({
+              adId: SAMPLE_BANNER,
+              adSize: "BANNER",
+              position: "BOTTOM_CENTER",
+              margin: 0,
+              isTesting: true
+            });
+            bannerLayout(true);
+            adDiagnostic("\u30C6\u30B9\u30C8\u30D0\u30CA\u30FC\u8868\u793A\u6210\u529F");
+            log("test banner displayed");
+          } catch (error) {
+            bannerLayout(false);
+            adDiagnostic("\u30D0\u30CA\u30FC\u8AAD\u8FBC\u5931\u6557: " + (error?.message || String(error)));
+            log("banner failed", error);
+          }
         } catch (error) {
           bannerLayout(false);
-          log("banner initialization failed", error);
+          adDiagnostic("\u521D\u671F\u5316\u30A8\u30E9\u30FC: " + (error?.message || String(error)));
+          log("AdMob initialization failed", error);
+        } finally {
+          adsInitializing = false;
         }
       }
+      window.flipFixAdDebug = () => ({
+        platform: window.Capacitor?.getPlatform?.() || "unknown",
+        adPluginPresent: Boolean(adMob),
+        banner: window.flipFixAdDiagnostic || "\u672A\u958B\u59CB",
+        interstitial: window.flipFixInterstitialStatus || "\u672A\u6E96\u5099",
+        store: window.flipFixMonetizationStatus || "\u672A\u958B\u59CB",
+        purchased: unlocked
+      });
       if (native) {
         $html.classList.add("native-ios", "native-ad-hidden");
         status("loading");
