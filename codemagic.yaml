@@ -45,7 +45,17 @@ workflows:
       - name: Build signed IPA
         script: |
           xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+      - name: Verify IPA artifact
+        script: |
+          echo "Searching for signed IPA files"
+          find build ios-app/build -type f -name '*.ipa' -print 2>/dev/null || true
+          IPA_COUNT=$(find build ios-app/build -type f -name '*.ipa' 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$IPA_COUNT" -eq 0 ]; then
+            echo "ERROR: No IPA generated; refusing to report a successful TestFlight build"
+            exit 1
+          fi
     artifacts:
+      - build/ios/ipa/*.ipa
       - ios-app/build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     publishing:
