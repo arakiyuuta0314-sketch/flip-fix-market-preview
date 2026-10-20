@@ -46,27 +46,27 @@ function unlockAds() {
   window.dispatchEvent(new CustomEvent('flipfix-purchase-updated'));
 }
 async function initializePurchases() {
-  store.register([{ id: PRODUCT_ID, type: ProductType.NON_CONSUMABLE, platform: Platform.APPLE_APPSTORE }]);
-  store.when().approved(async transaction => {
-    if (!transaction.products?.some(p => p.id === PRODUCT_ID)) return;
-    unlockAds();
-    try { await transaction.finish(); } catch (error) { log('finish transaction failed', error); }
-  });
-  store.when().receiptsReady(() => {
-    if (store.owned(PRODUCT_ID)) unlockAds();
-    log('StoreKit receipts ready', { owned: store.owned(PRODUCT_ID) });
-  });
-  store.when().receiptUpdated(() => {
-    if (store.owned(PRODUCT_ID)) unlockAds();
-  });
-  store.when().productUpdated(product => {
-    if (product.id === PRODUCT_ID) {
-      status(unlocked ? 'purchased' : 'available');
-      log('product updated', { id: product.id, price: product.getOffer?.()?.pricing?.price });
-    }
-  });
-  store.error(error => { log('StoreKit error', error); status('error: ' + errorText(error)); });
   try {
+    store.register([{ id: PRODUCT_ID, type: ProductType.NON_CONSUMABLE, platform: Platform.APPLE_APPSTORE }]);
+    store.when().approved(async transaction => {
+      if (!transaction.products?.some(p => p.id === PRODUCT_ID)) return;
+      unlockAds();
+      try { await transaction.finish(); } catch (error) { log('finish transaction failed', error); }
+    });
+    store.when().receiptsReady(() => {
+      if (store.owned(PRODUCT_ID)) unlockAds();
+      log('StoreKit receipts ready', { owned: store.owned(PRODUCT_ID) });
+    });
+    store.when().receiptUpdated(() => {
+      if (store.owned(PRODUCT_ID)) unlockAds();
+    });
+    store.when().productUpdated(product => {
+      if (product.id === PRODUCT_ID) {
+        status(unlocked ? 'purchased' : 'available');
+        log('product updated', { id: product.id, price: product.getOffer?.()?.pricing?.price });
+      }
+    });
+    store.error(error => { log('StoreKit error', error); status('error: ' + errorText(error)); });
     const errors = await store.initialize([Platform.APPLE_APPSTORE]);
     if (errors?.length) throw new Error(errors.map(errorText).join('; '));
     if (store.owned(PRODUCT_ID)) unlockAds();
@@ -74,15 +74,23 @@ async function initializePurchases() {
     status(unlocked ? 'purchased' : 'ready');
     log('StoreKit initialized');
   } catch (error) {
+    initialized = false;
     status('error: ' + errorText(error));
     log('StoreKit initialization failed', error);
   }
 }
+const appStoreConnectionMessage = () => {
+  const connection = String(window.flipFixMonetizationStatus || '未開始');
+  if (connection.startsWith('error: ')) {
+    return 'App Store接続エラー:\n' + connection.slice('error: '.length);
+  }
+  return 'App Storeへの接続がまだ完了していません。\n状態: ' + connection + '\n少し待ってから再度お試しください。';
+};
 window.flipFixPurchase = async () => {
   if (!PURCHASES_ENABLED) return notify('広告削除の購入機能は準備中です。');
   if (!native) return notify('購入はiPhoneアプリから利用できます。');
   if (unlocked) return notify('広告削除は購入済みです。');
-  if (!initialized) return notify('App Storeへの接続を確認してください。');
+  if (!initialized) return notify(appStoreConnectionMessage());
   const product = store.get(PRODUCT_ID, Platform.APPLE_APPSTORE);
   const offer = product?.getOffer?.();
   if (!offer) return notify('購入商品を取得できません。App Store Connectの商品設定を確認してください。');
@@ -91,7 +99,8 @@ window.flipFixPurchase = async () => {
 };
 window.flipFixRestore = async () => {
   if (!PURCHASES_ENABLED) return notify('広告削除の購入機能は準備中です。');
-  if (!native || !initialized) return notify('App Storeへの接続を確認してください。');
+  if (!native) return notify('購入の復元はiPhoneアプリから利用できます。');
+  if (!initialized) return notify(appStoreConnectionMessage());
   try {
     const error = await store.restorePurchases();
     if (error) throw new Error(error.message);

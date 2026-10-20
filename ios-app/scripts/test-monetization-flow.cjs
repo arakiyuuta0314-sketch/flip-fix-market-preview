@@ -27,7 +27,7 @@ async function boot(options = {}) {
     async finish() { calls.finish++; }
   };
   const store = {
-    register(products) { calls.products = products; },
+    register(products) { calls.products = products; if (options.registerError) throw new Error('Store registration failed'); },
     error(cb) { callback.error = cb; },
     when() {
       return {
@@ -150,10 +150,23 @@ async function boot(options = {}) {
   assert.equal(failedRestore.window.flipFixAdsRemoved(), false);
   assert(failedRestore.calls.alerts.some(v => v.includes('復元に失敗しました')));
 
+  const initFailure = await boot({ initializeFailure: true });
+  await initFailure.window.flipFixPurchase();
+  assert.equal(initFailure.calls.order, 0);
+  assert(initFailure.calls.alerts.some(v => v.includes('App Store接続エラー:') && v.includes('StoreKit unavailable')),
+    'StoreKit initialization error must be visible on iPhone');
+  assert.equal(initFailure.calls.banners, 1, 'Ads must continue when store initialization fails');
+
+  const registrationFailure = await boot({ registerError: true });
+  await registrationFailure.window.flipFixPurchase();
+  assert(registrationFailure.calls.alerts.some(v => v.includes('Store registration failed')),
+    'Store registration exceptions must be visible on iPhone');
+  assert.equal(registrationFailure.calls.banners, 1, 'Store registration failure must not prevent advertisements');
+
   const web = await boot({ platform: 'web' });
   await web.window.flipFixPurchase();
   assert.equal(web.calls.banners, 0);
   assert(web.calls.alerts.some(v => v.includes('iPhoneアプリ')));
 
-  console.log('PASS 9 monetization scenarios: initial ad + purchase/hide, concurrent banner + purchase, restart entitlement, restore, no-owned restore, missing product, failed purchase, failed restore, web guard.');
+  console.log('PASS 11 monetization scenarios: purchase/hide, concurrent banner, restart, restore, no-owned restore, missing product, failed purchase, failed restore, initialization failure, registration exception, web guard.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

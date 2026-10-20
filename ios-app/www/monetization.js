@@ -8951,34 +8951,34 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         window.dispatchEvent(new CustomEvent("flipfix-purchase-updated"));
       }
       async function initializePurchases() {
-        store.register([{ id: PRODUCT_ID, type: ProductType.NON_CONSUMABLE, platform: Platform.APPLE_APPSTORE }]);
-        store.when().approved(async (transaction) => {
-          if (!transaction.products?.some((p) => p.id === PRODUCT_ID)) return;
-          unlockAds();
-          try {
-            await transaction.finish();
-          } catch (error) {
-            log("finish transaction failed", error);
-          }
-        });
-        store.when().receiptsReady(() => {
-          if (store.owned(PRODUCT_ID)) unlockAds();
-          log("StoreKit receipts ready", { owned: store.owned(PRODUCT_ID) });
-        });
-        store.when().receiptUpdated(() => {
-          if (store.owned(PRODUCT_ID)) unlockAds();
-        });
-        store.when().productUpdated((product) => {
-          if (product.id === PRODUCT_ID) {
-            status(unlocked ? "purchased" : "available");
-            log("product updated", { id: product.id, price: product.getOffer?.()?.pricing?.price });
-          }
-        });
-        store.error((error) => {
-          log("StoreKit error", error);
-          status("error: " + errorText(error));
-        });
         try {
+          store.register([{ id: PRODUCT_ID, type: ProductType.NON_CONSUMABLE, platform: Platform.APPLE_APPSTORE }]);
+          store.when().approved(async (transaction) => {
+            if (!transaction.products?.some((p) => p.id === PRODUCT_ID)) return;
+            unlockAds();
+            try {
+              await transaction.finish();
+            } catch (error) {
+              log("finish transaction failed", error);
+            }
+          });
+          store.when().receiptsReady(() => {
+            if (store.owned(PRODUCT_ID)) unlockAds();
+            log("StoreKit receipts ready", { owned: store.owned(PRODUCT_ID) });
+          });
+          store.when().receiptUpdated(() => {
+            if (store.owned(PRODUCT_ID)) unlockAds();
+          });
+          store.when().productUpdated((product) => {
+            if (product.id === PRODUCT_ID) {
+              status(unlocked ? "purchased" : "available");
+              log("product updated", { id: product.id, price: product.getOffer?.()?.pricing?.price });
+            }
+          });
+          store.error((error) => {
+            log("StoreKit error", error);
+            status("error: " + errorText(error));
+          });
           const errors = await store.initialize([Platform.APPLE_APPSTORE]);
           if (errors?.length) throw new Error(errors.map(errorText).join("; "));
           if (store.owned(PRODUCT_ID)) unlockAds();
@@ -8986,15 +8986,23 @@ Enter "E" to fail with an error.Anything else to cancel.`);
           status(unlocked ? "purchased" : "ready");
           log("StoreKit initialized");
         } catch (error) {
+          initialized = false;
           status("error: " + errorText(error));
           log("StoreKit initialization failed", error);
         }
       }
+      var appStoreConnectionMessage = () => {
+        const connection = String(window.flipFixMonetizationStatus || "\u672A\u958B\u59CB");
+        if (connection.startsWith("error: ")) {
+          return "App Store\u63A5\u7D9A\u30A8\u30E9\u30FC:\n" + connection.slice("error: ".length);
+        }
+        return "App Store\u3078\u306E\u63A5\u7D9A\u304C\u307E\u3060\u5B8C\u4E86\u3057\u3066\u3044\u307E\u305B\u3093\u3002\n\u72B6\u614B: " + connection + "\n\u5C11\u3057\u5F85\u3063\u3066\u304B\u3089\u518D\u5EA6\u304A\u8A66\u3057\u304F\u3060\u3055\u3044\u3002";
+      };
       window.flipFixPurchase = async () => {
         if (!PURCHASES_ENABLED) return notify("\u5E83\u544A\u524A\u9664\u306E\u8CFC\u5165\u6A5F\u80FD\u306F\u6E96\u5099\u4E2D\u3067\u3059\u3002");
         if (!native) return notify("\u8CFC\u5165\u306FiPhone\u30A2\u30D7\u30EA\u304B\u3089\u5229\u7528\u3067\u304D\u307E\u3059\u3002");
         if (unlocked) return notify("\u5E83\u544A\u524A\u9664\u306F\u8CFC\u5165\u6E08\u307F\u3067\u3059\u3002");
-        if (!initialized) return notify("App Store\u3078\u306E\u63A5\u7D9A\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+        if (!initialized) return notify(appStoreConnectionMessage());
         const product = store.get(PRODUCT_ID, Platform.APPLE_APPSTORE);
         const offer = product?.getOffer?.();
         if (!offer) return notify("\u8CFC\u5165\u5546\u54C1\u3092\u53D6\u5F97\u3067\u304D\u307E\u305B\u3093\u3002App Store Connect\u306E\u5546\u54C1\u8A2D\u5B9A\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
@@ -9006,7 +9014,8 @@ Enter "E" to fail with an error.Anything else to cancel.`);
       };
       window.flipFixRestore = async () => {
         if (!PURCHASES_ENABLED) return notify("\u5E83\u544A\u524A\u9664\u306E\u8CFC\u5165\u6A5F\u80FD\u306F\u6E96\u5099\u4E2D\u3067\u3059\u3002");
-        if (!native || !initialized) return notify("App Store\u3078\u306E\u63A5\u7D9A\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+        if (!native) return notify("\u8CFC\u5165\u306E\u5FA9\u5143\u306FiPhone\u30A2\u30D7\u30EA\u304B\u3089\u5229\u7528\u3067\u304D\u307E\u3059\u3002");
+        if (!initialized) return notify(appStoreConnectionMessage());
         try {
           const error = await store.restorePurchases();
           if (error) throw new Error(error.message);
