@@ -2517,7 +2517,7 @@ function settingsOverlay(){
    <div class="settings-heading">⚙ ${L('ゲーム設定','Game settings')}</div>
    <p>${L('進行状況はこの端末に自動保存されます。アプリやブラウザのデータを削除するとセーブデータが失われる場合があります。','Progress is saved on this device. Removing the app or browser data may erase your progress.')}</p>
    <div class="settings-info">🏠 ${L('工房','Workshop')} LV.${state.houseLevel} · ⛩️ ${L('街','Town')} LV.${state.townLevel} · 🔧 ${n(state.completed)} ${L('回修理','repairs')}</div>
-   <div class="settings-info" id="purchase-panel"><strong>${L("広告削除（準備中）","Remove Ads (Coming Soon)")}</strong><p>${L("広告削除の買い切り機能は現在準備中です。販売開始まで購入できません。","The one-time remove-ads purchase is being prepared and is unavailable for now.")}</p><button class="btn secondary block" type="button" disabled aria-disabled="true">${L("現在準備中","Coming soon")}</button></div>
+   <div class="settings-info" id="purchase-panel"><strong>${L("広告を永久に削除","Remove Ads Permanently")}</strong><p>${L("一度の購入でバナー広告と全画面広告が表示されなくなります。","A one-time purchase removes banner and interstitial ads.")}</p>${window.Capacitor?.getPlatform?.() === "ios" ? (window.flipFixAdsRemoved?.() ? `<p>${L("購入済み・広告削除有効","Purchased — ads removed")}</p>` : `<button class="btn secondary block" type="button" data-action="purchase-remove-ads">${L("広告を永久に削除","Remove Ads Permanently")}</button>`) + `<button class="btn secondary block" type="button" data-action="restore-remove-ads">${L("購入を復元","Restore Purchases")}</button>` : `<p>${L("購入はiPhoneアプリから利用できます。","Purchases are available in the iPhone app.")}</p>`}</div>
    ${window.Capacitor?.getPlatform?.() === 'ios' ? `<div class="settings-info"><strong>${L('広告・プライバシー','Ads & privacy')}</strong><p>${L('広告に関する同意やプライバシー設定を変更できます。','Review or change your advertising privacy choices.')}</p><button class="btn secondary block" data-action="ad-privacy-options">${L('広告の同意設定を開く','Advertising privacy choices')}</button><p><a href="https://arakiyuuta0314-sketch.github.io/app-legal-pages/flip-fix-market/privacy/" target="_blank" rel="noopener noreferrer">${L('プライバシーポリシー','Privacy Policy')}</a></p></div>` : ''}
    ${settingsResetStage===0?`<div class="settings-actions"><button class="btn danger block" data-action="settings-reset-prompt">↻ ${L('最初から始める','Start a new game')}</button><button class="btn secondary block" data-action="settings-close">${L('ゲームに戻る','Return to game')}</button></div>`:
    `<div class="settings-danger"><h3>⚠️ ${L('セーブデータを初期化しますか？','Permanently erase this save?')}</h3>
@@ -3433,6 +3433,7 @@ if(DEV_MODE){
  }
  };
 }
+window.addEventListener('flipfix-purchase-updated',()=>{if(settingsOpen&&!blockedSave)render();});
 load();if(!blockedSave)render();
 setInterval(()=>{
  if(blockedSave||!state?.active)return;

@@ -8899,7 +8899,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
     "monetization-entry.js"() {
       init_dist2();
       var PRODUCT_ID = "com.flipfixmarket.game.remove_ads";
-      var PURCHASES_ENABLED = false;
+      var PURCHASES_ENABLED = true;
       var BANNER_AD_ID = "ca-app-pub-2233916147865641/3865855634";
       var INTERSTITIAL_AD_ID = "ca-app-pub-2233916147865641/3103438301";
       var native = window.Capacitor?.getPlatform?.() === "ios";
@@ -8944,6 +8944,7 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         }
       }
       function unlockAds() {
+        if (unlocked) return;
         unlocked = true;
         status("purchased");
         hideAds();
@@ -8963,6 +8964,9 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         store.when().receiptsReady(() => {
           if (store.owned(PRODUCT_ID)) unlockAds();
           log("StoreKit receipts ready", { owned: store.owned(PRODUCT_ID) });
+        });
+        store.when().receiptUpdated(() => {
+          if (store.owned(PRODUCT_ID)) unlockAds();
         });
         store.when().productUpdated((product) => {
           if (product.id === PRODUCT_ID) {
@@ -9048,6 +9052,11 @@ Enter "E" to fail with an error.Anything else to cancel.`);
         await prepareInterstitial();
       };
       async function initializeAds() {
+        if (unlocked) {
+          adDiagnostic("\u5E83\u544A\u524A\u9664\u6E08\u307F");
+          bannerLayout(false);
+          return;
+        }
         if (!adMob) {
           adDiagnostic("AdMob\u30D7\u30E9\u30B0\u30A4\u30F3\u672A\u691C\u51FA");
           bannerLayout(false);

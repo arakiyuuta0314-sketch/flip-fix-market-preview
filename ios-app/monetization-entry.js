@@ -1,7 +1,7 @@
 import { store, ProductType, Platform } from 'capacitor-plugin-cdv-purchase';
 const PRODUCT_ID = 'com.flipfixmarket.game.remove_ads';
-// In-app purchases are paused until App Store Connect is ready.
-const PURCHASES_ENABLED = false;
+// Enable non-consumable Remove Ads for Apple Sandbox / TestFlight verification.
+const PURCHASES_ENABLED = true;
 const BANNER_AD_ID = 'ca-app-pub-2233916147865641/3865855634';
 const INTERSTITIAL_AD_ID = 'ca-app-pub-2233916147865641/3103438301';
 const native = window.Capacitor?.getPlatform?.() === 'ios';
@@ -39,6 +39,7 @@ async function hideAds() {
   try { if (adMob) await adMob.hideBanner(); } catch (error) { log('hideBanner failed', error); }
 }
 function unlockAds() {
+  if (unlocked) return;
   unlocked = true;
   status('purchased');
   hideAds();
@@ -54,6 +55,9 @@ async function initializePurchases() {
   store.when().receiptsReady(() => {
     if (store.owned(PRODUCT_ID)) unlockAds();
     log('StoreKit receipts ready', { owned: store.owned(PRODUCT_ID) });
+  });
+  store.when().receiptUpdated(() => {
+    if (store.owned(PRODUCT_ID)) unlockAds();
   });
   store.when().productUpdated(product => {
     if (product.id === PRODUCT_ID) {
@@ -132,6 +136,11 @@ window.flipFixAdBreak = async () => {
   await prepareInterstitial();
 };
 async function initializeAds() {
+  if (unlocked) {
+    adDiagnostic('広告削除済み');
+    bannerLayout(false);
+    return;
+  }
   if (!adMob) {
     adDiagnostic('AdMobプラグイン未検出');
     bannerLayout(false);
