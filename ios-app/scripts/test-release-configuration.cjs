@@ -18,6 +18,8 @@ assert(web.includes('<script src="monetization.js"></script>'));
 assert(!/src=["']admob-test\.js["']/.test(web), 'Sample ad script must not load');
 assert(!fs.existsSync(path.join(root,'www/admob-test.js')), 'Remove sample ad script from release');
 
+const marketingVersions = xcode.match(/MARKETING_VERSION = 1\.0\.2;/g) || [];
+assert.equal(marketingVersions.length, 2, 'Debug and Release must be App Store version 1.0.2');
 const families = xcode.match(/TARGETED_DEVICE_FAMILY = "1";/g) || [];
 assert.equal(families.length, 2, 'Both Debug and Release must target iPhone only');
 assert(!xcode.includes('TARGETED_DEVICE_FAMILY = "1,2"'));
